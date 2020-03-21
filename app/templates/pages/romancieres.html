@@ -1,0 +1,50 @@
+{% extends "conteneur.html" %}
+<!--On lie la structure generale de nos templates definie dans conteneur.html avec la structure specifique de la page romancieres.html grace a extends.-->
+
+{% block titre %}
+    {%if romanciere %}| Romancière : 
+    {{romanciere.prenom_auteur}} {{romanciere.nom_auteur}} {% endif %}
+{% endblock %}
+
+
+{% block corps %}
+<!--Dans le bloc corps, les conditions ont ete multipliees. Enfin, l'ensemble des informations ne pourront pas etre completees pour l'ensemble des romancieres.-->
+    {% if romanciere %}
+            <h1>{{romanciere.prenom_auteur}} {{romanciere.nom_auteur}}</h1>
+            {% if not romanciere.pseudonyme %}
+            <h2></h2>
+            {% else %}
+            <h2>Dite {{romanciere.pseudonyme}}</h2>
+            {% endif %}
+            <dl> 
+                {% if not romanciere.prenom_naissance %}
+                 <dt>Nom de naissance <dd>Non renseigné</dd></dt>
+                {% else %}
+                <dt>Nom de naissance <dd>{{romanciere.prenom_naissance}} {{romanciere.nom_naissance}}</dd></dt>
+                {% endif %}
+                {% if not romanciere.date_naissance %}
+                <dt>Date de naissance</dt><dd>Non renseignée</dd>
+                {% else %}
+                <dt>Date de naissance</dt><dd>{{romanciere.date_naissance}}</dd>
+                {% endif %}
+                {% if not romanciere.lieu_naissance %}
+                <dt>Lieu de naissance</dt><dd>Non renseigné</dd>
+                {% else %}
+                <dt>Lieu de naissance</dt><dd>{{romanciere.lieu_naissance}}</dd>
+                {% endif %}
+                {% if not romanciere.date_mort %} 
+                <dt>Date de décès</dt><dd>Non renseignée</dd>
+                {% else %}
+                <dt>Date de décès</dt><dd>{{romanciere.date_mort}}</dd>
+                {% endif %}
+                {% if not romanciere.lieu_mort %}
+                <dt>Lieu de décès</dt><dd>Non renseigné</dd>
+                {% else %}
+                <dt>Lieu de décès</dt><dd>{{romanciere.lieu_mort}}</dd>
+                {% endif %}
+            </dl>
+        {% else %}
+            <p>La base de données est en cours de constitution</p>
+        {% endif %}
+        <p><a href="{{url_for('accueil')}}">Retour à l'accueil</a></p>
+{% endblock %}

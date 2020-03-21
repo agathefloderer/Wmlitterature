@@ -1,0 +1,25 @@
+<!--Definition de la structure generale des pages avec les elements voues à se repeter, que l'on etendra ensuite dans chaque page.-->
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+    	<meta charset="UTF-8">
+        <title>WmLitterature {% block titre %}{% endblock %}</title>
+        <!-- On definit un bloc titre qui pourra etre complete dans les templates enfants avec les informations specifiques a chaque page. -->
+        {% include "partials/css.html" %}
+        <!--On inclut dans le fichier conteneur.html des sous-elements concernant le css et les metadata. -->
+        {% include "partials/metadata.html" %}
+    </head>
+    <body>
+       <div class="container">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+          <a class="navbar-brand" href="{{ url_for('accueil') }}">WmLitterature</a>
+        </nav>
+        <div class="row">
+            <div class="col">
+            {% block corps %}{% endblock %}
+            <!--On definit un bloc corps qui pourra etre complete dans les templates enfants avec des informations specifiques a chaque page -->
+            </div>
+        </div>
+      </div>
+</html>
+
