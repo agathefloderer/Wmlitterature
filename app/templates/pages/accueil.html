@@ -1,6 +1,8 @@
 {% extends "conteneur.html" %}
 <!--On lie la structure generale de nos templates definie dans conteneur.html avec la structure specifique de la page accueil.html grace a extends.-->
-
+{% block afternav %}
+    {% include "partials/recherche.html" %}
+{%endblock%}
 {% block corps %}
     <h1>Bienvenue sur Women Make Litterature !</h1>
     {% if romancieres %}
