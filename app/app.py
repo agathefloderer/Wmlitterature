@@ -16,9 +16,9 @@ app = Flask(
     static_folder=statics)
 #On donne ensuite un nom a lapplication
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///../romanciere.sqlite'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./romanciere.sqlite'
 #On configure lapplication avec les informations necessaires pour se connecter
 db = SQLAlchemy(app)
 # On initie lobjet SQLAlchemy en lui fournissant lapplication comme variable et en le stockant dans la variable `db`.
 
-from .routes import romanciere, accueil
+from .routes import romanciere, accueil, recherche

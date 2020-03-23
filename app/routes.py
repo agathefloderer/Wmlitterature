@@ -1,7 +1,9 @@
-from flask import render_template
+from flask import render_template, request
 
 from .app import app
-from .modeles.donnees import Femme_de_lettres
+from .modeles.donnees import Femme_de_lettres, Oeuvres_principales
+
+femme_par_page = 5
 
 @app.route("/")
 # Le decorateur app.route cree une associaton entre lURL donnee comme argument et la fonction. Comme nous sommes sur la page daccueil, on ecrit lURL("/")
@@ -16,5 +18,29 @@ def accueil():
 #Definition de routes a parametres. On conditionne le type de id_femme (il s'agit d'un nombre entier)
 def romanciere(id_femme):
     unique_femme = Femme_de_lettres.query.get(id_femme)
-    #On utilise .query pour les clefs primaires. 
-    return render_template("pages/romancieres.html", nom="WmLitterature", romanciere=unique_femme)
+    #On utilise .query pour les clefs primaires.
+    oeuvres = Oeuvres_principales.query.all()
+    return render_template("pages/romancieres.html", nom="WmLitterature", romanciere=unique_femme, oeuvres=oeuvres)
+
+@app.route("/recherche")
+def recherche():
+    # On preferera lutilisation de .get() ici qui nous permet d'eviter un if long (if "clef" in dictionnaire and dictonnaire["clef"])
+    motclef = request.args.get("keyword", None)
+    page = request.args.get("page", 1)
+    
+    if isinstance(page, str) and page.isdigit():
+    	page = int(page)
+    else :
+    	page = 1
+
+    # On cree une liste vide de resultat (qui restera vide par defaut si on na pas de mot cle)
+    resultats = []
+
+    # On fait de meme pour le titre de la page
+    titre = "Recherche"
+    if motclef:
+        resultats = Femme_de_lettres.query.filter(
+            Femme_de_lettres.nom_auteur.like("%{}%".format(motclef))
+        ).paginate(page=page, per_page=femme_par_page)
+        titre = "Resultat pour la recherche `" + motclef + "`"
+    return render_template("pages/recherche.html", resultats=resultats, titre=titre, keyword=motclef)

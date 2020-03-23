@@ -46,5 +46,19 @@
         {% else %}
             <p>La base de données est en cours de constitution</p>
         {% endif %}
+
+
+    {% if oeuvres %}
+        <h3>Oeuvres principales de la romancière :</h3>
+        {%for oeuvre in oeuvres %}
+            <ul>
+            {{oeuvre.titre}}
+            </ul>
+        {% endfor %}
+
+        {% else %}
+            <p>La base de données est en cours de constitution</p>
+        {% endif %}
+
         <p><a href="{{url_for('accueil')}}">Retour à l'accueil</a></p>
 {% endblock %}

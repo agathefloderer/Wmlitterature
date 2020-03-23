@@ -10,16 +10,22 @@
         {% include "partials/metadata.html" %}
     </head>
     <body>
-       <div class="container">
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-          <a class="navbar-brand" href="{{ url_for('accueil') }}">WmLitterature</a>
-        </nav>
-        <div class="row">
-            <div class="col">
-            {% block corps %}{% endblock %}
-            <!--On definit un bloc corps qui pourra etre complete dans les templates enfants avec des informations specifiques a chaque page -->
+
+
+            <nav class="navbar navbar-expand-md navbar-dark bg-dark justify-content-between">
+                <a class="navbar-brand" href="{{ url_for('accueil') }}">WmLitterature</a>
+                <form class="form-inline" action="{{url_for("recherche")}}" method="GET">
+                    <input class="form-control" name="keyword" type="search" placeholder="Recherche rapide" aria-label="Recherche">
+                    <button class="btn btn-outline-info" type="submit">Rechercher</button>
+                </form>
+            </nav>
+            {% block afternav %}{%endblock%}
+            <div class="container">
+                <div class="row">
+                <div class="col">
+                {% block corps %}{% endblock %}
+                </div>
             </div>
         </div>
-      </div>
+    </body>
 </html>
-
