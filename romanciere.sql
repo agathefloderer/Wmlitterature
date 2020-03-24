@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
 DROP TABLE IF EXISTS `portrait`;
 CREATE TABLE IF NOT EXISTS `portrait` (
 	`id_portrait`			INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	`url_portrait`			TEXT NOT NULL,
 	`nom_createur`			TEXT,
 	`prenom_createur`		TEXT,
 	`annee_realisation`		TEXT,
@@ -57,16 +58,16 @@ COMMIT;
 
 BEGIN TRANSACTION;
 
-INSERT INTO `portrait` (`id_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (1,NULL,NULL,'1840',NULL,NULL,2);
-INSERT INTO `portrait` (`id_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (2,'CHARPENTIER','Auguste','1838',NULL,'Musée de la Vie romantique - Paris',3);
-INSERT INTO `portrait` (`id_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (3,NULL,NULL,'1905','peinture',NULL,4);
-INSERT INTO `portrait` (`id_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (4,'CLESINGER','Auguste','1849',NULL,'Musée de la vie romantique - Paris',5);
-INSERT INTO `portrait` (`id_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (5,'BECQUET',NULL,NULL,'gravure','Bibliothèque de Bordeaux',7);
-INSERT INTO `portrait` (`id_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (6,'PETIT','Pierre','1872','photographie','Gallica',8);
-INSERT INTO `portrait` (`id_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (7,'LAUDA','E. de','1902',NULL,NULL,10);
-INSERT INTO `portrait` (`id_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (8,NULL,NULL,'1875','photographie','Bibliothèque nationale de France',12);
-INSERT INTO `portrait` (`id_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (9,'BARRIAS','Félix Joseph','1859',NULL,NULL,14);
-INSERT INTO `portrait` (`id_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (10,'DESORIA','Jean Baptiste François','1797','peinture',NULL,17);
+INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (1,'https://fr.wikipedia.org/wiki/Claire_de_Duras#/media/Fichier:Claire_de_Duras.jpg',NULL,NULL,'1840',NULL,NULL,2);
+INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (2,'images/SAND_Georges.PNG','CHARPENTIER','Auguste','1838',NULL,'Musée de la Vie romantique - Paris',3);
+INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (3,'images/BENTZON_Therese.jpg',NULL,NULL,'1905','Peinture',NULL,4);
+INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (4,'images/CLESINGER-SAND_Solange.jpg','CLESINGER','Auguste','1849',NULL,'Musée de la vie romantique - Paris',5);
+INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (5,'images/FOA_Eugenie.jpg','BECQUET','',NULL,'Gravure','Bibliothèque de Bordeaux',7);
+INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (6,'images/GAGNEUR_Marie_Louise.png','PETIT','Pierre','1872','Photographie','Gallica',8);
+INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (7,'images/SCRIVE_Jeanne.jpg','LAUDA','E. de','1902',NULL,NULL,10);
+INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (8,'images/NAVERY_Raoul_de.jpg',NULL,NULL,'1875','Photographie','Bibliothèque nationale de France',12);
+INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (9,'images/PITRAY_Olga_de.jpg','BARRIAS','Félix Joseph','1859',NULL,NULL,14);
+INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (10,'images/SALM_Constance.jpg','DESORIA','Jean Baptiste François','1797','Peinture',NULL,17);
 INSERT INTO `femme_de_lettres` (`id_femme`,`nom_naissance`,`prenom_naissance`,`nom_auteur`,`prenom_auteur`,`date_naissance`,`lieu_naissance`,`date_mort`,`lieu_mort`,`pseudonyme`) VALUES (1,'MARONNAT','Anne Pierrette','AMERO','Marie','1838-04-03','Luzy','1913-30-12','Neuilly-sur-Seine','Daniel Arnault');
 INSERT INTO `femme_de_lettres` (`id_femme`,`nom_naissance`,`prenom_naissance`,`nom_auteur`,`prenom_auteur`,`date_naissance`,`lieu_naissance`,`date_mort`,`lieu_mort`,`pseudonyme`) VALUES (2,'COETNEMPREN DE KERSAINT','Claire Louisa Rose Bonne de','DURAS','Claire de','1777-03-22','Brest','1828-01-16','Nice','Claire Lechat de Kersaint');
 INSERT INTO `femme_de_lettres` (`id_femme`,`nom_naissance`,`prenom_naissance`,`nom_auteur`,`prenom_auteur`,`date_naissance`,`lieu_naissance`,`date_mort`,`lieu_mort`,`pseudonyme`) VALUES (3,'DUPIN','Amantine Aurore Lucile','SAND','Georges','1804-07-01','Paris','1876-06-08','Nohant',NULL);

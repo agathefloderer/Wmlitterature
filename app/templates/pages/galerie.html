@@ -1,0 +1,21 @@
+{% extends "conteneur.html" %}
+{% block afternav %}
+    {% include "partials/recherche.html" %}
+{% endblock %}
+
+{% block corps %}
+    <h1>Galerie des femmes de lettres française</h1>
+
+    {% if portraits %}
+    {% for portrait in portraits %}
+    <figure>
+    	<img src="{{portrait.url_portrait}}"/>
+    	<figcaption>
+    	{% if not portrait.techniques %}Portrait {% else %} {{portrait.techniques}}{% endif %} réalisé {% if not portrait.nom_createur %}{% else %}par {{portrait.prenom_createur}} {{portrait.nom_createur}}{% endif %} {% if not portrait.annee_realisation %}{% else %}en {{portrait.annee_realisation}}{% endif %}. {% if not portrait.lieu_conservation %}{% else %}Lieu de conservation : {{portrait.lieu_conservation}}.{% endif %}</figcaption>
+	</figure>
+    {% endfor %}
+    {% else %}
+        <p>La base de données est en cours de constitution.</p>
+    {% endif %}
+     <p><a href="{{url_for('accueil')}}">Retour à l'accueil</a></p>
+{% endblock %}
