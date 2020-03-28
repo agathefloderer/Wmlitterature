@@ -6,7 +6,7 @@
 {% block corps %}
     <h1>Bienvenue sur Women Make Litterature !</h1>
         <div style="text-align: center">
-            <a title="Jean-Honoré Fragonard/ Public domain" href="https://commons.wikimedia.org/wiki/File:Fragonard,_The_Reader.jpg"><img width="256" alt="Fragonard, The Reader" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Fragonard%2C_The_Reader.jpg/256px-Fragonard%2C_The_Reader.jpg"></a>
+            <a title="Jean-Honoré Fragonard/ Public domain" href="https://commons.wikimedia.org/wiki/File:Fragonard,_The_Reader.jpg"><img width="256" alt="Fragonard, The Reader" src="{{ url_for('static', filename='images/FRAGONARD_LaLiseuse.jpg')}}"></a>
         </div>
 
     <h2>Ce site vous propose de découvrir ou redécouvrir des femmes de lettres françaises !</h2>
@@ -15,7 +15,7 @@
     <ul>
         <li>Des courtes <a href="{{url_for('index_romanciere')}}"> biographies de ces femmes</a></li>
 
-        <li>La <a href="{{url_for('portrait')}}">galerie de portrait</a> de ces femmes de lettres</li>
+        <li>La <a href="{{url_for('portrait')}}">galerie de portraits</a> de ces femmes de lettres</li>
 
         <li>La liste des principales oeuvres de ces femmes</li>
     </ul>

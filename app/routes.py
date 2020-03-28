@@ -1,7 +1,7 @@
 from flask import render_template, request
 
 from .app import app
-from .modeles.donnees import Femme_de_lettres, Oeuvres_principales, Portrait
+from .modeles.donnees import Femme_de_lettres, Oeuvres_principales, Portrait, Profession
 
 femme_par_page = 5
 
@@ -14,7 +14,7 @@ def accueil():
 
 @app.route("/index_romanciere")
 def index_romanciere() :
-    romancieres = Femme_de_lettres.query.order_by(Femme_de_lettres.nom_auteur.asc()).all()
+    romancieres = Femme_de_lettres.query.order_by(Femme_de_lettres.nom_auteur).all()
     #Maintenant que notre modele est mis en place, on peut faire des requetes. Ici, on recupere l'integralite des lieux.NB : on recupere les donnees au moment de lexecution des routes.
     return render_template("pages/index_romanciere.html", nom="WmLitterature", romancieres=romancieres)
     #Declaration et retour du template accueil. 
@@ -25,13 +25,15 @@ def index_romanciere() :
 def romanciere(id_femme):
     unique_femme = Femme_de_lettres.query.get(id_femme)
     #On utilise .query pour les clefs primaires.
-    oeuvres = Oeuvres_principales.query.all()
-    return render_template("pages/romanciere.html", nom="WmLitterature", romanciere=unique_femme, oeuvres=oeuvres)
+    oeuvres = unique_femme.oeuvres
+    portraits = unique_femme.portraits
+    return render_template("pages/romanciere.html", nom="WmLitterature", romanciere=unique_femme, oeuvres=oeuvres, portraits=portraits)
 
 @app.route("/galerie")
 def portrait():
+    romancieres = Femme_de_lettres.query.order_by(Femme_de_lettres.nom_auteur).all()
     portraits = Portrait.query.all()
-    return render_template("pages/galerie.html", nom="WmLitterature", portraits=portraits)
+    return render_template("pages/galerie.html", nom="WmLitterature", portraits=portraits, romancieres=romancieres)
 
 @app.route("/recherche")
 def recherche():

@@ -1,5 +1,16 @@
 from .. app import db
 
+# Table dassociation necessaire a la declaration dune relation many-to-many entre la table femme_de_lettres et la profession dans notre db
+HasProfession = db.Table("hasProfession",
+    db.Column("id_hasProfession", db.Integer, unique=True, nullable=False, primary_key=True),
+    db.Column("hasProfession_id_femme", db.Integer, db.ForeignKey("femme_de_lettres.id_femme"), primary_key=True),
+    db.Column("hasProfession_id_profession", db.Integer, db.ForeignKey("profession.id_profession"), primary_key=True)
+    )
+
+class Profession(db.Model):
+    id_profession = db.Column(db.Integer, unique=True, nullable=False, primary_key=True, autoincrement=True)
+    label = db.Column(db.Text)
+
 class Femme_de_lettres(db.Model):
 #On cree notre modele Femme_de_lettres. Les modeles permettent de generer automatiquement des requetes.
     id_femme = db.Column(db.Integer, unique=True, nullable=False, primary_key=True, autoincrement=True)
@@ -13,7 +24,9 @@ class Femme_de_lettres(db.Model):
     date_mort = db.Column(db.Text)
     lieu_mort = db.Column(db.Text)
     pseudonyme = db.Column(db.Text)
-    femme_de_lettres = db.relationship("Femme_de_lettres", back_populates="oeuvres_principales")
+    oeuvres = db.relationship('Oeuvres_principales', backref='romanciere')
+    portraits = db.relationship('Portrait', backref='romanciere')
+    professions = db.relationship('Profession', secondary=HasProfession, backref=db.backref("romanciere"))
 
 class Oeuvres_principales(db.Model):
     __tablename__ = "oeuvres_principales"
@@ -23,9 +36,10 @@ class Oeuvres_principales(db.Model):
     editeur = db.Column(db.Text)
     lieu_publication = db.Column(db.Text)
     nombre_pages = db.Column(db.Text)
-    oeuvres_principales_id_femmme = (db.Integer, db.ForeignKey('femme_de_lettres.id_femme'))
+    oeuvres_principales_id_femmme = db.Column(db.Integer, db.ForeignKey('femme_de_lettres.id_femme'))
 
 class Portrait(db.Model):
+    __tablename__="portrait"
     id_portrait = db.Column(db.Integer, unique=True, nullable=False, primary_key=True, autoincrement=True)
     url_portrait = db.Column(db.Text)
     nom_createur = db.Column(db.Text)
@@ -34,4 +48,6 @@ class Portrait(db.Model):
     techniques = db.Column(db.Text)
     lieu_conservation = db.Column(db.Text)
     portrait_id_femme = db.Column(db.Integer, db.ForeignKey('femme_de_lettres.id_femme'))
+
+
     

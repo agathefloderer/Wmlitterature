@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
 DROP TABLE IF EXISTS `portrait`;
 CREATE TABLE IF NOT EXISTS `portrait` (
 	`id_portrait`			INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-	`url_portrait`			TEXT NOT NULL,
+	`url_portrait`			TEXT,
 	`nom_createur`			TEXT,
 	`prenom_createur`		TEXT,
 	`annee_realisation`		TEXT,
@@ -34,14 +34,16 @@ CREATE TABLE IF NOT EXISTS `femme_de_lettres`(
 );
 DROP TABLE IF EXISTS `hasProfession`;
 CREATE TABLE IF NOT EXISTS `hasProfession` (
+	`id_hasProfession`			INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	`hasProfession_id_femme`	INTEGER NOT NULL,
-	`hasProfession_label`				TEXT,
-	FOREIGN KEY(hasProfession_label) REFERENCES profession(label),
+	`hasProfession_id_profession`		INTEGER,
+	FOREIGN KEY(hasProfession_id_profession) REFERENCES profession(id_profession),
 	FOREIGN KEY(hasProfession_id_femme) REFERENCES femme_de_lettres(id_femme)
 );
 DROP TABLE IF EXISTS `profession`;
 CREATE TABLE IF NOT EXISTS `profession` (
-	`label`					TEXT NOT NULL PRIMARY KEY
+	`id_profession`			INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	`label`					TEXT
 );
 DROP TABLE IF EXISTS `oeuvres_principales`;
 CREATE TABLE IF NOT EXISTS `oeuvres_principales` (
@@ -58,16 +60,24 @@ COMMIT;
 
 BEGIN TRANSACTION;
 
-INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (1,'https://fr.wikipedia.org/wiki/Claire_de_Duras#/media/Fichier:Claire_de_Duras.jpg',NULL,NULL,'1840',NULL,NULL,2);
-INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (2,'images/SAND_Georges.PNG','CHARPENTIER','Auguste','1838',NULL,'Musée de la Vie romantique - Paris',3);
-INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (3,'images/BENTZON_Therese.jpg',NULL,NULL,'1905','Peinture',NULL,4);
-INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (4,'images/CLESINGER-SAND_Solange.jpg','CLESINGER','Auguste','1849',NULL,'Musée de la vie romantique - Paris',5);
-INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (5,'images/FOA_Eugenie.jpg','BECQUET','',NULL,'Gravure','Bibliothèque de Bordeaux',7);
-INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (6,'images/GAGNEUR_Marie_Louise.png','PETIT','Pierre','1872','Photographie','Gallica',8);
-INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (7,'images/SCRIVE_Jeanne.jpg','LAUDA','E. de','1902',NULL,NULL,10);
-INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (8,'images/NAVERY_Raoul_de.jpg',NULL,NULL,'1875','Photographie','Bibliothèque nationale de France',12);
-INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (9,'images/PITRAY_Olga_de.jpg','BARRIAS','Félix Joseph','1859',NULL,NULL,14);
-INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (10,'images/SALM_Constance.jpg','DESORIA','Jean Baptiste François','1797','Peinture',NULL,17);
+INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (1,NULL,NULL,NULL,NULL,NULL,NULL,1);
+INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (2,'images/DURAS_Claire_de.jpg',NULL,NULL,'1840',NULL,NULL,2);
+INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (3,'images/SAND_Georges.jpg','CHARPENTIER','Auguste','1838',NULL,'Musée de la Vie romantique - Paris',3);
+INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (4,'images/BENTZON_Therese.jpg',NULL,NULL,'1905','Peinture',NULL,4);
+INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (5,'images/CLESINGER-SAND_Solange.jpg','CLESINGER','Auguste','1849',NULL,'Musée de la vie romantique - Paris',5);
+INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (6,NULL,NULL,NULL,NULL,NULL,NULL,6);
+INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (7,'images/FOA_Eugenie.jpg','BECQUET','',NULL,'Gravure','Bibliothèque de Bordeaux',7);
+INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (8,'images/GAGNEUR_Marie-Louise.jpg','PETIT','Pierre','1872','Photographie','Gallica',8);
+INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (9,NULL,NULL,NULL,NULL,NULL,NULL,9);
+INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (10,'images/SCRIVE_Jeanne.jpg','LAUDA','E. de','1902',NULL,NULL,10);
+INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (11,NULL,NULL,NULL,NULL,NULL,NULL,11);
+INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (12,'images/NAVERY_Raoul_de.jpg',NULL,NULL,'1875','Photographie','Bibliothèque nationale de France',12);
+INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (13,NULL,NULL,NULL,NULL,NULL,NULL,13);
+INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (14,'images/PITRAY_Olga_de.jpg','BARRIAS','Félix Joseph','1859',NULL,NULL,14);
+INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (15,NULL,NULL,NULL,NULL,NULL,NULL,15);
+INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (16,NULL,NULL,NULL,NULL,NULL,NULL,16);
+INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (17,'images/SALM_Constance_de.jpg','DESORIA','Jean Baptiste François','1797','Peinture',NULL,17);
+INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (18,NULL,NULL,NULL,NULL,NULL,NULL,18);
 INSERT INTO `femme_de_lettres` (`id_femme`,`nom_naissance`,`prenom_naissance`,`nom_auteur`,`prenom_auteur`,`date_naissance`,`lieu_naissance`,`date_mort`,`lieu_mort`,`pseudonyme`) VALUES (1,'MARONNAT','Anne Pierrette','AMERO','Marie','1838-04-03','Luzy','1913-30-12','Neuilly-sur-Seine','Daniel Arnault');
 INSERT INTO `femme_de_lettres` (`id_femme`,`nom_naissance`,`prenom_naissance`,`nom_auteur`,`prenom_auteur`,`date_naissance`,`lieu_naissance`,`date_mort`,`lieu_mort`,`pseudonyme`) VALUES (2,'COETNEMPREN DE KERSAINT','Claire Louisa Rose Bonne de','DURAS','Claire de','1777-03-22','Brest','1828-01-16','Nice','Claire Lechat de Kersaint');
 INSERT INTO `femme_de_lettres` (`id_femme`,`nom_naissance`,`prenom_naissance`,`nom_auteur`,`prenom_auteur`,`date_naissance`,`lieu_naissance`,`date_mort`,`lieu_mort`,`pseudonyme`) VALUES (3,'DUPIN','Amantine Aurore Lucile','SAND','Georges','1804-07-01','Paris','1876-06-08','Nohant',NULL);
@@ -86,73 +96,73 @@ INSERT INTO `femme_de_lettres` (`id_femme`,`nom_naissance`,`prenom_naissance`,`n
 INSERT INTO `femme_de_lettres` (`id_femme`,`nom_naissance`,`prenom_naissance`,`nom_auteur`,`prenom_auteur`,`date_naissance`,`lieu_naissance`,`date_mort`,`lieu_mort`,`pseudonyme`) VALUES (16,'CAMUSAT','Louise Léonie','ROUZADE','Léonie','1839','Paris','1916',NULL,NULL);
 INSERT INTO `femme_de_lettres` (`id_femme`,`nom_naissance`,`prenom_naissance`,`nom_auteur`,`prenom_auteur`,`date_naissance`,`lieu_naissance`,`date_mort`,`lieu_mort`,`pseudonyme`) VALUES (17,'THEIS','Constance Marie de','SALM','Constance de','1767-09-07','Nantes','1845-04-13','Paris','Constance D. T. Pipelet');
 INSERT INTO `femme_de_lettres` (`id_femme`,`nom_naissance`,`prenom_naissance`,`nom_auteur`,`prenom_auteur`,`date_naissance`,`lieu_naissance`,`date_mort`,`lieu_mort`,`pseudonyme`) VALUES (18,'',NULL,'ULLIAC-TREMADEURE','Sophie','1794-04-19','Lorient','1862-04-21','Paris','Mademoiselle Dudrezène');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (1,'Romancière');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (2,'Romancière');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (2,'Salonnière');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (2,'Ecrivaine');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (2,'`Féministe`');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (3,'Romancière');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (3,'Journaliste');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (3,'Dramaturge');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (3,'Epistolière');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (3,'Critique littéraire');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (3,'`Féministe`');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (4,'Journaliste');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (4,'Essayiste');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (4,'Romancière');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (5,'Ecrivaine');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (5,'Romancière');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (6,'Ecrivaine');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (6,'Romancière');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (6,'Directrice d''un bureau de poste');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (7,'Ecrivaine');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (7,'Auteure de littérature pour la jeunesse');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (8,'Ecrivaine');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (8,'Romancière');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (9,'Ecrivaine');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (9,'Romancière');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (10,'Poétesse');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (10,'Romancière');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (10,'Ecrivaine');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (10,'Dramaturge');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (11,'Fondatrice EHES');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (11,'Romancière');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (11,'Sociologue');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (12,'Romancière');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (13,'Romancière');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (13,'Poétesse');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (13,'Traductrice');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (14,'Romancière');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (14,'Auteure de littérature pour la jeunesse');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (15,'Ecrivaine');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (15,'Romancière');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (16,'Ecrivaine');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (16,'Romancière');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (16,'Politicienne');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (16,'Journaliste');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (17,'Ecrivaine');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (17,'Poétesse');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (17,'Salonnière');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (18,'Ecrivaine');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (18,'Romancière');
-INSERT INTO `hasProfession` (`hasProfession_id_femme`,`hasProfession_label`) VALUES (18,'Educatrice');
-INSERT INTO `profession` (`label`) VALUES ('Romancière');
-INSERT INTO `profession` (`label`) VALUES ('Ecrivaine');
-INSERT INTO `profession` (`label`) VALUES ('Salonnière');
-INSERT INTO `profession` (`label`) VALUES ('Journaliste');
-INSERT INTO `profession` (`label`) VALUES ('Poétesse');
-INSERT INTO `profession` (`label`) VALUES ('Politicienne');
-INSERT INTO `profession` (`label`) VALUES ('Sociologue');
-INSERT INTO `profession` (`label`) VALUES ('`Féministe`');
-INSERT INTO `profession` (`label`) VALUES ('Dramaturge');
-INSERT INTO `profession` (`label`) VALUES ('Critique littéraire');
-INSERT INTO `profession` (`label`) VALUES ('Epistolière');
-INSERT INTO `profession` (`label`) VALUES ('Essayiste');
-INSERT INTO `profession` (`label`) VALUES ('Directrice d''un bureau de poste');
-INSERT INTO `profession` (`label`) VALUES ('Auteure de littérature pour la jeunesse');
-INSERT INTO `profession` (`label`) VALUES ('Fondatrice EHES');
-INSERT INTO `profession` (`label`) VALUES ('Traductrice');
-INSERT INTO `profession` (`label`) VALUES ('Educatrice');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (1,1,'Romancière');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (2,2,'Romancière');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (3,2,'Salonnière');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (4,2,'Ecrivaine');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (5,2,'`Féministe`');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (6,3,'Romancière');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (7,3,'Journaliste');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (8,3,'Dramaturge');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (9,3,'Epistolière');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (10,3,'Critique littéraire');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (11,3,'`Féministe`');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (12,4,'Journaliste');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (13,4,'Essayiste');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (14,4,'Romancière');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (15,5,'Ecrivaine');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (16,5,'Romancière');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (17,6,'Ecrivaine');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (18,6,'Romancière');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (19,6,"Directrice d'un bureau de poste");
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (20,7,'Ecrivaine');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (21,7,'Auteure de littérature pour la jeunesse');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (22,8,'Ecrivaine');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (23,8,'Romancière');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (24,9,'Ecrivaine');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (25,9,'Romancière');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (26,10,'Poétesse');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (27,10,'Romancière');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (28,10,'Ecrivaine');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (29,10,'Dramaturge');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (30,11,'Fondatrice EHES');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (31,11,'Romancière');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (32,11,'Sociologue');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (33,12,'Romancière');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (34,13,'Romancière');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (35,13,'Poétesse');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (36,13,'Traductrice');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (37,14,'Romancière');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (38,14,'Auteure de littérature pour la jeunesse');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (39,15,'Ecrivaine');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (40,15,'Romancière');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (41,16,'Ecrivaine');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (42,16,'Romancière');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (43,16,'Politicienne');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (44,16,'Journaliste');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (45,17,'Ecrivaine');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (46,17,'Poétesse');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (47,17,'Salonnière');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (48,18,'Ecrivaine');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (49,18,'Romancière');
+INSERT INTO `hasProfession` (`id_hasProfession`,`hasProfession_id_femme`,`hasProfession_id_profession`) VALUES (50,18,'Educatrice');
+INSERT INTO `profession` (`id_profession`,`label`) VALUES (1,'Romancière');
+INSERT INTO `profession` (`id_profession`,`label`) VALUES (2,'Ecrivaine');
+INSERT INTO `profession` (`id_profession`,`label`) VALUES (3,'Salonnière');
+INSERT INTO `profession` (`id_profession`,`label`) VALUES (4,'Journaliste');
+INSERT INTO `profession` (`id_profession`,`label`) VALUES (5,'Poétesse');
+INSERT INTO `profession` (`id_profession`,`label`) VALUES (6,'Politicienne');
+INSERT INTO `profession` (`id_profession`,`label`) VALUES (7,'Sociologue');
+INSERT INTO `profession` (`id_profession`,`label`) VALUES (8,"'Féministe'");
+INSERT INTO `profession` (`id_profession`,`label`) VALUES (9,'Dramaturge');
+INSERT INTO `profession` (`id_profession`,`label`) VALUES (10,'Critique littéraire');
+INSERT INTO `profession` (`id_profession`,`label`) VALUES (11,'Epistolière');
+INSERT INTO `profession` (`id_profession`,`label`) VALUES (12,'Essayiste');
+INSERT INTO `profession` (`id_profession`,`label`) VALUES (13,'Directrice d''un bureau de poste');
+INSERT INTO `profession` (`id_profession`,`label`) VALUES (14,'Auteure de littérature pour la jeunesse');
+INSERT INTO `profession` (`id_profession`,`label`) VALUES (15,'Fondatrice EHES');
+INSERT INTO `profession` (`id_profession`,`label`) VALUES (16,'Traductrice');
+INSERT INTO `profession` (`id_profession`,`label`) VALUES (17,'Educatrice');
 INSERT INTO `oeuvres_principales` (`id_oeuvre`,`titre`,`date_premiere_pub`,`editeur`,`lieu_publication`,`nombre_pages`,`oeuvres_principales_id_femmme`) VALUES (1,'Fille de Lorraine','1895','Oudin et Cie','Paris',NULL,1);
 INSERT INTO `oeuvres_principales` (`id_oeuvre`,`titre`,`date_premiere_pub`,`editeur`,`lieu_publication`,`nombre_pages`,`oeuvres_principales_id_femmme`) VALUES (2,'Fakirs et jongleurs','1889','Editions Firmin-Didot et Cie','Paris','64',1);
 INSERT INTO `oeuvres_principales` (`id_oeuvre`,`titre`,`date_premiere_pub`,`editeur`,`lieu_publication`,`nombre_pages`,`oeuvres_principales_id_femmme`) VALUES (3,'L''Etoile du nord','1903','Firmin-Didot et Cie','Paris','144',1);

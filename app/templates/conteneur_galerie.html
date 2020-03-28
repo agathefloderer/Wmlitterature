@@ -1,0 +1,75 @@
+<!--Definition de la structure generale des pages avec les elements voues à se repeter, que l'on etendra ensuite dans chaque page.-->
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+    	<meta charset="UTF-8">
+        <title>WmLitterature {% block titre %}{% endblock %}</title>
+        <!-- On definit un bloc titre qui pourra etre complete dans les templates enfants avec les informations specifiques a chaque page. -->
+        {% include "partials/css.html" %}
+        <!--On inclut dans le fichier conteneur.html des sous-elements concernant le css et les metadata. -->
+        {% include "partials/metadata.html" %}
+        <style type="text/css">
+            .hero  {
+                background-position: center center;
+                padding:10vh;
+                background-image: url('https://upload.wikimedia.org/wikipedia/commons/6/69/Fragonard%2C_The_Reader.jpg');
+            }
+            .container .hero {
+                background-image: none;
+            }
+        </style>
+
+        <style>
+            div.gallery{
+            margin: 5px;
+            border: 1px solid #ccc;
+            float: left;
+            width: 180px;
+            }
+
+            div.gallery:hover {
+                border: 1px solid #777;
+            }
+
+            div.gallery img {
+                width: 100%;
+                height: auto;
+            }
+
+        </style>
+    </head>
+    <body>
+
+
+            <nav class="navbar navbar-expand-md navbar-dark bg-dark justify-content-between">
+                <a class="navbar-brand" href="{{ url_for('accueil') }}">WmLitterature</a>
+                <form class="form-inline" action="{{url_for("recherche")}}" method="GET">
+                    <input class="form-control" name="keyword" type="search" placeholder="Recherche rapide" aria-label="Recherche">
+                    <button class="btn btn-outline-info" type="submit">Rechercher</button>
+                </form>
+            </nav>
+            {% block afternav %}{%endblock%}
+            <div class="container">
+                <div class="row">
+                <div class="col">
+                {% block corps %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    </body>
+
+
+<footer class="page-footer font-small teal pt-4">
+  <!-- Copyright -->
+    <div style="text-align:center">
+        <p><a href="{{url_for('accueil')}}">Retour à l'accueil</a>  |  <a href="{{url_for('index_romanciere')}}">Index des romancières</a></p>
+    </div>
+  <div class="footer-copyright text-center py-3">
+      <p>© WmLitterature - TNAH, promotion 2020</p>
+      <a href="http://www.chartes.psl.eu/fr/cursus/master-technologies-numeriques-appliquees-histoire"><img src="http://www.chartes.psl.eu/sites/all/themes/enc_base/images/public/logo-ecole-nationale-des-chartes-header.png" class="img-fluid" alt="" width="150"></a>
+  </div>
+  <!-- Copyright -->
+
+</footer>
+<!-- Footer -->
+</html>
