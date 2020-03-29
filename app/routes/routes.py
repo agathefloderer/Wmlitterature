@@ -1,9 +1,9 @@
 from flask import render_template, request, flash, redirect
 
-from ..app import app, login
-from ..modeles.donnees import Femme_de_lettres, Oeuvres_principales, Portrait, Profession
-from ..modeles.utilisateurs import User
-from ..constantes import femme_par_page
+from app.app import app, login
+from app.modeles.donnees import Femme_de_lettres, Oeuvres_principales, Portrait, Profession
+from app.modeles.utilisateurs import User
+from app.constantes import femme_par_page
 from flask_login import login_user, current_user, logout_user
 
 @app.route("/")
