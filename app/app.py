@@ -30,4 +30,4 @@ db = SQLAlchemy(app)
 # On met en place la gestion dutilisateur-rice-s
 login = LoginManager(app)
 
-import app.routes
+from .routes import routes
