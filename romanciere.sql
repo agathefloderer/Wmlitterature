@@ -1,11 +1,11 @@
 BEGIN TRANSACTION;
-DROP TABLE IF EXISTS `utilisateur`;
-CREATE TABLE IF NOT EXISTS `utilisateur` (
-	`id_utilisateur`		INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-	`nom_utilisateur`		TINYTEXT NOT NULL,
-	`login_utilisateur`		VARCHAR(45) NOT NULL,
-	`email_utilisateur`		TINYTEXT NOT NULL,
-	`mdp_utilisateur`		VARCHAR(100) NOT NULL
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE IF NOT EXISTS `user` (
+	`user_id`				INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	`user_nom`				TINYTEXT NOT NULL,
+	`user_login`			VARCHAR(45) NOT NULL,
+	`user_email`			TINYTEXT NOT NULL,
+	`user_password`			VARCHAR(100) NOT NULL
 );
 DROP TABLE IF EXISTS `portrait`;
 CREATE TABLE IF NOT EXISTS `portrait` (
