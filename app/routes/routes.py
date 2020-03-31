@@ -1,10 +1,11 @@
 from flask import render_template, request, flash, redirect
+from sqlalchemy import or_
+from flask_login import login_user, current_user, logout_user, login_required
 
 from app.app import app, login
-from app.modeles.donnees import Femme_de_lettres, Oeuvres_principales, Portrait, Profession
+from app.modeles.donnees import Femme_de_lettres, Oeuvres_principales, Portrait
 from app.modeles.utilisateurs import User
 from app.constantes import femme_par_page
-from flask_login import login_user, current_user, logout_user
 
 @app.route("/")
 # Le decorateur app.route cree une associaton entre lURL donnee comme argument et la fonction. Comme nous sommes sur la page daccueil, on ecrit lURL("/")
@@ -32,13 +33,15 @@ def romanciere(id_femme):
 
 @app.route("/galerie")
 def portrait():
-    romancieres = Femme_de_lettres.query.order_by(Femme_de_lettres.nom_auteur).all()
+    romanciere = Femme_de_lettres.query.all()
     portraits = Portrait.query.all()
-    return render_template("pages/galerie.html", nom="WmLitterature", portraits=portraits, romancieres=romancieres)
+    return render_template("pages/galerie.html", nom="WmLitterature", portraits=portraits, romanciere=romanciere)
 
 @app.route("/recherche")
 def recherche():
-    # On preferera lutilisation de .get() ici qui nous permet d'eviter un if long (if "clef" in dictionnaire and dictonnaire["clef"])
+    """
+    Fonction permettant d'effectuer de la recherche plein-texte
+    """
     motclef = request.args.get("keyword", None)
     page = request.args.get("page", 1)
     
@@ -47,17 +50,54 @@ def recherche():
     else :
     	page = 1
 
-    # On cree une liste vide de resultat (qui restera vide par defaut si on na pas de mot cle)
+    # On crée une liste vide de résultat (qui restera vide par defaut si on n'a pas de mot clef)
     resultats = []
 
-    # On fait de meme pour le titre de la page
+    # On fait de même pour le titre de la page
     titre = "Recherche"
     if motclef:
         resultats = Femme_de_lettres.query.filter(
-            Femme_de_lettres.nom_auteur.like("%{}%".format(motclef))
-        ).paginate(page=page, per_page=femme_par_page)
-        titre = "Resultat pour la recherche `" + motclef + "`"
+            or_(
+                Femme_de_lettres.nom_naissance.like("%{}%".format(motclef)),
+                Femme_de_lettres.prenom_naissance.like("%{}%".format(motclef)),
+                Femme_de_lettres.nom_auteur.like("%{}%".format(motclef)),
+                Femme_de_lettres.prenom_auteur.like("%{}%".format(motclef)),
+                Femme_de_lettres.date_naissance.like("%{}%".format(motclef)),
+                Femme_de_lettres.lieu_naissance.like("%{}%".format(motclef)),
+                Femme_de_lettres.date_mort.like("%{}%".format(motclef)),
+                Femme_de_lettres.lieu_mort.like("%{}%".format(motclef)),
+                Femme_de_lettres.pseudonyme.like("%{}%".format(motclef)),
+                )
+        ).order_by(Femme_de_lettres.nom_auteur.asc()).paginate(page=page, per_page=femme_par_page)
+        titre = "Résultat pour la recherche '" + motclef + "'"
     return render_template("pages/recherche.html", resultats=resultats, titre=titre, keyword=motclef)
+
+@app.route("/creer_romanciere", methods=["GET", "POST"])
+@login_required
+def creer_romanciere():
+    """ Route permettant a l'utilisateur de créer une notice romancière """
+    femme_de_lettres = Femme_de_lettres.query.all()
+    if request.method == "POST":
+        status, data = Femme_de_lettres.create_person(
+        new_nom_naissance=request.form.get("new_nom_naissance", None),
+        new_prenom_naissance=request.form.get("new_prenom_naissance", None),
+        new_nom_auteur=request.form.get("new_nom_auteur", None),
+        new_prenom_auteur=request.form.get("new_prenom_auteur", None),
+        new_date_naissance=request.form.get("new_date_naissance", None),
+        new_lieu_naissance=request.form.get("new_lieu_naissance", None),
+        new_date_mort=request.form.get("new_date_mort", None),
+        new_lieu_mort=request.form.get("new_lieu_mort", None),
+        new_pseudonyme=request.form.get("new_pseudonyme", None)
+        )
+
+        if status is True:
+            flash("Création d'une nouvelle romanciere réussie !", "success")
+            return redirect("/creer_romanciere")
+        else:
+            flash("La création d'une nouvelle romanciere a échoué pour les raisons suivantes : " + ", ".join(data), "danger")
+            return render_template("pages/creer_romanciere.html")
+    else:
+        return render_template("pages/creer_romanciere.html", nom="WmLitterature")
 
 @app.route("/register", methods=["GET", "POST"])
 def inscription():

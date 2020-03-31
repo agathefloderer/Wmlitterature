@@ -46,7 +46,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV='/home/formation1/Bureau/Devoir_python/env'
+VIRTUAL_ENV='/home/formation1/Bureau/WmlitteratureEssai/env'
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

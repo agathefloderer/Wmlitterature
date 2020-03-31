@@ -24,6 +24,8 @@ app.config['SECRET_KEY'] = SECRET_KEY
 #On configure le secret
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./romanciere.sqlite'
 #On configure lapplication avec les informations necessaires pour se connecter
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
 db = SQLAlchemy(app)
 # On initie lobjet SQLAlchemy en lui fournissant lapplication comme variable et en le stockant dans la variable `db`.
 

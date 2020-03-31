@@ -24,22 +24,31 @@
 
             <nav class="navbar navbar-expand-md navbar-dark bg-dark justify-content-between">
                 <a class="navbar-brand" href="{{ url_for('accueil') }}">WmLitterature</a>
+                    <ul class="navbar-nav mr-auto">
+                    {% if not current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('inscription')}}">Inscription</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('connexion')}}">Connexion</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('deconnexion')}}">Déconnexion ({{current_user.user_nom}})</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('creer_romanciere')}}">Formulaire romancière</a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('index_romanciere')}}">Index des romancières</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('portrait')}}">Galerie de portraits</a>
+                </li>
+                    </ul>
 
-            <ul class="navbar-nav mr-auto">
-                {% if not current_user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{url_for("inscription")}}">Inscription</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{url_for("connexion")}}">Connexion</a>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{url_for("deconnexion")}}">Déconnexion ({{current_user.user_nom}})</a>
-                    </li>
-            {% endif %}
-            </ul>
-                <form class="form-inline" action="{{url_for("recherche")}}" method="GET">
+                <form class="form-inline" action="{{url_for('recherche')}}" method="GET">
                     <input class="form-control" name="keyword" type="search" placeholder="Recherche rapide" aria-label="Recherche">
                     <button class="btn btn-outline-info" type="submit">Rechercher</button>
                 </form>
@@ -57,6 +66,9 @@
 <footer>
 <footer class="page-footer font-small blue pt-4">
   <!-- Copyright -->
+  <div style="text-align:center">
+        <p><a href="{{url_for('accueil')}}">Retour à l'accueil</a></p>
+    </div>
   <div class="footer-copyright text-center py-3">
       <p>© WmLitterature - TNAH, promotion 2020</p>
       <a href="http://www.chartes.psl.eu/fr/cursus/master-technologies-numeriques-appliquees-histoire"><img src="http://www.chartes.psl.eu/sites/all/themes/enc_base/images/public/logo-ecole-nationale-des-chartes-header.png" class="img-fluid" alt="" width="150"></a>

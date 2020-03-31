@@ -1,0 +1,74 @@
+{% extends "conteneur.html" %}
+
+{% block titre %}| Création d'une romancière{%endblock%}
+
+{% block corps %}
+
+<div class="container">
+	<div>
+		<h1>Création d'une romancière</h1>
+		<p>Pour ajouter une nouvelle romancière à la base de données, complétez le formulaire et cliquez sur "Créer".</p>
+	</div>
+</div>
+<form class="container" method="POST" action="{{url_for('creer_romanciere')}}">
+	<div>
+		<div>
+			<label for="new_nom_naissance">Nom de naissance</label>
+		<div>
+			<input type="text" id="new_nom_naissance" name="new_nom_naissance" maxlength="300">
+		</div>
+		</div>
+		<div>
+			<label for="new_prenom_naissance">Prénom de naissance</label>
+		<div>
+			<input type="text" id="new_prenom_naissance" name="new_prenom_naissance" maxlength="300">
+		</div>
+		</div>
+		<div>
+			<label for="new_nom_auteur">Nom d'auteur</label>
+		<div>
+			<input type="text" id="new_nom_auteur" name="new_nom_auteur" maxlength="300">
+		</div>
+		</div>
+		<div>
+			<label for="new_prenom_auteur">Prénom d'auteur</label>
+		<div>
+			<input type="text" id="new_prenom_auteur" name="new_prenom_auteur" maxlength="300">
+		</div>
+		</div>
+		<div>
+			<label for="new_date_naissance">Date de naissance. Format à respecter : MM-JJ-AAAA.</label>
+		<div>
+			<input type="text" id="new_date_naissance" name="new_date_naissance" maxlength="10">
+		</div>
+		</div>
+		<div>
+			<label for="new_lieu_naissance">Lieu de naissance. Ville ou village</label>
+		<div>
+			<input type="text" id="new_lieu_naissance" name="new_lieu_naissance" maxlength="300">
+		</div>
+		</div>
+		<div>
+			<label for="new_date_mort">Date de décès. Format à respecter : MM-JJ-AAAA.</label>
+		<div>
+			<input type="text" id="new_date_mort" name="new_date_mort" maxlength="10">
+		</div>
+		</div>
+		<div>
+			<label for="new_lieu_mort">Lieu de décès. Ville ou village</label>
+		<div>
+			<input type="text" id="new_lieu_mort" name="new_lieu_mort" maxlength="300">
+		</div>
+		</div>
+		<div>
+			<label for="new_pseudonyme">Pseudonyme</label>
+		<div>
+			<input type="text" id="new_pseudonyme" name="new_pseudonyme" maxlength="300">
+		</div>
+		</div>
+	</div>
+	<div>
+		<button type="submit" value="créer">Créer</button>
+	</div>
+</form>
+{% endblock %}

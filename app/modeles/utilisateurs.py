@@ -1,14 +1,25 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from sqlalchemy import or_
 
 from .. app import db, login
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     user_id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True, autoincrement=True)
     user_nom = db.Column(db.Text, nullable=False)
     user_login = db.Column(db.String(45), nullable=False, unique=True)
     user_email = db.Column(db.Text, nullable=False)
     user_password = db.Column(db.String(100), nullable=False)
+    #Jointure
+    authorships = db.relationship("Authorship", back_populates="user")
+
+    def get_id(self):
+        """
+        Fonction permettant de retourner l'identifiant de l'objet en cours d'utilisation
+        :returns: identifiant de l'utilisateur
+        :rtype: int
+        """ 
+        return (self.user_id)
 
     @staticmethod
     def identification(login, motdepasse):
