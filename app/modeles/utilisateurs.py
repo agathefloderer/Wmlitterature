@@ -49,20 +49,20 @@ class User(UserMixin, db.Model):
         """
         erreurs = []
         if not login:
-            erreurs.append("Le login fourni est vide")
+            erreurs.append("le login fourni est vide")
         if not email:
-            erreurs.append("L'email fourni est vide")
+            erreurs.append("l'email fourni est vide")
         if not nom:
-            erreurs.append("Le nom fourni est vide")
+            erreurs.append("le nom fourni est vide")
         if not motdepasse or len(motdepasse) < 6:
-            erreurs.append("Le mot de passe fourni est vide ou trop court")
+            erreurs.append("le mot de passe fourni est vide ou trop court")
 
-        # On verifie que personne na utilise cet email ou ce login
+        # On vérifie que personne n'a utilisé cet email ou ce login
         uniques = User.query.filter(
             db.or_(User.user_email == email, User.user_login == login)
         ).count()
         if uniques > 0:
-            erreurs.append("Lemail ou le login sont deja inscrits dans notre base de donnees")
+            erreurs.append("l'email ou le login sont déjà inscrits dans notre base de données")
 
         # Si on a au moins une erreur
         if len(erreurs) > 0:
@@ -77,18 +77,18 @@ class User(UserMixin, db.Model):
         )
 
         try:
-            # On lajoute au transport vers la base de donnees
+            # On l'ajoute au transport vers la base de donnees
             db.session.add(utilisateur)
             # On envoie le paquet
             db.session.commit()
 
-            # On renvoie lutilisateur
+            # On renvoie l'utilisateur
             return True, utilisateur
         except Exception as erreur:
             return False, [str(erreur)]
 
     def get_id(self):
-        """ Retourne lid de l'objet actuellement utilise
+        """ Retourne l'id de l'objet actuellement utilise
 
         :returns: ID de l'utilisateur
         :rtype: int

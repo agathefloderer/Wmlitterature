@@ -21,7 +21,7 @@ class Femme_de_lettres(db.Model):
     authorships = db.relationship("Authorship", back_populates='femme_de_lettres')
 
     @staticmethod
-    def create_person(new_nom_naissance, new_prenom_naissance, new_nom_auteur, new_prenom_auteur, new_date_naissance, new_lieu_naissance, new_date_mort, new_lieu_mort, new_pseudonyme):
+    def create_romanciere(new_nom_naissance, new_prenom_naissance, new_nom_auteur, new_prenom_auteur, new_date_naissance, new_lieu_naissance, new_date_mort, new_lieu_mort, new_pseudonyme):
         """
         Fonction qui permet de creer une nouvelle romanciere dans la base de donnees (ajout rendu possible par un utilisateur)
         :param new_nom_naissance: nom de famille de naissance de la romanciere (str)
@@ -35,18 +35,38 @@ class Femme_de_lettres(db.Model):
         :param new_pseudonyme: pseudonyme de la romanciere (str)
         :return:
         """
+
+        #On crée une liste vide pour les erreurs
         erreurs = []
+
+        #On vérifie que la romancière que l'utilisateur veut ajouter n'existe pas déjà dans la base.
+        new_femme_de_lettres = Femme_de_lettres.query.filter(db.and_(Femme_de_lettres.nom_auteur == new_nom_auteur, Femme_de_lettres.prenom_auteur == new_prenom_auteur)).count()
+        if new_femme_de_lettres > 0:
+            erreurs.append("La romancière existe déjà dans la base de données")
+
+        #On vérifie que l'utilisateur complète au moins deux champs de données considérés comme essentiels
         if not new_nom_auteur:
-            erreurs.append("Le champ 'nom d'auteur' est obligatoire.")
+            erreurs.append("le champ 'nom d'auteur' est obligatoire")
         if not new_prenom_auteur:
-            erreurs.append("Le champ 'prénom d'auteur' est obligatoire.")
-        #Les autres donnees ne sont pas forcement disponibles et sont donc optionnelles.
+            erreurs.append("le champ 'prénom d'auteur' est obligatoire")
+        #Les autres données ne sont pas forcément disponibles et sont donc optionnelles.
         #Si on a au moins une erreur, retourner un message d'erreur
         if len(erreurs) > 0:
             return False, erreurs
 
-        # Si non, on ajoute une nouvelle entree femme_de_lettres dans la table femme_de_lettres avec les champs correspondant aux paramètres du modèle
-        new_femme_de_lettres = Femme_de_lettres(
+        #On vérifie que la longueur des caractères de la date ne dépasse pas la limite de 10 (format MM-JJ-AAAA)
+        if new_date_naissance:
+            if not len(new_date_naissance) == 10 or not len(new_date_mort) == 10:
+                erreurs.append("Les dates doivent faire 10 caractères. Format MM-JJ-AAAA demandé.")
+            if len(erreurs) > 0:
+                return False, erreurs
+
+         # Si on a au moins une erreurs, on affiche un message d'erreur
+        if len(erreurs) > 0:
+            return False, erreurs
+
+        # S'il n'y a pas d'erreur, on ajoute une nouvelle entree femme_de_lettres dans la table femme_de_lettres avec les champs correspondant aux paramètres du modèle
+        created_romanciere = Femme_de_lettres(
             nom_naissance=new_nom_naissance,
             prenom_naissance=new_prenom_naissance,
             nom_auteur=new_nom_auteur,
@@ -58,14 +78,30 @@ class Femme_de_lettres(db.Model):
             pseudonyme=new_pseudonyme)
 
         try:
-             # ajout de la romanciere a la base de donnees
-            db.session.add(new_femme_de_lettres)
-            db.session(commit)
+             # On ajoute la romanciere a la base de donnees
+            db.session.add(created_romanciere)
+            db.session.commit()
            
 
             return True, new_femme_de_lettres
         except Exception as erreur_creation:
             return False, [str(erreur_creation)]
+
+    @staticmethod
+    def delete_romanciere(new_id_femme):
+        """
+        Fonction qui permet de supprimer une romancière
+        :param id_femme: identifiant de la romancière
+        :type id_femme: int
+        :returns : booléens
+        """
+
+        #On récupère l'objet femme de lettres
+        romanciereUnique = Femme_de_lettres.query.get(new_id_femme)
+
+        #On supprime la notice correspondante
+        db.session.delete(romanciereUnique)
+        db.session.commit()
 
 class Oeuvres_principales(db.Model):
     __tablename__ = "oeuvres_principales"

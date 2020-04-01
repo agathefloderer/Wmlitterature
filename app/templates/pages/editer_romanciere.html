@@ -1,16 +1,16 @@
 {% extends "conteneur.html" %}
 
-{% block titre %}| Création d'une romancière{%endblock%}
+{% block titre %}| Modification des données d'une romancière{%endblock%}
 
 {% block corps %}
 
 <div class="container">
 	<div>
-		<h1>Création d'une romancière</h1>
-		<p>Pour ajouter une nouvelle romancière à la base de données, complétez le formulaire et cliquez sur "Créer".</p>
+		<h1>Modification des données d'une romancière</h1>
+		<p>Pour modifier les données d'une romancière déjà existante, complétez le formulaire et cliquez sur "Créer".</p>
 	</div>
 </div>
-<form class="container" method="POST" action="{{url_for('creer_romanciere')}}">
+<form class="container" method="POST" action="{{url_for('editer_romanciere', id_femme=femme_de_lettres_origine.id_femme)}}">
 	<div>
 		<div>
 			<label for="new_nom_naissance">Nom de naissance</label>

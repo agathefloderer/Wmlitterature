@@ -78,16 +78,16 @@ def creer_romanciere():
     """ Route permettant a l'utilisateur de créer une notice romancière """
     femme_de_lettres = Femme_de_lettres.query.all()
     if request.method == "POST":
-        status, data = Femme_de_lettres.create_person(
-        new_nom_naissance=request.form.get("new_nom_naissance", None),
-        new_prenom_naissance=request.form.get("new_prenom_naissance", None),
-        new_nom_auteur=request.form.get("new_nom_auteur", None),
-        new_prenom_auteur=request.form.get("new_prenom_auteur", None),
-        new_date_naissance=request.form.get("new_date_naissance", None),
-        new_lieu_naissance=request.form.get("new_lieu_naissance", None),
-        new_date_mort=request.form.get("new_date_mort", None),
-        new_lieu_mort=request.form.get("new_lieu_mort", None),
-        new_pseudonyme=request.form.get("new_pseudonyme", None)
+        status, data = Femme_de_lettres.create_romanciere(
+        new_nom_naissance = request.form.get("new_nom_naissance", None),
+        new_prenom_naissance = request.form.get("new_prenom_naissance", None),
+        new_nom_auteur = request.form.get("new_nom_auteur", None),
+        new_prenom_auteur = request.form.get("new_prenom_auteur", None),
+        new_date_naissance = request.form.get("new_date_naissance", None),
+        new_lieu_naissance = request.form.get("new_lieu_naissance", None),
+        new_date_mort = request.form.get("new_date_mort", None),
+        new_lieu_mort = request.form.get("new_lieu_mort", None),
+        new_pseudonyme = request.form.get("new_pseudonyme", None)
         )
 
         if status is True:
@@ -98,6 +98,18 @@ def creer_romanciere():
             return render_template("pages/creer_romanciere.html")
     else:
         return render_template("pages/creer_romanciere.html", nom="WmLitterature")
+
+@app.route("/supprimer_romanciere/<int:nr_romanciere>")
+@login_required
+def supprimer_romanciere(nr_romanciere):
+    """
+    Route permettant la suppression d'une romancière dans la base de données
+    :param nr_romanciere : identifiant numérique de la personne
+    """
+
+    status=Femme_de_lettres.delete_romanciere(new_id_femme=nr_romanciere)
+    flash("Suppression de la romancière réussie !" "success")
+    return redirect("/index_romanciere")
 
 @app.route("/register", methods=["GET", "POST"])
 def inscription():
@@ -112,10 +124,10 @@ def inscription():
             motdepasse=request.form.get("motdepasse", None)
         )
         if statut is True:
-            flash("Enregistrement effectue. Identifiez-vous maintenant", "success")
+            flash("Enregistrement effectué. Identifiez-vous maintenant", "success")
             return redirect("/")
         else:
-            flash("Les erreurs suivantes ont ete rencontrees : " + ",".join(donnees), "error")
+            flash("Les erreurs suivantes ont été rencontrées : " + ",".join(donnees), "error")
             return render_template("pages/inscription.html")
     else:
         return render_template("pages/inscription.html")
@@ -125,7 +137,7 @@ def connexion():
     """ Route gerant les connexions
     """
     if current_user.is_authenticated is True:
-        flash("Vous etes deja connecte-e", "info")
+        flash("Vous êtes déjà connecté-e", "info")
         return redirect("/")
     # Si on est en POST, cela veut dire que le formulaire a ete envoye
     if request.method == "POST":
@@ -134,11 +146,11 @@ def connexion():
             motdepasse=request.form.get("motdepasse", None)
         )
         if utilisateur:
-            flash("Connexion effectuee", "success")
+            flash("Connexion effectuée", "success")
             login_user(utilisateur)
             return redirect("/")
         else:
-            flash("Les identifiants nont pas ete reconnus", "error")
+            flash("Les identifiants nont pas été reconnus", "error")
 
     return render_template("pages/connexion.html")
 login.login_view = 'connexion'
@@ -148,5 +160,5 @@ login.login_view = 'connexion'
 def deconnexion():
     if current_user.is_authenticated is True:
         logout_user()
-    flash("Vous etes deconnecte-e", "info")
+    flash("Vous êtes déconnecté-e", "info")
     return redirect("/")

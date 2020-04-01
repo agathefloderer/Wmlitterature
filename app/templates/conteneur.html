@@ -37,7 +37,7 @@
                         <a class="nav-link" href="{{url_for('deconnexion')}}">Déconnexion ({{current_user.user_nom}})</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{url_for('creer_romanciere')}}">Formulaire romancière</a>
+                        <a class="nav-link" href="{{url_for('creer_romanciere')}}">Formulaire : création romancière</a>
                     </li>
                     {% endif %}
                     <li class="nav-item">
@@ -55,7 +55,18 @@
             </nav>
             {% block afternav %}{%endblock%}
             <div class="container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
                 <div class="row">
+                    <div class="col">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{category}}" role="alert">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            {% endwith %}
+            <div class="row">
                 <div class="col">
                 {% block corps %}{% endblock %}
                 </div>
