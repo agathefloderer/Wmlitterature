@@ -1,9 +1,11 @@
-#On stocke dans constantes.py un "secret" qui permettra a Flask deffectuer des transactions securisees
+#Définition des constantes utilisées dans l'application
 
 from warnings import warn
 
 femme_par_page = 5
+
 SECRET_KEY = "JE SUIS UN SECRET !"
+#On stocke dans constantes.py un "secret" qui permettra à Flask d'effectuer des transactions sécurisées
 
 if SECRET_KEY == "JE SUIS UN SECRET !":
-    warn("Le secret par defaut n'a pas ete change, vous devriez le faire", Warning)
+    warn("Le secret par defaut n'a pas été changé, vous devriez le faire", Warning)

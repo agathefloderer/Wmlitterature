@@ -1,10 +1,20 @@
+#Mise en place de la classe User. Mise en place des fonctionnalités de création d'un compte utilisateur et de la connexion à l'application
+
 from werkzeug.security import generate_password_hash, check_password_hash
+#On importe les outils generate_password_hash et check_password_hash depuis werkzeug pour hascher les mots de passe des utilisateurs
 from flask_login import UserMixin
+#La classe user doit implémenter les propriétés et méthodes suivantes : is_authenticated, is_active, is_anonymous, get_id(identifier)
+#Pour facilier l'implémentation d'une classe user, on peut utiliser UserMixin qui fournit des implémentations par défaut pour toutes ces propriétés et méthodes.
 from sqlalchemy import or_
+#Grâce à cette commande, on peut utiliser l'opérateur 'or' dans les fonctions destiner à requêter la base de données.
+
 
 from .. app import db, login
+#On importe notre base de données depuis app.py, stockée dans la variable db. On importe également login, destiné à la gestion des utilisateur-rice-s
 
+#On crée notre modèle 'User'.
 class User(UserMixin, db.Model):
+#En ajoutant UserMixin à db.Model, on donne à python l'information que User est à la fois un UserMixin et un db.Model
     user_id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True, autoincrement=True)
     user_nom = db.Column(db.Text, nullable=False)
     user_login = db.Column(db.String(45), nullable=False, unique=True)
@@ -22,12 +32,13 @@ class User(UserMixin, db.Model):
         return (self.user_id)
 
     @staticmethod
+    #@staticmethod permet d'intérafur avec une classe pour un objet qui n'existe pas encore.
     def identification(login, motdepasse):
-        """ Identifie un utilisateur. Si cela fonctionne, renvoie les donnees de lutilisateurs.
+        """ Identifie un utilisateur. Si cela fonctionne, renvoie les données de l'utilisateur.
 
         :param login: Login de l'utilisateur
-        :param motdepasse: Mot de passe envoye par lutilisateur
-        :returns: Si reussite, donnees de lutilisateur. Sinon None
+        :param motdepasse: Mot de passe envoyé par l'utilisateur
+        :returns: Si réussite, données de l'utilisateur. Sinon None
         :rtype: User or None
         """
         utilisateur = User.query.filter(User.user_login == login).first()
@@ -37,14 +48,14 @@ class User(UserMixin, db.Model):
 
     @staticmethod
     def creer(login, email, nom, motdepasse):
-        """ Cree un compte utilisateur-rice. Retourne un tuple (booleen, User ou liste).
-        Si il y a une erreur, la fonction renvoie False suivi dune liste derreur
-        Sinon, elle renvoie True suivi de la donnee enregistree
+        """ Crée un compte utilisateur-rice. Retourne un tuple (booleen, User ou liste).
+        Si il y a une erreur, la fonction renvoie False suivi d'une liste derreur
+        Sinon, elle renvoie True suivi des donnée enregistrée
 
-        :param login: Login de lutilisateur-rice
-        :param email: Email de lutilisateur-rice
-        :param nom: Nom de lutilisateur-rice
-        :param motdepasse: Mot de passe de lutilisateur-rice (Minimum 6 caracteres)
+        :param login: Login de l'utilisateur-rice
+        :param email: Email de l'utilisateur-rice
+        :param nom: Nom de l'utilisateur-rice
+        :param motdepasse: Mot de passe de l'utilisateur-rice (Minimum 6 caractères)
 
         """
         erreurs = []
@@ -68,7 +79,7 @@ class User(UserMixin, db.Model):
         if len(erreurs) > 0:
             return False, erreurs
 
-        # On cree un utilisateur
+        # On crée un utilisateur
         utilisateur = User(
             user_nom=nom,
             user_login=login,
@@ -76,6 +87,7 @@ class User(UserMixin, db.Model):
             user_password=generate_password_hash(motdepasse)
         )
 
+        #On ouvre un double bloc "try-except" afin de gérer les erreurs
         try:
             # On l'ajoute au transport vers la base de donnees
             db.session.add(utilisateur)
@@ -85,10 +97,11 @@ class User(UserMixin, db.Model):
             # On renvoie l'utilisateur
             return True, utilisateur
         except Exception as erreur:
+        #Exécution de except uniquement si une erreur apparaît. 
             return False, [str(erreur)]
 
     def get_id(self):
-        """ Retourne l'id de l'objet actuellement utilise
+        """ Retourne l'id de l'objet actuellement utilisé
 
         :returns: ID de l'utilisateur
         :rtype: int
@@ -96,6 +109,6 @@ class User(UserMixin, db.Model):
         return self.user_id
 
 @login.user_loader
-#  fonction qui permet de recuperer un utilisateur en fonction de son identifiant
+#  fonction qui permet de récuperer un utilisateur en fonction de son identifiant
 def trouver_utilisateur_via_id(identifiant):
     return User.query.get(int(identifiant))

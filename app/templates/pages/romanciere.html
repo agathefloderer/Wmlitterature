@@ -1,3 +1,6 @@
+<!--Page 'romanciere' du site -->
+
+
 {% extends "conteneur.html" %}
 <!--On lie la structure generale de nos templates definie dans conteneur.html avec la structure specifique de la page romancieres.html grace a extends.-->
 
@@ -9,14 +12,14 @@
 
 {% block corps %}
 
-{% if status %}
-
+{% if femme_de_lettre_origine %}
 {% if current_user.is_authenticated %}
 <div>
-    <a href="{{ url_for('supprimer_romanciere', nr_romanciere=status.id_femme) }}" class="btn btn-secondary">Modifier la notice de la personne</a>
+    <p><a href="{{url_for('editer_romanciere', id_femme=femme_de_lettre_origine.id_femme)}}">Modifier la notice de la romancière</a></p>
 </div>
 {% endif %}
 {% endif %}
+
 {% if portraits %}
         {% for portrait in portraits %}
             {% if not portrait.url_portrait %}
