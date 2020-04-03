@@ -12,14 +12,6 @@
 
 {% block corps %}
 
-{% if femme_de_lettre_origine %}
-{% if current_user.is_authenticated %}
-<div>
-    <p><a href="{{url_for('editer_romanciere', id_femme=femme_de_lettre_origine.id_femme)}}">Modifier la notice de la romancière</a></p>
-</div>
-{% endif %}
-{% endif %}
-
 {% if portraits %}
         {% for portrait in portraits %}
             {% if not portrait.url_portrait %}
@@ -70,6 +62,9 @@
                 {% else %}
                 <dt>Lieu de décès</dt><dd>{{romanciere.lieu_mort}}</dd>
                 {% endif %}
+                {%if current_user.is_authenticated%}
+                <dt><a class="nav-link" href="{{url_for('modification', identifier=romanciere.id_femme)}}">Editer cette romancière</a></dt>
+                {%endif %}
             </dl>
         {% else %}
             <p style="text-align:center">La notice que vous recherchez n'existe pas ou plus.</p>

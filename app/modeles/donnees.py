@@ -99,7 +99,7 @@ class Femme_de_lettres(db.Model):
     @staticmethod
     #@staticmethod permet d'intéragir avec une classe pour un objet qui n'existe pas encore.
 
-    def edit_romanciere(new_nom_naissance, new_prenom_naissance, new_nom_auteur, new_prenom_auteur, new_date_naissance, new_lieu_naissance, new_date_mort, new_lieu_mort, new_pseudonyme):
+    def modifier(Id_femme, Nom_naissance, Prenom_naissance, Nom_auteur, Prenom_auteur, Date_naissance, Lieu_naissance, Date_mort, Lieu_mort, Pseudonyme):
         """
         Fonction qui permet de modifier les informations d'une romancière dans la base de données (modifications rendues possibles par un utilisateur.rice).
         :param new_nom_naissance: nom de famille de naissance de la romanciere
@@ -119,9 +119,9 @@ class Femme_de_lettres(db.Model):
         erreurs=[]
 
         #On vérifie que l'utilisateur complète au moins deux champs de données considérés comme essentiels
-        if not new_nom_auteur:
+        if not Nom_auteur:
             erreurs.append("le champ 'nom d'auteur' est obligatoire")
-        if not new_prenom_auteur:
+        if not Prenom_auteur:
             erreurs.append("le champ 'prénom d'auteur' est obligatoire")
         #Les autres données ne sont pas forcément disponibles et sont donc optionnelles.
         #Si on a au moins une erreur, retourner un message d'erreur
@@ -129,67 +129,61 @@ class Femme_de_lettres(db.Model):
             return False, erreurs
 
         #On récupère une romancière dans la base grâce à son identifiant
-        femme_de_lettres = Femme_de_lettres.query.get(femme_id)
+        romanciere = Femme_de_lettres.query.get(Id_femme)
 
-        #On vérifie que l'utilisateur modifie au moins un des champs
+        #On vérifie que l'utilisateur-trice modifie au moins un champ
 
-        if femme_de_lettres.nom_naissance == new_nom_naissance \
-                and femme_de_lettres.prenom_naissance == new_prenom_naissance \
-                and femme_de_lettres.nom_auteur == new_nom_auteur \
-                and femme_de_lettres.prenom_auteur == new_prenom_auteur \
-                and femme_de_lettres.date_naissance == new_date_naissance \
-                and femme_de_lettres.lieu_naissance == new_lieu_naissance \
-                and femme_de_lettres.date_mort == new_date_mort \
-                and femme_de_lettres.lieu_mort == new_lieu_mort \
-                and femme_de_lettres.pseudonyme == new_pseudonyme :
-                erreurs.append("Aucune modification n'a été réalisée")
+        if romanciere.nom_naissance == Nom_naissance \
+                and romanciere.prenom_naissance == Prenom_naissance \
+                and romanciere.nom_auteur == Nom_auteur \
+                and romanciere.prenom_naissance == Nom_naissance \
+                and romanciere.date_naissance == Date_naissance \
+                and romanciere.lieu_naissance == Lieu_naissance \
+                and romanciere.date_mort == Date_mort \
+                and romanciere.lieu_mort == Lieu_mort \
+                and romanciere.pseudonyme == Pseudonyme :
+            erreurs.append("Aucune modification n'a été réalisée")
 
+        if len(erreurs) > 0:
+            return False, erreurs
 
-        # S'il n'y a pas d'erreur, on met à jour les données de la romancière
+        #On vérifie que la longueur des caractères de la date ne dépasse pas la limite de 10 (format MM-JJ-AAAA)
+        if new_date_naissance:
+            if not len(new_date_naissance) == 10 or not len(new_date_mort) == 10:
+                erreurs.append("Les dates doivent faire 10 caractères. Format MM-JJ-AAAA demandé.")
+            if len(erreurs) > 0:
+                return False, erreurs
+
+         # Si on a au moins une erreurs, on affiche un message d'erreur
+        if len(erreurs) > 0:
+            return False, erreurs
+
+        #S'il n'y a pas d'erreurs, on met à jour les données de la romancière :
         else :
-            femme_de_lettres.nom_naissance=new_nom_naissance
-            femme_de_lettres.prenom_naissance=new_prenom_naissance
-            femme_de_lettres.nom_auteur=new_nom_auteur
-            femme_de_lettres.prenom_auteur=new_prenom_auteur
-            femme_de_lettres.date_naissance=new_date_naissance
-            femme_de_lettres.lieu_naissance=new_lieu_naissance
-            femme_de_lettres.date_mort=new_date_mort
-            femme_de_lettres.lieu_mort=new_lieu_mort
-            femme_de_lettres.pseudonyme=new_pseudonyme
+            romanciere.nom_naissance=Nom_naissance
+            romanciere.prenom_naissance=Prenom_naissance
+            romanciere.nom_auteur=Nom_auteur
+            romanciere.prenom_auteur=Prenom_auteur
+            romanciere.date_naissance=Date_naissance
+            romanciere.lieu_naissance=Lieu_naissance
+            romanciere.date_mort=Date_mort
+            romanciere.lieu_mort=Lieu_mort
+            romanciere.pseudonyme=Pseudonyme
 
         #On ajoute un bloc "try-except" afin de "gérer" les erreurs
         try:
             # On ajoute la romanciere a la base de donnees
-            db.session.add(femme_de_lettres)
+            db.session.add(romanciere)
             db.session.commit()
 
-            return True, femme_de_lettres
+            return True, romanciere
 
         #Exécution de except uniquement si une erreur apparaît. 
         except Exception as erreur:
-            return False, [str(erreur)]
+            return False, [str(erreur)]                     
 
 
-    @staticmethod
-    #@staticmethod permet d'intéragir avec une classe pour un objet qui n'existe pas encore.
-
-    def delete_romanciere(new_id_femme):
-        """
-        Fonction qui permet de supprimer une romancière
-        :param id_femme: identifiant de la romancière
-        :type id_femme: int
-        :returns : booléens
-        """
-
-        #On récupère l'objet femme de lettres
-        romanciereUnique = Femme_de_lettres.query.get(new_id_femme)
-
-        #On supprime la notice correspondante
-        db.session.delete(romanciereUnique)
-        db.session.commit()
-
-
-                                                            ####Oeuvres_principales#####
+                                                        ####Oeuvres_principales#####
 
 class Oeuvres_principales(db.Model):
 #On crée notre modèle Oeuvres_principales.

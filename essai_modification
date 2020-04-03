@@ -1,0 +1,107 @@
+
+Essai avec Boatlas
+
+@staticmethod
+    #@staticmethod permet d'intéragir avec une classe pour un objet qui n'existe pas encore.
+
+    def supprimer_romanciere(new_id_femme, new_nom_naissance, new_prenom_naissance, new_nom_auteur, new_prenom_auteur, new_date_naissance, new_lieu_naissance, new_date_mort, new_lieu_mort, new_pseudonyme):
+        """
+        Fonction qui permet de supprimer une romancière
+        :param id_femme: identifiant de la romancière
+        :type id_femme: int
+        :returns : booléens
+        """
+
+        #On récupère l'objet femme de lettres
+        femme_de_lettres = Femme_de_lettres.query.get(new_id_femme)
+        femme_de_lettres.nom_naissance = new_nom_naissance
+        femme_de_lettres.prenom_naissance = new_prenom_naissance
+        femme_de_lettres.nom_auteur = new_nom_auteur
+        femme_de_lettres.prenom_auteur = new_prenom_auteur
+        femme_de_lettres.lieu_naissance = new_lieu_naissance
+        femme_de_lettres.date_naissance = new_date_naissance
+        femme_de_lettres.lieu_mort = new_lieu_mort
+        femme_de_lettres.date_mort = new_date_mort
+
+
+        try:
+
+        #On supprime la notice correspondante
+            db.session.delete(femme_de_lettres)
+            db.session.commit()
+            return True, femme_de_lettres
+
+        except Exception as erreur:
+            return False, [str(erreur)]
+
+#Essai à partir de Boat
+@app.route("/supprimer_romanciere/<int:id_femme>", methods=["POST", "GET"])
+@login_required
+def supprimer_romanciere(id_femme):
+    """
+    Route permettant la suppression d'une romancière dans la base de données
+    :param nr_romanciere : identifiant numérique de la personne
+    """
+
+    femme_de_lettres=Femme_de_lettres.query.get(id_femme)
+    if request.method == "POST":
+        status, donnees = Femme_de_lettres.supprimer_romanciere(
+        new_id_femme=id_femme,
+        new_nom_naissance=request.args.get("new_nom_naissance", None),
+        new_prenom_naissance=request.args.get("new_prenom_naissance", None),
+        new_nom_auteur=request.args.get("new_nom_auteur", None),
+        new_prenom_auteur=request.args.get("new_prenom_auteur", None),
+        new_lieu_naissance=request.args.get("new_lieu_naissance", None),
+        new_date_naissance=request.args.get("new_date_naissance", None),
+        new_lieu_mort=request.args.get("new_lieu_mort", None),
+        new_date_mort=request.args.get("new_date_mort", None),
+        new_pseudonyme=request.args.get("new_pseudonyme", None))
+
+        detached_error = "sqlalchemy.orm.exc.DetachedInstanceError"
+        if detached_error:
+            flash("Suppression réussie!", "success")
+            return redirect("/")
+        elif status is True:
+            flash("Suppression réussie!", "success")
+            return redirect("/")
+        else:
+            flash("Les erreurs suivantes ont été rencontrées : " + ",".join(donnees), "danger")
+            return render_template("pages/supprimer_romanciere.html", romanciere=femme_de_lettres)
+    else:
+        return render_template("pages/supprimer_romanciere.html", romanciere=femme_de_lettres)
+
+#Modification dico-proso
+@app.route("/editer_romanciere", methods=["POST", "GET"])
+@login_required
+def editer_romanciere(id_femme):
+    """
+    Route permettant à l'utilisateur de modifier un formulaire avec les données d'une romancière
+    :param id_femme : identifiant numérique de la romancière récupéré depuis la page romanciere
+    """
+
+    #On renvoie sur la page html les éléments de l'objet new_femme_de_lettres correspondant à l'identifiant de la route 
+    if request.method == "GET":
+        femme_de_lettre_origine = Femme_de_lettres.query.get(id_femme)
+        return render_template("pages/editer_romanciere.html", femme_de_lettre_origine=femme_de_lettre_origine)
+
+    #On récupère les données du formulaire modifié
+    else: 
+        status, femme_de_lettres_modif= Femme_de_lettres.edit_romanciere(
+            new_id_femme = id_femme,
+            new_nom_naissance = request.form.get("new_nom_naissance", None),
+            new_prenom_naissance = request.form.get("new_prenom_naissance", None),
+            new_nom_auteur = request.form.get("new_nom_auteur", None),
+            new_prenom_auteur = request.form.get("new_prenom_auteur", None),
+            new_date_naissance = request.form.get("new_date_naissance", None),
+            new_lieu_naissance = request.form.get("new_lieu_naissance", None),
+            new_date_mort = request.form.get("new_date_mort", None),
+            new_lieu_mort = request.form.get("new_lieu_mort", None),
+            new_pseudonyme = request.form.get("new_pseudonyme", None)
+            )
+    if status is True:
+            flash("Modification des données d'une romanciere réussie !", "success")
+            return render_template("pages/romanciere.html")
+    else:
+        flash("La modification des données d'une a échoué pour les raisons suivantes : " + ", ".join(data), "danger")
+        femme_de_lettre_origine = Femme_de_lettres.query.get(id_femme)
+        return render_template("pages/editer_romanciere.html", femme_de_lettre_origine=femme_de_lettre_origine)

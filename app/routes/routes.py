@@ -131,52 +131,41 @@ def creer_romanciere():
     else:
         return render_template("pages/creer_romanciere.html", nom="WmLitterature")
 
-@app.route("/editer_romanciere", methods=["POST", "GET"])
-@login_required
-def editer_romanciere(id_femme):
-    """
-    Route permettant à l'utilisateur de modifier un formulaire avec les données d'une romancière
-    :param id_femme : identifiant numérique de la romancière récupéré depuis la page romanciere
-    """
 
-    #On renvoie sur la page html les éléments de l'objet new_femme_de_lettres correspondant à l'identifiant de la route 
+@app.route("/modifier_romanciere/<int:identifier>", methods=["POST", "GET"])
+@login_required
+def modification(identifier):
+    """
+    Route gérant la modification de lieu
+    :param place_id: identifiant du lieu
+    """
+    # On renvoie sur la page html les éléments de l'objet site correspondant à l'identifiant de la route
     if request.method == "GET":
-        femme_de_lettre_origine = Femme_de_lettres.query.get(id_femme)
-        return render_template("pages/editer_romanciere.html", femme_de_lettre_origine=femme_de_lettre_origine)
+        femme_a_modifier = Femme_de_lettres.query.get(identifier)
+        return render_template("pages/modifier_romanciere.html", romanciere=femme_a_modifier)
 
-    #On récupère les données du formulaire modifié
-    else: 
-        status, femme_de_lettres_modif= Femme_de_lettres.edit_romanciere(
-            new_id_femme = id_femme,
-            new_nom_naissance = request.form.get("new_nom_naissance", None),
-            new_prenom_naissance = request.form.get("new_prenom_naissance", None),
-            new_nom_auteur = request.form.get("new_nom_auteur", None),
-            new_prenom_auteur = request.form.get("new_prenom_auteur", None),
-            new_date_naissance = request.form.get("new_date_naissance", None),
-            new_lieu_naissance = request.form.get("new_lieu_naissance", None),
-            new_date_mort = request.form.get("new_date_mort", None),
-            new_lieu_mort = request.form.get("new_lieu_mort", None),
-            new_pseudonyme = request.form.get("new_pseudonyme", None)
-            )
-    if status is True:
-            flash("Modification des données d'une romanciere réussie !", "success")
-            return render_template("pages/romanciere.html")
+    # on récupère les données du formulaire modifié
     else:
-        flash("La modification des données d'une a échoué pour les raisons suivantes : " + ", ".join(data), "danger")
-        femme_de_lettre_origine = Femme_de_lettres.query.get(id_femme)
-        return render_template("pages/editer_romanciere.html", femme_de_lettre_origine=femme_de_lettre_origine)
+        statut, donnees= Femme_de_lettres.modifier(
+            Id_femme=identifier,
+            Nom_naissance=request.form.get("Nom_naissance", None),
+            Prenom_naissance=request.form.get("Prenom_naissance", None),
+            Nom_auteur=request.form.get("Nom_auteur", None),
+            Prenom_auteur=request.form.get("Prenom_auteur", None),
+            Lieu_naissance=request.form.get("Lieu_naissance", None),
+            Date_naissance=request.form.get("Date_naissance", None),
+            Lieu_mort=request.form.get("Lieu_mort", None),
+            Date_mort=request.form.get("Date_mort", None),
+            Pseudonyme=request.form.get("Pseudonyme", None)
+        )
 
-@app.route("/supprimer_romanciere/<int:nr_romanciere>")
-@login_required
-def supprimer_romanciere(nr_romanciere):
-    """
-    Route permettant la suppression d'une romancière dans la base de données
-    :param nr_romanciere : identifiant numérique de la personne
-    """
-
-    status=Femme_de_lettres.delete_romanciere(new_id_femme=nr_romanciere)
-    flash("Suppression de la romancière réussie !" "success")
-    return redirect("/index_romanciere")
+        if statut is True:
+            flash("Modification réussie !", "success")
+            return render_template ("pages/index_romanciere.html")
+        else:
+            flash("Les erreurs suivantes ont été rencontrées : " + ",".join(donnees), "danger")
+            femme_a_modifier = Femme_de_lettres.query.get(identifier)
+            return render_template("pages/modifier_romanciere.html", romanciere=femme_a_modifier)
 
 
                                                     ####PAGES POUR LA GESTION DES UTILISATEUR-TRICE-S####

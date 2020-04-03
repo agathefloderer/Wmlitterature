@@ -1,0 +1,21 @@
+{% extends "conteneur.html" %}
+
+
+{% block corps %}
+<form method="POST" action="{{url_for('supprimer_romanciere', id_femme=romanciere.id_femme)}}">
+<dl>
+
+            <dt>Romancière</dt><dd id="romanciere" name="romanciere" value="{{romanciere.id_femme}}">{{romanciere.prenom_auteur}} {{romanciere.nom_auteur}}</dd>
+
+<div>
+
+        <button type="submit" class="btn btn-success btn-sm">Confirmer</button>
+
+ </form>
+
+
+</div>
+</dl>
+
+
+{% endblock %}
