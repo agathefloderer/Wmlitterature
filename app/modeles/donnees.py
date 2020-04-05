@@ -148,8 +148,8 @@ class Femme_de_lettres(db.Model):
             return False, erreurs
 
         #On vérifie que la longueur des caractères de la date ne dépasse pas la limite de 10 (format MM-JJ-AAAA)
-        if new_date_naissance:
-            if not len(new_date_naissance) == 10 or not len(new_date_mort) == 10:
+        if Date_naissance:
+            if not len(Date_naissance) == 10 or not len(Date_mort) == 10:
                 erreurs.append("Les dates doivent faire 10 caractères. Format MM-JJ-AAAA demandé.")
             if len(erreurs) > 0:
                 return False, erreurs
