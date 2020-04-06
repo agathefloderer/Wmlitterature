@@ -1,5 +1,20 @@
 BEGIN TRANSACTION;
-DROP TABLE IF EXISTS `user`;
+CREATE TABLE IF NOT EXISTS "authorship_femme_de_lettres" (
+	"authorship_femme_de_lettres_id"				INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	"authorship_femme_de_lettres_user_id"			INTEGER NOT NULL,
+	"authorship_femme_de_lettres_id_femme"			INTEGER NOT NULL,
+	"authorship_femme_de_lettres_date"				DATETIME DEFAULT CURENT_TIMESTAMP,
+	FOREIGN KEY("authorship_femme_de_lettres_id_femme") REFERENCES "femme_de_lettres"("id_femme"),
+	FOREIGN KEY("authorship_femme_de_lettres_user_id") REFERENCES "user"("user_id")
+);
+CREATE TABLE IF NOT EXISTS "authorship_oeuvres_principales" (
+	"authorship_oeuvres_principales_id"				INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	"authorship_oeuvres_principales_user_id"		INTEGER NOT NULL,
+	"authorship_oeuvres_principales_id_oeuvre"		INTEGER NOT NULL,
+	"authorship_oeuvres_principales_date"			DATETIME DEFAULT CURENT_TIMESTAMP,
+	FOREIGN KEY("authorship_oeuvres_principales_id_oeuvre") REFERENCES "oeuvres_principales"("id_oeuvre"),
+	FOREIGN KEY("authorship_oeuvres_principales_user_id") REFERENCES "user"("user_id")
+);
 CREATE TABLE IF NOT EXISTS `user` (
 	`user_id`				INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	`user_nom`				TINYTEXT NOT NULL,
@@ -7,7 +22,6 @@ CREATE TABLE IF NOT EXISTS `user` (
 	`user_email`			TINYTEXT NOT NULL,
 	`user_password`			VARCHAR(100) NOT NULL
 );
-DROP TABLE IF EXISTS `portrait`;
 CREATE TABLE IF NOT EXISTS `portrait` (
 	`id_portrait`			INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	`url_portrait`			TEXT,
@@ -17,9 +31,8 @@ CREATE TABLE IF NOT EXISTS `portrait` (
 	`techniques`			TEXT,
 	`lieu_conservation`		TEXT,
 	`portrait_id_femme`		INTEGER NOT NULL,
-	FOREIGN KEY(portrait_id_femme) REFERENCES femme_de_lettres(id_femme)
+	FOREIGN KEY("portrait_id_femme") REFERENCES "femme_de_lettres"("id_femme")
 );
-DROP TABLE IF EXISTS `femme_de_lettres`;
 CREATE TABLE IF NOT EXISTS `femme_de_lettres`(
 	`id_femme`				INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	`nom_naissance`			TEXT,
@@ -32,8 +45,6 @@ CREATE TABLE IF NOT EXISTS `femme_de_lettres`(
 	`lieu_mort`				TEXT,
 	`pseudonyme`			TEXT
 );
-
-DROP TABLE IF EXISTS `oeuvres_principales`;
 CREATE TABLE IF NOT EXISTS `oeuvres_principales` (
 	`id_oeuvre`				INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	`titre`					TEXT,
@@ -42,11 +53,8 @@ CREATE TABLE IF NOT EXISTS `oeuvres_principales` (
 	`lieu_publication`		TEXT,
 	`nombre_pages`			TEXT,
 	`oeuvres_principales_id_femmme`	INTEGER NOT NULL,
-	FOREIGN KEY(oeuvres_principales_id_femmme) REFERENCES femme_de_lettres(id_femme)
-	);
-COMMIT;
-
-BEGIN TRANSACTION;
+	FOREIGN KEY("oeuvres_principales_id_femmme") REFERENCES "femme_de_lettres"("id_femme")
+);
 
 INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (1,NULL,NULL,NULL,NULL,NULL,NULL,1);
 INSERT INTO `portrait` (`id_portrait`,`url_portrait`,`nom_createur`,`prenom_createur`,`annee_realisation`,`techniques`,`lieu_conservation`,`portrait_id_femme`) VALUES (2,'images/DURAS_Claire_de.jpg',NULL,NULL,'1840',NULL,NULL,2);
@@ -74,7 +82,7 @@ INSERT INTO `femme_de_lettres` (`id_femme`,`nom_naissance`,`prenom_naissance`,`n
 INSERT INTO `femme_de_lettres` (`id_femme`,`nom_naissance`,`prenom_naissance`,`nom_auteur`,`prenom_auteur`,`date_naissance`,`lieu_naissance`,`date_mort`,`lieu_mort`,`pseudonyme`) VALUES (6,'CONSTANT DE REBECQUE','Anne Marie Louise','ESTOURNELLES','Louise','1792-06-04','Brevans','1860-02-08','La Flèche',NULL);
 INSERT INTO `femme_de_lettres` (`id_femme`,`nom_naissance`,`prenom_naissance`,`nom_auteur`,`prenom_auteur`,`date_naissance`,`lieu_naissance`,`date_mort`,`lieu_mort`,`pseudonyme`) VALUES (7,'RODRIGUES-HENRIQUES','Rebecca Eugénie','FOA','Eugénie','1796-06-10','Bordeaux','1852-05-03','Paris','Edmond de Fontanes');
 INSERT INTO `femme_de_lettres` (`id_femme`,`nom_naissance`,`prenom_naissance`,`nom_auteur`,`prenom_auteur`,`date_naissance`,`lieu_naissance`,`date_mort`,`lieu_mort`,`pseudonyme`) VALUES (8,'MIGNEROT','Marie Louise','GAGNEUR','Marie Louise','1832-05-25','Domblans','1902-02-17','Paris','Duchesse Lauriane');
-INSERT INTO `femme_de_lettres` (`id_femme`,`nom_naissance`,`prenom_naissance`,`nom_auteur`,`prenom_auteur`,`date_naissance`,`lieu_naissance`,`date_mort`,`lieu_mort`,`pseudonyme`) VALUES (9,'PABAN','Clotilde Marie','COLLIN DE PLANCY','Clotide Marie','1790','Paris',NULL,NULL,"Marie d'Heures");
+INSERT INTO `femme_de_lettres` (`id_femme`,`nom_naissance`,`prenom_naissance`,`nom_auteur`,`prenom_auteur`,`date_naissance`,`lieu_naissance`,`date_mort`,`lieu_mort`,`pseudonyme`) VALUES (9,'PABAN','Clotilde Marie','COLLIN DE PLANCY','Clotide Marie','1790','Paris',NULL,NULL,'Marie dHeures');
 INSERT INTO `femme_de_lettres` (`id_femme`,`nom_naissance`,`prenom_naissance`,`nom_auteur`,`prenom_auteur`,`date_naissance`,`lieu_naissance`,`date_mort`,`lieu_mort`,`pseudonyme`) VALUES (10,'LA VAUDERE','Jane de','SCRIVE','Jeanne',' 1857-04-15','Paris','1908-07-26','Paris',NULL);
 INSERT INTO `femme_de_lettres` (`id_femme`,`nom_naissance`,`prenom_naissance`,`nom_auteur`,`prenom_auteur`,`date_naissance`,`lieu_naissance`,`date_mort`,`lieu_mort`,`pseudonyme`) VALUES (11,'WEILL','Jeanne','MAY', 'Dick','1859-03-94','Alger','1925-08-14',NULL,NULL);
 INSERT INTO `femme_de_lettres` (`id_femme`,`nom_naissance`,`prenom_naissance`,`nom_auteur`,`prenom_auteur`,`date_naissance`,`lieu_naissance`,`date_mort`,`lieu_mort`,`pseudonyme`) VALUES (12,'SAFFRAY','Eugénie Caroline','NAVERY','Raoul de','1828-05-27','Ploërmel','1885-05-17','La Ferté-sous-Jarre',NULL);
