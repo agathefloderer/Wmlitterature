@@ -1,0 +1,33 @@
+{% extends "conteneur.html" %}
+
+{% block titre %}
+    {%if oeuvre %}| Oeuvre : {{oeuvre.titre}} {% endif %}
+{% endblock %}
+
+{% block corps %}
+<div>
+    {% if oeuvre %}
+        <div>
+            <div>
+                <h1>{{oeuvre.titre}}</h1>
+            </div>
+            <dl>
+                <dt>Année de la première publication</dt><dd>{{oeuvre.date_premiere_pub}}</dd>
+                <dt>Editeur, maison d'édition</dt><dd>{{oeuvre.editeur}}</dd>
+                <dt>Lieu de publication</dt><dd>{{oeuvre.nombre_pages}}</dd>
+            </dl>
+        </div>
+        <center>
+            <h3>Résumé de l'oeuvre</h3>
+            <p>{{oeuvre.resume}}</p>
+        </center>
+        {% if current_user.is_authenticated %}
+            <p style="text-align:center">
+                    <a href="{{url_for('modification_oeuvre', id_oeuvre=oeuvre.id_oeuvre)}}">Modifier la notice</a>
+            </p>
+        {% endif %}
+    {% else %}
+        <p style="text-align:center">La notice que vous recherchez n'existe pas ou plus.</p>
+    {% endif %}
+</div>
+{% endblock %}

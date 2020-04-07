@@ -62,9 +62,6 @@
                 {% else %}
                 <dt>Lieu de décès</dt><dd>{{romanciere.lieu_mort}}</dd>
                 {% endif %}
-                {%if current_user.is_authenticated%}
-                <dt><a class="nav-link" href="{{url_for('modification', identifier=romanciere.id_femme)}}">Editer cette romancière</a></dt>
-                {%endif %}
             </dl>
         {% else %}
             <p style="text-align:center">La notice que vous recherchez n'existe pas ou plus.</p>
@@ -78,10 +75,18 @@
                 <dt>
                     <em>{{oeuvre.titre}}</em>
                 </dt>
-                <dd>Cette oeuvre a été publiée pour la première fois {% if oeuvre.date_premiere_pub %}en {{oeuvre.date_premiere_pub}}{% else %}{% endif %}{% if oeuvre.editeur %}, par {{oeuvre.editeur}}{% else %}{% endif %} {% if oeuvre.lieu_publication %}({{oeuvre.lieu_publication}}){% else %}{% endif %}. {% if oeuvre.nombre_pages %}Elle comporte {{oeuvre.nombre_pages}} pages.{% else %}{% endif %}
+                <dd><a href="{{url_for('oeuvre', id_oeuvre=oeuvre.id_oeuvre)}}">En savoir plus</a>
                 </dd>
             </dl>
         {% endfor %}
     {% else %}
+    {% endif %}
+
+    {% if current_user.is_authenticated %}
+        <center>
+            <p>
+                <a href="{{url_for('modification_romanciere', identifier=romanciere.id_femme)}}">Modifier la romancière</a> | <a href="{{url_for('suppression_romanciere', identifier=romanciere.id_femme)}}">Supprimer la romancière</a> | <a href="{{url_for('creation_oeuvre', id_femme=romanciere.id_femme)}}">Ajouter une oeuvre</a> | <a href="{{(url_for('creation_portrait', id_femme=romanciere.id_femme))}}">Ajouter un portrait</a>
+            </p>
+        </center>
     {% endif %}
 {% endblock %}

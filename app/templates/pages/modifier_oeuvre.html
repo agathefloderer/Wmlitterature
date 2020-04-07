@@ -1,0 +1,59 @@
+<!--Page 'editer_romanciere' du site -->
+
+
+{% extends "conteneur.html" %}
+
+{% block titre %}| Modification des données d'une oeuvre{%endblock%}
+
+{% block corps %}
+
+<div class="container">
+	<div>
+		<h1>Modification des données d'une oeuvre</h1>
+		<p>Pour modifier les données d'une oeuvre déjà existante, complétez le formulaire et cliquez sur "Modifier".</p>
+	</div>
+</div>
+<form class="container" method="POST" action="{{url_for('modification_oeuvre', id_oeuvre=oeuvre.id_oeuvre)}}">
+	<div>
+		<div>
+			<label for="Titre">Titre de l'oeuvre</label>
+		<div>
+			<input type="text" id="Titre" name="Titre" maxlength="300">
+		</div>
+		</div>
+		<div>
+			<label for="Date_premiere_pub">Date de la première publication</label>
+		<div>
+			<input type="text" id="Date_premiere_pub" name="Date_premiere_pub" placeholder="AAAA" maxlength="4">
+		</div>
+		</div>
+		<div>
+			<label for="Editeur">Editeur</label>
+		<div>
+			<input type="text" id="Editeur" name="Editeur" maxlength="300">
+		</div>
+		</div>
+		<div>
+			<label for="Lieu_publication">Lieu de publication</label>
+		<div>
+			<input type="text" id="Lieu_publication" name="Lieu_publication" maxlength="300">
+		</div>
+		</div>
+		<div>
+			<label for="Nombre_pages">Nombre de pages</label>
+		<div>
+			<input type="text" id="Nombre_pages" name="Nombre_pages" maxlength="5">
+		</div>
+		</div>
+		<div>
+			<label for="Resume">Résumé de l'oeuvre</label>
+		<div>
+			<input type="text" id="Resume" name="Resume">
+		</div>
+		</div>
+	</div>
+	<div>
+		<button type="submit" value="créer">Modifier</button>
+	</div>
+</form>
+{% endblock %}

@@ -21,7 +21,8 @@ class User(UserMixin, db.Model):
     user_email = db.Column(db.Text, nullable=False)
     user_password = db.Column(db.String(100), nullable=False)
     #Jointure
-    authorships = db.relationship("Authorship", back_populates="user")
+    author_femme_de_lettres = db.relationship("Authorship_femme_de_lettres", back_populates="user_femme_de_lettres")
+    author_oeuvres_principales = db.relationship("Authorship_oeuvres_principales", back_populates="user_oeuvres_principales")
 
     def get_id(self):
         """

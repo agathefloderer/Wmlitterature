@@ -2,7 +2,7 @@
 
 
 {% block corps %}
-<form method="POST" action="{{url_for('supprimer_romanciere', id_femme=romanciere.id_femme)}}">
+<form method="POST" action="{{url_for('suppression_romanciere', identifier=romanciere.id_femme)}}">
 <dl>
 
             <dt>Romancière</dt><dd id="romanciere" name="romanciere" value="{{romanciere.id_femme}}">{{romanciere.prenom_auteur}} {{romanciere.nom_auteur}}</dd>

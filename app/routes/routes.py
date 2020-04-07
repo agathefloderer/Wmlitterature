@@ -57,6 +57,17 @@ def romanciere(id_femme):
     portraits = unique_femme.portraits
     return render_template("pages/romanciere.html", nom="WmLitterature", romanciere=unique_femme, oeuvres=oeuvres, portraits=portraits)
 
+@app.route("/romanciere/oeuvre/<int:id_oeuvre>")
+def oeuvre(id_oeuvre):
+    """
+    Route permettant d'afficher les données d'une oeuvre
+    :param work_id: clé primaire d'une oeuvre dans la table Work
+    :return: template collection.html
+    :rtype: template
+    """
+    unique_oeuvre = Oeuvres_principales.query.get(id_oeuvre)
+    return render_template("pages/oeuvre.html", nom="WmLitterature", oeuvre=unique_oeuvre)
+
 @app.route("/galerie")
 def portrait():
     """Route permettant l'affichage de la galerie de portraits des romancières
@@ -106,11 +117,11 @@ def recherche():
 
 @app.route("/creer_romanciere", methods=["GET", "POST"])
 @login_required
-def creer_romanciere():
+def creation_romanciere():
     """ Route permettant a l'utilisateur de créer une notice romancière """
     femme_de_lettres = Femme_de_lettres.query.all()
     if request.method == "POST":
-        status, data = Femme_de_lettres.create_romanciere(
+        statut, donnees = Femme_de_lettres.creer_romanciere(
         new_nom_naissance = request.form.get("new_nom_naissance", None),
         new_prenom_naissance = request.form.get("new_prenom_naissance", None),
         new_nom_auteur = request.form.get("new_nom_auteur", None),
@@ -122,11 +133,11 @@ def creer_romanciere():
         new_pseudonyme = request.form.get("new_pseudonyme", None)
         )
 
-        if status is True:
+        if statut is True:
             flash("Création d'une nouvelle romanciere réussie !", "success")
             return redirect("/creer_romanciere")
         else:
-            flash("La création d'une nouvelle romanciere a échoué pour les raisons suivantes : " + ", ".join(data), "danger")
+            flash("La création d'une nouvelle romanciere a échoué pour les raisons suivantes : " + ", ".join(donnees), "danger")
             return render_template("pages/creer_romanciere.html")
     else:
         return render_template("pages/creer_romanciere.html", nom="WmLitterature")
@@ -134,10 +145,10 @@ def creer_romanciere():
 
 @app.route("/modifier_romanciere/<int:identifier>", methods=["POST", "GET"])
 @login_required
-def modification(identifier):
+def modification_romanciere(identifier):
     """
-    Route gérant la modification de lieu
-    :param place_id: identifiant du lieu
+    Route gérant la modification d'une romancière
+    :param identifier: identifiant de la romancière
     """
     # On renvoie sur la page html les éléments de l'objet site correspondant à l'identifiant de la route
     if request.method == "GET":
@@ -146,7 +157,7 @@ def modification(identifier):
 
     # on récupère les données du formulaire modifié
     else:
-        statut, donnees= Femme_de_lettres.modifier(
+        statut, donnees= Femme_de_lettres.modifier_romanciere(
             Id_femme=identifier,
             Nom_naissance=request.form.get("Nom_naissance", None),
             Prenom_naissance=request.form.get("Prenom_naissance", None),
@@ -161,11 +172,137 @@ def modification(identifier):
 
         if statut is True:
             flash("Modification réussie !", "success")
-            return render_template ("pages/index_romanciere.html")
+            return render_template ("pages/accueil.html")
         else:
             flash("Les erreurs suivantes ont été rencontrées : " + ",".join(donnees), "danger")
             femme_a_modifier = Femme_de_lettres.query.get(identifier)
-            return render_template("pages/modifier_romanciere.html", romanciere=femme_a_modifier)
+            return render_template("pages/modifier_romanciere.html", nom="WmLitterature", romanciere=femme_a_modifier)
+
+@app.route("/supprimer_romanciere/<int:identifier>", methods=["POST", "GET"])
+@login_required
+def suppression_romanciere(identifier):
+    """ 
+    Route pour supprimer une romancière dans la base
+    :param identifier : identifiant de la romancière
+    """
+    femme_a_supprimer = Femme_de_lettres.query.get(identifier)
+
+    if request.method == "POST":
+        statut, donnees = Femme_de_lettres.supprimer_romanciere(
+            Id_femme=identifier,
+            Nom_naissance=request.form.get("Nom_naissance", None),
+            Prenom_naissance=request.form.get("Prenom_naissance", None),
+            Nom_auteur=request.form.get("Nom_auteur", None),
+            Prenom_auteur=request.form.get("Prenom_auteur", None),
+            Lieu_naissance=request.form.get("Lieu_naissance", None),
+            Date_naissance=request.form.get("Date_naissance", None),
+            Lieu_mort=request.form.get("Lieu_mort", None),
+            Date_mort=request.form.get("Date_mort", None),
+            Pseudonyme=request.form.get("Pseudonyme", None)
+        )
+
+        if statut is True:
+            flash("Suppression réussie !", "success")
+            return redirect("/accueil")
+        else:
+            flash("Les erreurs suivantes ont été rencontrées : " + ", ".join(donnees), "danger")
+            return redirect("pages/supprimer_romanciere.html")
+    else:
+        return render_template("pages/supprimer_romanciere.html", nom="WmLitterature", romanciere=femme_a_supprimer)
+
+
+@app.route("/romanciere/<int:id_femme>/creer_oeuvre", methods=["GET", "POST"])
+@login_required
+def creation_oeuvre(id_femme):
+    """ 
+    Route permettant a l'utilisateur de créer une notice oeuvre 
+    :param id_femme : identifiant de la romancière
+    """
+    
+    femme_de_lettres = Femme_de_lettres.query.get(id_femme)
+
+    if request.method == "POST":
+        statut, donnees = Oeuvres_principales.creer_oeuvres_principales(
+        new_titre = request.form.get("new_titre", None),
+        new_date_premiere_pub = request.form.get("new_date_premiere_pub", None),
+        new_editeur = request.form.get("new_editeur", None),
+        new_lieu_publication = request.form.get("new_lieu_publication", None),
+        new_nombre_pages = request.form.get("new_nombre_pages", None), 
+        new_resume = request.form.get("resume", None), 
+        id_femme = id_femme
+        )
+
+        if statut is True:
+            flash("Ajout d'une nouvelle oeuvre à la bibliographie de la romancière", "success")
+            return redirect("/index_romanciere")
+        else:
+            flash("L'ajout d'une nouvelle oeuvre a échoué pour les raisons suivantes : " + ", ".join(donnees), "danger")
+            return render_template("pages/creer_oeuvre.html")
+    else:
+        return render_template("pages/creer_oeuvre.html", nom="WmLitterature", romanciere=femme_de_lettres)
+
+@app.route("/modifier_oeuvre/<int:id_oeuvre>", methods=["POST", "GET"])
+@login_required
+def modification_oeuvre(id_oeuvre):
+    """
+    Route gérant la modification d'une oeuvre
+    :param id_oeuvre: identifiant de l'oeuvre
+    """
+    # On renvoie sur la page html les éléments de l'objet oeuvre correspondant à l'identifiant de la route
+    if request.method == "GET":
+        oeuvre_a_modifier = Oeuvres_principales.get(id_oeuvre)
+        return render_template("pages/modifier_oeuvre.html", oeuvre=oeuvre_a_modifier)
+
+    # on récupère les données du formulaire modifié
+    else:
+        statut, donnees= Oeuvres_principales.modifier_oeuvres_principales(
+            id_oeuvre=id_oeuvre,
+            Titre=request.form.get("Titre", None),
+            Date_premiere_pub=request.form.get("Date_premiere_pub", None),
+            Editeur=request.form.get("Editeur", None),
+            Lieu_publication=request.form.get("Lieu_publication", None),
+            Nombre_pages=request.form.get("Nombre_pages", None),
+            Resume = request.form.get("Resume", None), 
+        )
+
+        if statut is True:
+            flash("Modification réussie !", "success")
+            return render_template ("pages/accueil.html")
+        else:
+            flash("Les erreurs suivantes ont été rencontrées : " + ",".join(donnees), "danger")
+            oeuvre_a_modifier = Oeuvres_principales.query.get(id_oeuvre)
+            return render_template("pages/modifier_oeuvre.html", nom="WmLitterature", oeuvre=oeuvre_a_modifier)
+
+
+@app.route("/romanciere/<int:id_femme>/creer_portrait", methods=["GET", "POST"])
+@login_required
+def creation_portrait(id_femme):
+    """
+    Route permettant a l'utilisateur de créer un portrait 
+    :param id_femme : identifiant de la romancière
+    """
+    
+    femme_de_lettres = Femme_de_lettres.query.get(id_femme)
+
+    if request.method == "POST":
+        statut, donnees = Portrait.creer_portrait(
+        new_url_portrait = request.form.get("new_url_portrait", None),
+        new_nom_createur = request.form.get("new_nom_createur", None),
+        new_prenom_createur = request.form.get("new_prenom_createur", None),
+        new_annee_realisation = request.form.get("new_annee_realisation", None),
+        new_techniques = request.form.get("new_techniques", None), 
+        new_lieu_conservation = request.form.get("new_lieu_conservation", None),
+        id_femme = id_femme
+        )
+
+        if statut is True:
+            flash("Ajout du portrait de la romancière", "success")
+            return redirect("/index_romanciere")
+        else:
+            flash("L'ajout du portrait de la romancière a échoué pour les raisons suivantes : " + ", ".join(donnees), "danger")
+            return render_template("pages/creer_portrait.html")
+    else:
+        return render_template("pages/creer_portrait.html", nom="WmLitterature", romanciere=femme_de_lettres)
 
 
                                                     ####PAGES POUR LA GESTION DES UTILISATEUR-TRICE-S####
