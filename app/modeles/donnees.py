@@ -384,7 +384,43 @@ class Oeuvres_principales(db.Model):
 
         #Exécution de except uniquement si une erreur apparaît. 
         except Exception as erreur:
-            return False, [str(erreur)]      
+            return False, [str(erreur)]
+
+    @staticmethod
+    def supprimer_oeuvres_principales(id_oeuvre, Titre, Date_premiere_pub, Editeur, Lieu_publication, Nombre_pages, Resume):
+        """
+        Fonction qui permet de supprimer la notice d'une oeuvre.
+        :param id_oeuvre: identifiant numérique de l'oeuvre
+        :param Titre: titre de l'oeuvre
+        :param Date_premiere_pub: Date de la première publication de l'oeuvre
+        :param Editeur: éditeur ou maison d'édition de l'oeuvre
+        :param Lieu_publication: lieu de publication de l'oeuvre
+        :param Nombre_pages: nombre de pages de l'oeuvre
+        :param Resume: résumé de l'oeuvre
+        :type id_oeuvre: integer
+        :type Titre, Date_premiere_pub, Editeur, Lieu_publication, Nombre_pages, Resume: string
+        :returns: booleens
+        """
+
+        #On récupère une oeuvre dans la base grâce à son identifiant
+        delete_oeuvres_principales = Oeuvres_principales.query.get(id_oeuvre)
+
+        delete_oeuvres_principales.id_oeuvre = id_oeuvre
+        delete_oeuvres_principales.titre = Titre
+        delete_oeuvres_principales.date_premiere_pub = Date_premiere_pub
+        delete_oeuvres_principales.editeur = Editeur
+        delete_oeuvres_principales.lieu_publication = Lieu_publication
+        delete_oeuvres_principales.nombre_pages = Nombre_pages
+        delete_oeuvres_principales.resume = Resume
+    
+        #On ajoute un bloc "try-except" afin de "gérer" les erreurs
+        try:
+            #On supprime la romancière de la base de données
+            db.session.delete(delete_oeuvres_principales)
+            db.session.commit()
+            return True, delete_oeuvres_principales
+        except Exception as erreur:
+            return False, [str(erreur)]
 
 
                                                                 ####Portrait####

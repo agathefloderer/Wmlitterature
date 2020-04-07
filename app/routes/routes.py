@@ -190,15 +190,15 @@ def suppression_romanciere(identifier):
     if request.method == "POST":
         statut, donnees = Femme_de_lettres.supprimer_romanciere(
             Id_femme=identifier,
-            Nom_naissance=request.form.get("Nom_naissance", None),
-            Prenom_naissance=request.form.get("Prenom_naissance", None),
-            Nom_auteur=request.form.get("Nom_auteur", None),
-            Prenom_auteur=request.form.get("Prenom_auteur", None),
-            Lieu_naissance=request.form.get("Lieu_naissance", None),
-            Date_naissance=request.form.get("Date_naissance", None),
-            Lieu_mort=request.form.get("Lieu_mort", None),
-            Date_mort=request.form.get("Date_mort", None),
-            Pseudonyme=request.form.get("Pseudonyme", None)
+            Nom_naissance=request.args.get("Nom_naissance", None),
+            Prenom_naissance=request.args.get("Prenom_naissance", None),
+            Nom_auteur=request.args.get("Nom_auteur", None),
+            Prenom_auteur=request.args.get("Prenom_auteur", None),
+            Lieu_naissance=request.args.get("Lieu_naissance", None),
+            Date_naissance=request.args.get("Date_naissance", None),
+            Lieu_mort=request.args.get("Lieu_mort", None),
+            Date_mort=request.args.get("Date_mort", None),
+            Pseudonyme=request.args.get("Pseudonyme", None)
         )
 
         if statut is True:
@@ -272,6 +272,37 @@ def modification_oeuvre(id_oeuvre):
             flash("Les erreurs suivantes ont été rencontrées : " + ",".join(donnees), "danger")
             oeuvre_a_modifier = Oeuvres_principales.query.get(id_oeuvre)
             return render_template("pages/modifier_oeuvre.html", nom="WmLitterature", oeuvre=oeuvre_a_modifier)
+
+
+@app.route("/supprimer_oeuvre/<int:id_oeuvre>", methods=["POST", "GET"])
+@login_required
+def suppression_oeuvre(id_oeuvre):
+    """ 
+    Route pour supprimer une oeuvre dans la base
+    :param identifier : identifiant de l'oeuvre
+    """
+    oeuvre_a_supprimer = Oeuvres_principales.query.get(id_oeuvre)
+
+    if request.method == "POST":
+        statut, donnees = Oeuvres_principales.supprimer_oeuvres_principales(
+            id_oeuvre=id_oeuvre,
+            Titre=request.args.get("Titre", None),
+            Date_premiere_pub=request.args.get("Date_premiere_pub", None),
+            Editeur=request.args.get("Editeur", None),
+            Lieu_publication=request.args.get("Lieu_publication", None),
+            Nombre_pages=request.args.get("Nombre_pages", None),
+            Resume=request.args.get("Resume", None)
+        )
+
+        if statut is True:
+            flash("Suppression réussie !", "success")
+            return redirect("/accueil")
+        else:
+            flash("Les erreurs suivantes ont été rencontrées : " + ", ".join(donnees), "danger")
+            return redirect("pages/supprimer_romanciere.html")
+    else:
+        return render_template("pages/supprimer_romanciere.html", nom="WmLitterature", romanciere=femme_a_supprimer)
+
 
 
 @app.route("/romanciere/<int:id_femme>/creer_portrait", methods=["GET", "POST"])
