@@ -234,7 +234,7 @@ def creation_oeuvre(id_femme):
 
         if statut is True:
             flash("Ajout d'une nouvelle oeuvre à la bibliographie de la romancière", "success")
-            return redirect("/index_romanciere")
+            return redirect("/creer_oeuvre")
         else:
             flash("L'ajout d'une nouvelle oeuvre a échoué pour les raisons suivantes : " + ", ".join(donnees), "danger")
             return render_template("pages/creer_oeuvre.html")
@@ -250,7 +250,7 @@ def modification_oeuvre(id_oeuvre):
     """
     # On renvoie sur la page html les éléments de l'objet oeuvre correspondant à l'identifiant de la route
     if request.method == "GET":
-        oeuvre_a_modifier = Oeuvres_principales.get(id_oeuvre)
+        oeuvre_a_modifier = Oeuvres_principales.query.get(id_oeuvre)
         return render_template("pages/modifier_oeuvre.html", oeuvre=oeuvre_a_modifier)
 
     # on récupère les données du formulaire modifié
@@ -296,12 +296,12 @@ def suppression_oeuvre(id_oeuvre):
 
         if statut is True:
             flash("Suppression réussie !", "success")
-            return redirect("/accueil")
+            return redirect("/index_romanciere")
         else:
             flash("Les erreurs suivantes ont été rencontrées : " + ", ".join(donnees), "danger")
-            return redirect("pages/supprimer_romanciere.html")
+            return redirect("pages/supprimer_oeuvre.html")
     else:
-        return render_template("pages/supprimer_romanciere.html", nom="WmLitterature", romanciere=femme_a_supprimer)
+        return render_template("pages/supprimer_oeuvre.html", nom="WmLitterature", oeuvre=oeuvre_a_supprimer)
 
 
 

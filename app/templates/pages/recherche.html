@@ -2,38 +2,38 @@
 
 {% extends "conteneur.html" %}
 
-{% block titre %}| {{titre}}{%endblock%}
-
-{% include "partials/recherche.html" %}
-
+{% block titre %}| Recherche{%endblock%}
 
 {% block corps %}
-<h1>{{titre}}</h1>
+<section>
+  <h1>Résultats de votre recherche</h1>
     {% if resultats %}
-    <p>Voici {{resultats.total}} romancières qui répondent à votre requête :</p>
-        <ul>
+    <h3>Voici {{resultats.total}} romancières qui répondent à votre requête :</h3>
+        <div>
+          <ul>
             {% for romanciere in resultats.items %}
                 <li><a href="{{url_for('romanciere', id_femme=romanciere.id_femme)}}"> {{romanciere.prenom_auteur}} {{romanciere.nom_auteur}}</a></li>
             {% endfor %}
-        </ul>
-      <nav aria-label="research-pagination">
-      <ul class="pagination">
+          </ul>
+        </div>
+      <nav>
+        <ul>
         {%- for page in resultats.iter_pages() %}
             {% if page %}
 
               {% if page != resultats.page %}
-                <li class="page-item">
-                    <a class="page-link" href="{{ url_for('recherche', keyword=keyword, page=page) }}">{{page}}</a>
+                <li>
+                    <a href="{{ url_for('recherche', keyword=keyword, page=page) }}">{{page}}</a>
                 </li>
               {% else %}
-                <li class="page-item active disabled">
-                  <a class="page-link">{{page}} <span class="sr-only">(actuelle)</span></a>
+                <li>
+                  <a>{{page}} <span>(actuelle)</span></a>
                 </li>
               {% endif %}
 
             {% else %}
-                <li class="page-item disabled">
-                  <a class="page-link">...</a>
+                <li>
+                  <a>...</a>
                 </li>
             {% endif %}
 
@@ -41,4 +41,5 @@
       </ul>
     </nav> 
     {% endif %}
+</section>
 {% endblock %}

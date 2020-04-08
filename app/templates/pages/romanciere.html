@@ -1,8 +1,6 @@
 <!--Page 'romanciere' du site -->
 
-
 {% extends "conteneur.html" %}
-<!--On lie la structure generale de nos templates definie dans conteneur.html avec la structure specifique de la page romancieres.html grace a extends.-->
 
 {% block titre %}
     {%if romanciere %}| Romancière : 
@@ -11,31 +9,28 @@
 
 
 {% block corps %}
-
+<!--Dans le bloc corps, les conditions ont ete multipliees. Enfin, l'ensemble des informations ne pourront pas etre completees pour l'ensemble des romancieres.-->
 {% if portraits %}
         {% for portrait in portraits %}
             {% if not portrait.url_portrait %}
                 <figure>
-                    <img src="{{ url_for('static', filename='images/silhouette.jpg')}}" width="256" class="rounded-circle" style="position: absolute; top: 30px; left: 800px"/>
+                    <img src="{{ url_for('static', filename='images/silhouette.jpg')}}" width="256" class="rounded-circle" style="position: absolute; left:900px; top:220px"/>
                 </figure>
             {% else %}
                 <figure>
-                    <img src="{{url_for('static', filename=portrait.url_portrait)}}" width="256" class="rounded-circle" style="position: absolute; top: 30px; left: 800px"/>
-                    <figcaption>
-                    {% if not portrait.techniques %}Portrait {% else %} {{portrait.techniques}}{% endif %} réalisé {% if not portrait.nom_createur %}{% else %}par {{portrait.prenom_createur}} {{portrait.nom_createur}}{% endif %} {% if not portrait.annee_realisation %}{% else %}en {{portrait.annee_realisation}}{% endif %}. {% if not portrait.lieu_conservation %}{% else %}Lieu de conservation : {{portrait.lieu_conservation}}.{% endif %}</figcaption>
+                    <img src="{{url_for('static', filename=portrait.url_portrait)}}" width="256" class="rounded-circle" style="position: absolute; left:900px; top:220px"/>
                 </figure>
             {% endif %}
         {% endfor %}
-    {% else %}
-    {% endif %}
+{% endif %}
 
-<!--Dans le bloc corps, les conditions ont ete multipliees. Enfin, l'ensemble des informations ne pourront pas etre completees pour l'ensemble des romancieres.-->
-    {% if romanciere %}
-            <h1>{{romanciere.prenom_auteur}} {{romanciere.nom_auteur}}</h1>
+<section>
+{% if romanciere %}
+    <div>
+        <h1>{{romanciere.prenom_auteur}} {{romanciere.nom_auteur}}</h1>
             {% if not romanciere.pseudonyme %}
-            <h2></h2>
             {% else %}
-            <h2>Dite {{romanciere.pseudonyme}}</h2>
+                <h2>Dite {{romanciere.pseudonyme}}</h2>
             {% endif %}
             <dl> 
                 {% if not romanciere.prenom_naissance %}
@@ -65,11 +60,13 @@
             </dl>
         {% else %}
             <p style="text-align:center">La notice que vous recherchez n'existe pas ou plus.</p>
-        {% endif %}
+    </div>
+{% endif %}
 
 
-    {% if oeuvres %}
-        <h3>Oeuvres principales de la romancière :</h3>
+{% if oeuvres %}
+    <div>
+        <h2>Oeuvres principales de la romancière :</h2>
         {%for oeuvre in oeuvres %}
             <dl>
                 <dt>
@@ -80,13 +77,15 @@
             </dl>
         {% endfor %}
     {% else %}
-    {% endif %}
+    </div>
+{% endif %}
 
     {% if current_user.is_authenticated %}
         <center>
             <p>
-                <a href="{{url_for('modification_romanciere', identifier=romanciere.id_femme)}}">Modifier la romancière</a> | <a href="{{url_for('suppression_romanciere', identifier=romanciere.id_femme)}}">Supprimer la romancière</a> | <a href="{{url_for('creation_oeuvre', id_femme=romanciere.id_femme)}}">Ajouter une oeuvre</a> | <a href="{{(url_for('creation_portrait', id_femme=romanciere.id_femme))}}">Ajouter un portrait</a>
+                <a href="{{url_for('modification_romanciere', identifier=romanciere.id_femme)}}">Modifier la romancière</a> || <a href="{{url_for('suppression_romanciere', identifier=romanciere.id_femme)}}">Supprimer la romancière</a> || <a href="{{url_for('creation_oeuvre', id_femme=romanciere.id_femme)}}">Ajouter une oeuvre</a> || <a href="{{(url_for('creation_portrait', id_femme=romanciere.id_femme))}}">Ajouter un portrait</a>
             </p>
         </center>
     {% endif %}
+</section>
 {% endblock %}

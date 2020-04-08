@@ -1,0 +1,228 @@
+
+/* Eléments principaux de la page */
+
+body
+{
+    font-family: 'Trebuchet MS', Arial, sans-serif;
+    background-color: #F0F8FF;
+}
+
+#bloc_page
+{
+    width: 1100px;
+    margin: auto;
+}
+
+section h1 nav a
+{
+    font-family: Dayrom, serif;
+    font-weight: normal;
+}
+
+.container {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+/* Les liens */
+a {
+text-decoration: none;
+color: #696969;
+}
+
+a:hover{
+  color: navy;
+}
+
+dl {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  color: teal;
+}
+
+dd {
+  margin-bottom: .5rem;
+  margin-left: 0;
+  font-weight: normal;
+  color: black;
+}
+
+/* Header */
+
+header
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+#titre_principal
+{
+    display: flex;
+    flex-direction: column;
+    color:#048b9a;
+}
+
+
+#logo
+{
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+#logo img
+{
+    width: 59px;
+    height: 60px;
+}
+
+header h1
+{
+    font-family: 'BallparkWeiner', serif;
+    font-size: 3em;
+    font-weight: normal;
+    margin: 0 0 0 10px;
+}
+
+/* Corps */
+
+section h1
+{
+    font-family: 'BallparkWeiner', serif;
+    font-size: 2em;
+    color:#000080;
+    text-align: center;
+
+}
+
+section h2
+{
+  font-family: 'Dayrom', serif;
+    font-size: 1em;
+}
+
+section h3
+{
+	font-family: 'BallparkWeiner', serif;
+    font-size: 1em;
+    text-align: center;
+}
+
+#first
+{
+    float:left;
+    width:50%;
+    height:100%;
+}
+#second
+{
+    float:left;
+    width:50%;
+    height:100%;
+}
+
+/* Navigation */
+
+nav ul
+{
+    list-style-type: none;
+    display: flex;
+}
+
+nav li
+{
+    margin-right: 15px;
+    margin-top: 100;
+}
+
+nav a
+{
+    font-size: 1em;
+    color: #181818;
+    padding-bottom: 3px;
+    text-decoration: none;
+}
+
+nav a:hover
+{
+    color: #760001;
+    border-bottom: 3px solid #760001;
+}
+
+/* Gestion des messages flash */
+
+.alert-warning {
+  color: #856404;
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+}
+
+
+/* Gestion des grilles et formulaires*/
+
+.row {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.col {
+  -ms-flex-preferred-size: 0;
+      flex-basis: 0;
+  -ms-flex-positive: 1;
+      flex-grow: 1;
+  max-width: 100%;
+}
+
+/* Gestion de la galerie et des portraits*/
+
+div.gallery{
+            margin: 5px;
+            float: left;
+            width: 270px;
+            text-align: center;
+            }
+
+            div.gallery img {
+                width: 100%;
+                height: auto;
+            }
+
+.rounded-circle {
+  border-radius: 50% !important;
+}
+
+
+/* Définition des polices personnalisées */
+
+@font-face
+{
+    font-family: 'BallparkWeiner';
+    src: url('polices/ballpark.eot');
+    src: url('polices/ballpark.eot?#iefix') format('embedded-opentype'),
+         url('polices/ballpark.woff') format('woff'),
+         url('polices/ballpark.ttf') format('truetype'),
+         url('polices/ballpark.svg#BallparkWeiner') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face
+{
+    font-family: 'Dayrom';
+    src: url('polices/dayrom.eot');
+    src: url('polices/dayrom.eot?#iefix') format('embedded-opentype'),
+         url('polices/dayrom.woff') format('woff'),
+         url('polices/dayrom.ttf') format('truetype'),
+         url('polices/dayrom.svg#Dayrom') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}

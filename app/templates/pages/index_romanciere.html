@@ -2,19 +2,25 @@
 
 
 {% extends "conteneur.html" %}
-<!--On lie la structure generale de nos templates definie dans conteneur.html avec la structure specifique de la page accueil.html grace a extends.-->
-{% block afternav %}
-    {% include "partials/recherche.html" %}
-{%endblock%}
+
+{% block titre %}| Index des romancières{%endblock%}
+
 {% block corps %}
+<section>
+    <h1>Index des romancières</h1>
     {% if romancieres %}
-    <p>Il y a {{romancieres|length}} romancières enregistrées :</p>
-    	<ul>
-    	 {% for romanciere in romancieres %}
+        <h2>Il y a {{romancieres|length}} romancières enregistrées :</h2>
+            <div>
+    	       <ul>
+    	       {% for romanciere in romancieres %}
                 <li><a href="{{url_for('romanciere', id_femme=romanciere.id_femme)}}"> {% if not romanciere.prenom_auteur %}{% else %}{{romanciere.prenom_auteur}}{% endif %} {{romanciere.nom_auteur}}</a></li>
-            {% endfor %}
-          </ul>
+                {% endfor %}
+                </ul>
+            </div>
     {% else %}
+    <div>
     	<p>La base de données est en cours de constitution.</p>
+    </div>
     {% endif %}
+ </section>
 {% endblock %}

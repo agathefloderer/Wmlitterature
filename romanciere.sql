@@ -56,6 +56,14 @@ CREATE TABLE IF NOT EXISTS "authorship_femme_de_lettres" (
 	FOREIGN KEY("authorship_femme_de_lettres_user_id") REFERENCES "user"("user_id"),
 	FOREIGN KEY("authorship_femme_de_lettres_id_femme") REFERENCES "femme_de_lettres"("id_femme")
 );
+CREATE TABLE IF NOT EXISTS "authorship_portrait" (
+	"authorship_portrait_id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	"authorship_portrait_user_id"	INTEGER NOT NULL,
+	"authorship_portrait_id_portrait"	INTEGER NOT NULL,
+	"authorship_portrait_date"	DATETIME DEFAULT CURENT_TIMESTAMP,
+	FOREIGN KEY("authorship_portrait_user_id") REFERENCES "user"("user_id"),
+	FOREIGN KEY("authorship_portrait_id_portrait") REFERENCES "portrait"("id_portrait")
+);
 INSERT INTO "oeuvres_principales" VALUES (1,'Fille de Lorraine','1895','Oudin et Cie','Paris',NULL,1,NULL);
 INSERT INTO "oeuvres_principales" VALUES (2,'Fakirs et jongleurs','1889','Editions Firmin-Didot et Cie','Paris','64',1,NULL);
 INSERT INTO "oeuvres_principales" VALUES (3,'L''Etoile du nord','1903','Firmin-Didot et Cie','Paris','144',1,NULL);

@@ -1,12 +1,7 @@
 <!--Page 'galerie' du site -->
-
-
-{% extends "conteneur_galerie.html" %}
-{% block afternav %}
-    {% include "partials/recherche.html" %}
-{% endblock %}
-
+{% extends "conteneur.html" %}
 {% block corps %}
+<section>
     <h1>Galerie des femmes de lettres française</h1>
 
     {% if portraits %}
@@ -14,17 +9,19 @@
             {% if portrait.url_portrait %}
             <div class="gallery">
                 <a target="_blank">
-                    <img src="{{url_for('static', filename=portrait.url_portrait)}}" width="800" heigth="600" />
+                    <img src="{{url_for('static', filename=portrait.url_portrait)}}"/>
                 </a>
-                <div class="desc">
+                <div>
                     <p>{% if not portrait.techniques %}Portrait {% else %} {{portrait.techniques}}{% endif %} réalisé {% if not portrait.nom_createur %}{% else %}par {{portrait.prenom_createur}} {{portrait.nom_createur}}{% endif %} {% if not portrait.annee_realisation %}{% else %}en {{portrait.annee_realisation}}{% endif %}. {% if not portrait.lieu_conservation %}{% else %}Lieu de conservation : {{portrait.lieu_conservation}}.{% endif %}</p>
                 </div>
             </div>
-            {% else %}
             {% endif %}
         {% endfor %}
     {% else %}
+    <div>
         <p>La base de données est en cours de constitution.</p>
+    </div>
     {% endif %}
+</section>
 {% endblock %}
 

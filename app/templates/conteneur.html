@@ -3,67 +3,65 @@
 <html lang="fr">
     <head>
     	<meta charset="UTF-8">
+        <link rel="stylesheet" href="/static/css/css.css" />
         <title>WmLitterature {% block titre %}{% endblock %}</title>
-        <!-- On definit un bloc titre qui pourra etre complete dans les templates enfants avec les informations specifiques a chaque page. -->
-        {% include "partials/css.html" %}
-        <!--On inclut dans le fichier conteneur.html des sous-elements concernant le css et les metadata. -->
+        <!-- On définit un bloc titre qui pourra être completé dans les templates enfants avec les informations spécifiques à chaque page. -->
+        <!--On inclut dans le fichier conteneur.html des sous-élements concernant les metadata. -->
         {% include "partials/metadata.html" %}
-        <style type="text/css">
-            .hero  {
-                background-position: center center;
-                padding:10vh;
-                background-image: url('https://upload.wikimedia.org/wikipedia/commons/6/69/Fragonard%2C_The_Reader.jpg');
-            }
-            .container .hero {
-                background-image: none;
-            }
-        </style>
     </head>
     <body>
-
-
-            <nav class="navbar navbar-expand-md navbar-dark bg-dark justify-content-between">
-                <a class="navbar-brand" href="{{ url_for('accueil') }}">WmLitterature</a>
-                    <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{url_for('accueil')}}">Accueil</a>
-                    </li>
-                    {% if not current_user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{url_for('inscription')}}">Inscription</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{url_for('connexion')}}">Connexion</a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{url_for('deconnexion')}}">Déconnexion ({{current_user.user_nom}})</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{url_for('creation_romanciere')}}">Ajouter une romancière</a>
-                    </li>
-                    {% endif %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{url_for('index_romanciere')}}">Index des romancières</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{url_for('portrait')}}">Galerie de portraits</a>
-                    </li>
+        <div id="bloc_page">
+            <header>
+                <nav>
+                    <div id="titre_principal">
+                        <div id="logo">
+                            <img  src="{{ url_for('static', filename='images/logo.png')}}" height="100" width="200"/>
+                            <h1>WmLitterature</h1>
+                        </div>
+                    </div>
+                    <ul>
+                        <li>
+                            <a href="{{url_for('accueil')}}">Accueil</a>
+                        </li>
+                        {% if not current_user.is_authenticated %}
+                        <li>
+                            <a href="{{url_for('inscription')}}">Inscription</a>
+                        </li>
+                        <li>
+                            <a href="{{url_for('connexion')}}">Connexion</a>
+                        </li>
+                        {% else %}
+                        <li>
+                            <a href="{{url_for('deconnexion')}}">Déconnexion ({{current_user.user_nom}})</a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="{{url_for('creation_romanciere')}}">Ajouter une romancière</a>
+                        </li>
+                        {% endif %}
+                        <li>
+                            <a href="{{url_for('index_romanciere')}}">Index</a>
+                        </li>
+                        <li>
+                            <a href="{{url_for('portrait')}}">Galerie</a>
+                        </li>
+                        <li>
+                            <form action="{{url_for('recherche')}}" method="GET">
+                                <input name="keyword" type="search" placeholder="Recherche rapide" aria-label="Recherche">
+                                <button type="submit">Rechercher</button>
+                            </form>
+                        </li>
                     </ul>
-
-                <form class="form-inline" action="{{url_for('recherche')}}" method="GET">
-                    <input class="form-control" name="keyword" type="search" placeholder="Recherche rapide" aria-label="Recherche">
-                    <button class="btn btn-outline-info" type="submit">Rechercher</button>
-                </form>
             </nav>
+        </header>
+
             {% block afternav %}{%endblock%}
-            <div class="container">
+        <div class="container">
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                 <div class="row">
                     <div class="col">
                         {% for category, message in messages %}
-                            <div class="alert alert-{{category}}" role="alert">{{ message }}</div>
+                            <div class="alert-warning">{{ message }}</div>
                         {% endfor %}
                     </div>
                 </div>
@@ -77,13 +75,16 @@
         </div>
     </body>
 
-<footer>
+
+<!-- Footer -->
 <footer class="page-footer font-small blue pt-4">
   <!-- Copyright -->
-  <div class="footer-copyright text-center py-3">
+  <center>
+  <div class="footer-copyright py-3">
       <p>© WmLitterature - TNAH, promotion 2020</p>
       <a href="http://www.chartes.psl.eu/fr/cursus/master-technologies-numeriques-appliquees-histoire"><img src="http://www.chartes.psl.eu/sites/all/themes/enc_base/images/public/logo-ecole-nationale-des-chartes-header.png" class="img-fluid" alt="" width="150"></a>
   </div>
+</center>
   <!-- Copyright -->
 
 </footer>

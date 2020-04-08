@@ -23,6 +23,8 @@ class User(UserMixin, db.Model):
     #Jointure
     author_femme_de_lettres = db.relationship("Authorship_femme_de_lettres", back_populates="user_femme_de_lettres")
     author_oeuvres_principales = db.relationship("Authorship_oeuvres_principales", back_populates="user_oeuvres_principales")
+    author_portrait = db.relationship("Authorship_portrait", back_populates="user_portrait")
+
 
     def get_id(self):
         """

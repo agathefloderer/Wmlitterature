@@ -266,34 +266,6 @@ class Oeuvres_principales(db.Model):
         Sinon, elle renvoie True, suivi de l'objet créé (ici new_oeuvres_principales).
         """
 
-        #On crée une liste vide pour les erreurs
-        erreurs = []
-
-        #On vérifie que l'oeuvre que l'utilisateur veut ajouter n'existe pas déjà dans la base.
-        new_oeuvres_principales = Oeuvres_principales.query.filter(db.and_(Oeuvres_principales.titre == new_titre)).count()
-        if new_oeuvres_principales > 0:
-            erreurs.append("L'oeuvre existe déjà dans la base de données")
-
-
-        #On vérifie que l'utilisateur complète au moins un champ de données considérés comme essentiels
-        if not new_titre:
-            erreurs.append("le champ 'titre' est obligatoire")
-        #Les autres données ne sont pas forcément disponibles et sont donc optionnelles.
-
-
-        #On vérifie que la date de la première publication fasse quatre caractères (et corresponde ainsi à une annnée)
-        if new_date_premiere_pub:
-            if not len(new_date_premiere_pub) == 4:
-                erreurs.append("La date de la première publication doit faire 4 caractères. Format AAAA demandé.")
-            if len(erreurs) > 0:
-                return False, erreurs
-
-
-
-        #Si on a au moins une erreur, retourner un message d'erreur
-        if len(erreurs) > 0:
-            return False, erreurs
-
 
         # S'il n'y a pas d'erreur, on ajoute une nouvelle entrée dans la table oeuvres_principales avec les champs correspondant aux paramètres du modèle.
         created_oeuvres_principales = Oeuvres_principales(
@@ -341,7 +313,7 @@ class Oeuvres_principales(db.Model):
         erreurs=[]
 
         #On vérifie que l'utilisateur complète au moins deux champs de données considérés comme essentiels
-        if not titre:
+        if not Titre:
             erreurs.append("le champ 'titre' est obligatoire")
         #Les autres données ne sont pas forcément disponibles et sont donc optionnelles.
         #Si on a au moins une erreur, retourner un message d'erreur
@@ -436,6 +408,7 @@ class Portrait(db.Model):
     lieu_conservation = db.Column(db.Text)
     #Jointure
     portrait_id_femme = db.Column(db.Integer, db.ForeignKey('femme_de_lettres.id_femme'))
+    authorships_portrait = db.relationship("Authorship_portrait", back_populates='portrait_portrait')
 
 
 
@@ -507,20 +480,34 @@ class Portrait(db.Model):
                                                                 ####Authorship####
 
 class Authorship_femme_de_lettres(db.Model):
-#On crée notre modèle Authorship.
+#On crée notre modèle Authorship pour la table Femme_de_lettres.
     __tablename__ = "authorship_femme_de_lettres"
     authorship_femme_de_lettres_id = db.Column(db.Integer, nullable=True, autoincrement=True, primary_key=True)
     authorship_femme_de_lettres_user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
     authorship_femme_de_lettres_id_femme = db.Column(db.Integer, db.ForeignKey('femme_de_lettres.id_femme'))
     authorship_femme_de_lettres_date = db.Column(db.DateTime, default=datetime.datetime.utcnow) 
+    #Jointures
     user_femme_de_lettres = db.relationship("User", back_populates="author_femme_de_lettres")
     femme_de_lettres_femme_de_lettres = db.relationship("Femme_de_lettres", back_populates="authorships_femme_de_lettres")
 
 class Authorship_oeuvres_principales(db.Model):
+#On crée notre modèle Authorship pour la table Oeuvres_principales.
     __tablename__="authorship_oeuvres_principales"
     authorship_oeuvres_principales_id = db.Column(db.Integer, nullable=True, autoincrement=True, primary_key=True)
     authorship_oeuvres_principales_user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
     authorship_oeuvres_principales_id_oeuvre = db.Column(db.Integer, db.ForeignKey('oeuvres_principales.id_oeuvre'))
-    authorship_oeuvres_principales_date = db.Column(db.DateTime, default=datetime.datetime.utcnow) 
+    authorship_oeuvres_principales_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    #Jointures
     user_oeuvres_principales = db.relationship("User", back_populates="author_oeuvres_principales")
     oeuvres_principales_oeuvres_principales = db.relationship("Oeuvres_principales", back_populates="authorships_oeuvres_principales")
+
+class Authorship_portrait(db.Model):
+#On crée notre modèle Authorship pour la table Portrait.
+    __tablename__="authorship_portrait"
+    authorship_portrait_id = db.Column(db.Integer, nullable=True, autoincrement=True, primary_key=True)
+    authorship_portrait_user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
+    authorship_portrait_id_portrait = db.Column(db.Integer, db.ForeignKey('portrait.id_portrait'))
+    authorship_portrait_date = db.Column(db.DateTime, default=datetime.datetime.utcnow) 
+    #Jointures
+    user_portrait = db.relationship("User", back_populates="author_portrait")
+    portrait_portrait = db.relationship("Portrait", back_populates="authorships_portrait")

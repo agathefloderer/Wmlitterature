@@ -1,0 +1,18 @@
+{% extends "conteneur.html" %}
+
+{% block titre %}| Suppression de l'oeuvre {{oeuvre.titre}}{%endblock%}
+
+{% block corps %}
+<section>
+	<h3>Suppression de l'oeuvre {{oeuvre.titre}}</h3>
+<form method="POST" action="{{url_for('suppression_oeuvre', id_oeuvre=oeuvre.id_oeuvre)}}" style="text-align:center">
+	<div>
+       <p name="oeuvre" value="{{oeuvre.id_oeuvre}}">Etes-vous sûr-e de vouloir procéder à cette suppression ?</p>
+	<div>
+	<div>
+        <button type="submit">Confirmer</button>
+    </div>
+ </form>
+</section>
+
+{% endblock %}
