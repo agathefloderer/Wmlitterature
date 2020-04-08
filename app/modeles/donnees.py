@@ -266,6 +266,25 @@ class Oeuvres_principales(db.Model):
         Sinon, elle renvoie True, suivi de l'objet créé (ici new_oeuvres_principales).
         """
 
+        #On crée une liste vide pour les erreurs
+        erreurs=[]
+
+         #On vérifie que l'utilisateur complète au moins un champ de données considéré comme essentiel
+        if not new_titre:
+            erreurs.append("le champ 'titre' est obligatoire")
+        #Les autres données ne sont pas forcément disponibles et sont donc optionnelles.
+
+
+        if new_date_premiere_pub:
+            if not len(new_date_premiere_pub) == 4:
+                erreurs.append("La date de l'année de réalisation  doit faire 4 caractères. Format AAAA demandé.")
+            if len(erreurs) > 0:
+                return False, erreurs
+
+
+        #Si on a au moins une erreur, retourner un message d'erreur
+        if len(erreurs) > 0:
+            return False, erreurs
 
         # S'il n'y a pas d'erreur, on ajoute une nouvelle entrée dans la table oeuvres_principales avec les champs correspondant aux paramètres du modèle.
         created_oeuvres_principales = Oeuvres_principales(
@@ -277,6 +296,7 @@ class Oeuvres_principales(db.Model):
             resume = new_resume,
             oeuvres_principales_id_femmme=id_femme)
 
+
         #On ouvre un double bloc "try-except" afin de gérer les erreurs
         try:
              # On ajoute la romanciere a la base de donnees
@@ -284,10 +304,10 @@ class Oeuvres_principales(db.Model):
             db.session.commit()
            
 
-            return True, new_oeuvres_principales
+            return True, created_oeuvres_principales
         #Exécution de except uniquement si une erreur apparaît. 
-        except Exception as erreur_creation:
-            return False, [str(erreur_creation)]
+        except Exception as erreur:
+            return False, [str(erreur)]
 
     @staticmethod
     #@staticmethod permet d'intéragir avec une classe pour un objet qui n'existe pas encore.
@@ -465,15 +485,15 @@ class Portrait(db.Model):
 
         #On ouvre un double bloc "try-except" afin de gérer les erreurs
         try:
-             # On ajoute la romanciere a la base de donnees
+             # On ajoute le portrait a la base de donnees
             db.session.add(created_portrait)
             db.session.commit()
            
 
             return True, created_portrait
         #Exécution de except uniquement si une erreur apparaît. 
-        except Exception as erreur_creation:
-            return False, [str(erreur_creation)]
+        except Exception as erreur:
+            return False, [str(erreur)]
 
 
 

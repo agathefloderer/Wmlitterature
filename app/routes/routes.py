@@ -49,7 +49,6 @@ def index_romanciere() :
 #Définition d'une route a paramètres. On conditionne le type de id_femme (il s'agit d'un nombre entier)
 def romanciere(id_femme):
     """Route permettant l'affichage des données concernant une romancière
-
     :param id_femme : identifiant numérique de la romancière
     """
     unique_femme = Femme_de_lettres.query.get(id_femme)
@@ -61,9 +60,7 @@ def romanciere(id_femme):
 def oeuvre(id_oeuvre):
     """
     Route permettant d'afficher les données d'une oeuvre
-    :param work_id: clé primaire d'une oeuvre dans la table Work
-    :return: template collection.html
-    :rtype: template
+    :param id_oeuvre : idenfiant numérique de la romancière
     """
     unique_oeuvre = Oeuvres_principales.query.get(id_oeuvre)
     return render_template("pages/oeuvre.html", nom="WmLitterature", oeuvre=unique_oeuvre)
@@ -75,6 +72,15 @@ def portrait():
     romanciere = Femme_de_lettres.query.all()
     portraits = Portrait.query.all()
     return render_template("pages/galerie.html", nom="WmLitterature", portraits=portraits, romanciere=romanciere)
+
+@app.route("/romanciere/portrait/<int:id_portrait>")
+def portrait_individuel(id_portrait):
+    """
+    Route permettant d'afficher les données d'un portrait
+    :param id_portrait : idenfiant numérique de la romancière
+    """
+    unique_portrait = Portrait.query.get(id_portrait)
+    return render_template("pages/portrait.html", nom="WmLitterature", portrait=unique_portrait)
 
 #Recherche
 @app.route("/recherche")
@@ -234,7 +240,7 @@ def creation_oeuvre(id_femme):
 
         if statut is True:
             flash("Ajout d'une nouvelle oeuvre à la bibliographie de la romancière", "success")
-            return redirect("/creer_oeuvre")
+            return redirect("/index_romanciere")
         else:
             flash("L'ajout d'une nouvelle oeuvre a échoué pour les raisons suivantes : " + ", ".join(donnees), "danger")
             return render_template("pages/creer_oeuvre.html")

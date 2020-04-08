@@ -1,0 +1,16 @@
+{% extends "conteneur.html" %}
+
+{% block titre %}
+    {%if oeuvre %}| Portrait {% endif %}
+{% endblock %}
+
+{% block corps %}
+    {% if portrait %}
+    <img src="{{url_for('static', filename=portrait.url_portrait)}}" width="256" class="rounded-circle" style="position: absolute; left:900px; top:220px"/>
+    {% else %}
+    <div>
+        <p style="text-align:center">La notice que vous recherchez n'existe pas ou plus.</p>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}
