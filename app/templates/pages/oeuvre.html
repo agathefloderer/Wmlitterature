@@ -23,7 +23,7 @@
                                 {% if oeuvre.resume %}
                                     <p>{{oeuvre.resume}}</p>
                                 {% else %}
-                                    <p>Aucun résumé de cet oeuvre n'a été enregistré... Souhaitez-vous remedier à la situation ? Inscrivez-vous <a href="{{url_for('inscription')}}">ici</a> pour pouvoir enrichir le site !</p>
+                                    <p>Aucun résumé de cette oeuvre n'a été enregistré... Souhaitez-vous remedier à la situation ? Inscrivez-vous <a href="{{url_for('inscription')}}">ici</a> pour pouvoir enrichir le site !</p>
                                 {% endif %}
                             </div>
                     </div>
@@ -34,7 +34,7 @@
                         </p>
                     </div>
                 </div>
-        {% endif %}
+                {% endif %}
     {% else %}
     <div>
         <p style="text-align:center">La notice que vous recherchez n'existe pas ou plus.</p>

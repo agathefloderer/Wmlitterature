@@ -14,6 +14,8 @@
     {% for portrait in portraits %}
         <figure>
             <a href="{url_for('portrait_individuel', id_portrait=portrait.id_portrait)"><img src="{{portrait.url_portrait}}" width="256" class="rounded-circle" style="position: absolute; left:900px; top:220px"></a>
+            <figcaption>{{portrait.annee_realisation}}</figcaption>
+        </figure>
     {% endfor %}
 {% else %}
     <figure>
@@ -32,7 +34,7 @@
             <dl> 
                 {% if not romanciere.prenom_naissance %}
                 {% else %}
-                <dt>Nom de naissance <dd>{{romanciere.prenom_naissance}} {{romanciere.nom_naissance}}</dd></dt>
+                <dt>Nom de naissance</dt><dd>{{romanciere.prenom_naissance}} {{romanciere.nom_naissance}}</dd>
                 {% endif %}
                 {% if not romanciere.date_naissance %}
                 <dt>Date de naissance</dt><dd>Non renseignée</dd>

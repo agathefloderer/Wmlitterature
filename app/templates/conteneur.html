@@ -15,7 +15,7 @@
                 <nav>
                     <div id="titre_principal">
                         <div id="logo">
-                            <img  src="{{ url_for('static', filename='images/logo.png')}}" height="100" width="200"/>
+                            <a href="{{url_for('accueil')}}"><img  src="{{ url_for('static', filename='images/logo.png')}}" height="100" width="200"/></a>
                             <h1>WmLitterature</h1>
                         </div>
                     </div>
@@ -77,12 +77,16 @@
 
 
 <!-- Footer -->
-<footer class="page-footer font-small blue pt-4">
+<footer>
   <!-- Copyright -->
   <center>
-  <div class="footer-copyright py-3">
-      <p>© WmLitterature - TNAH, promotion 2020</p>
-      <a href="http://www.chartes.psl.eu/fr/cursus/master-technologies-numeriques-appliquees-histoire"><img src="http://www.chartes.psl.eu/sites/all/themes/enc_base/images/public/logo-ecole-nationale-des-chartes-header.png" class="img-fluid" alt="" width="150"></a>
+  <div>
+      <p>© WmLitterature - TNAH, promotion 2020</p> 
+    <figure>
+        <a href="http://www.chartes.psl.eu/fr/cursus/master-technologies-numeriques-appliquees-histoire"><img src="http://www.chartes.psl.eu/sites/all/themes/enc_base/images/public/logo-ecole-nationale-des-chartes-header.png" alt="" width="170"></a>
+        <a href="https://github.com/agathefloderer/Wmlitterature"><img  src="{{ url_for('static', filename='images/logo_github.png')}}" width="50" title="Le github de l'application"></a>
+        <figcaption>En savoir plus</figcaption>
+    </figure>
   </div>
 </center>
   <!-- Copyright -->

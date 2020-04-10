@@ -21,8 +21,8 @@ class Femme_de_lettres(db.Model):
     pseudonyme = db.Column(db.Text)
     #Jointures. 
     #Relations many to one identifiées par des clefs étrangères du côté de la relation simple.
-    oeuvres = db.relationship('Oeuvres_principales', backref='romanciere')
-    portraits = db.relationship('Portrait', backref='romanciere')
+    oeuvres = db.relationship('Oeuvres_principales', cascade="all,delete", backref='romanciere')
+    portraits = db.relationship('Portrait', cascade="all,delete", backref='romanciere')
     authorships_femme_de_lettres = db.relationship("Authorship_femme_de_lettres", back_populates='femme_de_lettres_femme_de_lettres')
 
     @staticmethod
@@ -357,7 +357,7 @@ class Oeuvres_principales(db.Model):
             return False, erreurs
 
 
-        #S'il n'y a pas d'erreurs, on met à jour les données de la romancière :
+        #S'il n'y a pas d'erreurs, on met à jour les données de l'oeuvre :
         else :
             update_oeuvres_principales.titre=Titre
             update_oeuvres_principales.date_premiere_pub=Date_premiere_pub
@@ -444,7 +444,7 @@ class Portrait(db.Model):
         :param new_annee_realisation: année où le portrait a été réalisé
         :param new_lieu_conservation: institut de conservation du portrait, s'il y en a une
         :param id_femme : identifiant numérique de la romancière qui est représenté par le portrait
-        :type new_url_portrait, new_nom_createur, new_prenom_createur, new_annee_realisation, new_techniques, new_lieu_conservation, id_femme : string
+        :type new_url_portrait, new_nom_createur, new_prenom_createur, new_annee_realisation, new_techniques, new_lieu_conservation : string
         :type id_femme: integer
         :returns: tuple (booléen, liste/objet)
          S'il y a une erreur, la fonction renvoie False suivi d'une liste d'erreurs.
@@ -491,6 +491,66 @@ class Portrait(db.Model):
            
 
             return True, created_portrait
+        #Exécution de except uniquement si une erreur apparaît. 
+        except Exception as erreur:
+            return False, [str(erreur)]
+
+
+    @staticmethod
+    #@staticmethod permet d'intéragir avec une classe pour un objet qui n'existe pas encore.
+
+    def modifier_portrait(id_portrait, Url_portrait, Nom_createur, Prenom_createur, Annee_realisation, Techniques, Lieu_conservation):
+        """
+        Fonction qui permet de modifier les informations d'un portrait dans la base de données (modifications rendues possibles par un utilisateur.rice).
+        :param id_portrait : identifiant numérique du portrait
+        :param Url_portrait: url du portrait pour appeler l'image dans l'application
+        :param Nom_createur: nom de la personne ayant produit le portrait
+        :param Prenom_createur: prénom de la personne ayant produit le portrait
+        :param Annee_realisation: année où le portrait a été réalisé
+        :param Lieu_conservation: institut de conservation du portrait, s'il y en a une
+        :type Url_portrait, Nom_createur, Prenom_createur, Annee_realisation, Techniques, Lieu_conservation : string
+        :returns: tuple (booléen, liste/objet)
+         S'il y a une erreur, la fonction renvoie False suivi d'une liste d'erreurs.
+        Sinon, elle renvoie True, suivi de l'objet mis à jour (ici une oeuvre).
+        """
+
+        #On crée une liste vide pour les erreurs
+        erreurs=[]
+
+        #On récupère une oeuvre dans la base grâce à son identifiant
+        update_portrait = Portrait.query.get(id_portrait)
+
+        #On vérifie que l'utilisateur-trice modifie au moins un champ
+
+        if update_portrait.url_portrait == Url_portrait \
+                and update_portrait.nom_createur == Nom_createur \
+                and update_portrait.prenom_createur == Prenom_createur \
+                and update_portrait.annee_realisation == Annee_realisation \
+                and update_portrait.techniques == Techniques \
+                and update_portrait.lieu_conservation == Lieu_conservation :
+            erreurs.append("Aucune modification n'a été réalisée")
+
+        if len(erreurs) > 0:
+            return False, erreurs
+
+
+        #S'il n'y a pas d'erreurs, on met à jour les données du portrait :
+        else :
+            update_portrait.url_portrait = Url_portrait 
+            update_portrait.nom_createur = Nom_createur 
+            update_portrait.prenom_createur = Prenom_createur
+            update_portrait.annee_realisation = Annee_realisation
+            update_portrait.techniques = Techniques
+            update_portrait.lieu_conservation = Lieu_conservation
+
+        #On ajoute un bloc "try-except" afin de "gérer" les erreurs
+        try:
+            # On ajoute la romanciere a la base de donnees
+            db.session.add(update_portrait)
+            db.session.commit()
+
+            return True, update_portrait
+
         #Exécution de except uniquement si une erreur apparaît. 
         except Exception as erreur:
             return False, [str(erreur)]

@@ -341,6 +341,40 @@ def creation_portrait(id_femme):
     else:
         return render_template("pages/creer_portrait.html", nom="WmLitterature", romanciere=femme_de_lettres)
 
+@app.route("/modifier_portrait/<int:id_portrait>", methods=["POST", "GET"])
+@login_required
+def modification_portrait(id_portrait):
+    """
+    Route gérant la modification d'un portrait
+    :param id_oeuvre: identifiant numérique du protrait
+    """
+    # On renvoie sur la page html les éléments de l'objet portrait correspondant à l'identifiant de la route
+    if request.method == "GET":
+        portrait_a_modifier = Portrait.query.get(id_portrait)
+        return render_template("pages/modifier_portrait.html", portrait=portrait_a_modifier)
+
+    # on récupère les données du formulaire modifié
+    else:
+        statut, donnees= Portrait.modifier_portrait(
+            id_portrait=id_portrait,
+            Url_portrait=request.form.get("Url_portrait", None),
+            Nom_createur=request.form.get("Nom_createur", None),
+            Prenom_createur=request.form.get("Prenom_createur", None),
+            Annee_realisation=request.form.get("Annee_realisation", None),
+            Techniques=request.form.get("Techniques", None),
+            Lieu_conservation=request.form.get("Lieu_conservation", None)
+        )
+
+        if statut is True:
+            flash("Modification réussie !", "success")
+            return render_template ("pages/accueil.html")
+        else:
+            flash("Les erreurs suivantes ont été rencontrées : " + ",".join(donnees), "danger")
+            portrait_a_modifier = Portrait.query.get(id_portrait)
+            return render_template("pages/modifier_portrait.html", nom="WmLitterature", portrait=portrait_a_modifier)
+
+
+
 
                                                     ####PAGES POUR LA GESTION DES UTILISATEUR-TRICE-S####
 

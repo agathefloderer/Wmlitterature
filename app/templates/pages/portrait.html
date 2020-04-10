@@ -5,12 +5,30 @@
 {% endblock %}
 
 {% block corps %}
+<div>
     {% if portrait %}
-    <img src="{{url_for('static', filename=portrait.url_portrait)}}" width="256" class="rounded-circle" style="position: absolute; left:900px; top:220px"/>
+    <div>
+        <figure style="text-align: center">
+            <a href="{{portrait.url_portrait}}"><img src="{{portrait.url_portrait}}" width="400"/></a>
+        </figure>
+        <dl style="text-align: center">
+            <dt>Artiste</dt>{% if not portrait.nom_createur %}<dd>Non renseigné-e</dd>{% else %}<dd>{{portrait.prenom_createur}} {{portrait.nom_createur}}</dd>{% endif %}
+            <dt>
+            <dt>Année de réalisation</dt>{% if not portrait.annee_realisation %}<dd>Non renseignée</dd>{% else %}<dd>{{portrait.annee_realisation}}</dd>{% endif %}
+            <dt>Technique utilisée</dt>{% if not portrait.techniques %}<dd>Non renseigné</dd>{% else %}<dd>{{portrait.techniques}}</dd>{% endif %}
+            <dt>Lieu/Institution de conservation</dt>{% if not portrait.lieu_conservation %}<dd>Non renseigné-e</dd>{% else %}<dd>{{portrait.lieu_conservation}}</dd>{% endif %}
+        </dl>
+        {% if current_user.is_authenticated %}
+            <div>
+                <p style="text-align:center">
+                    <a href="{{url_for('modification_portrait', id_portrait=portrait.id_portrait)}}">Modifier la notice</a>
+                </p>
+            </div>
+        {% endif %}
     {% else %}
     <div>
         <p style="text-align:center">La notice que vous recherchez n'existe pas ou plus.</p>
     </div>
     {% endif %}
-</section>
+</div>
 {% endblock %}
