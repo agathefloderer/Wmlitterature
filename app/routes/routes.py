@@ -373,6 +373,35 @@ def modification_portrait(id_portrait):
             portrait_a_modifier = Portrait.query.get(id_portrait)
             return render_template("pages/modifier_portrait.html", nom="WmLitterature", portrait=portrait_a_modifier)
 
+@app.route("/supprimer_portrait/<int:id_portrait>", methods=["POST", "GET"])
+@login_required
+def suppression_portrait(id_portrait):
+    """ 
+    Route pour supprimer une portrait dans la base
+    :param identifier : identifiant du portrait
+    """
+    portrait_a_supprimer = Portrait.query.get(id_portrait)
+
+    if request.method == "POST":
+        statut, donnees = Portrait.supprimer_portrait(
+            id_portrait=id_portrait,
+            Url_portrait=request.args.get("Url_portrait", None),
+            Nom_createur=request.args.get("Nom_createur", None),
+            Prenom_createur=request.args.get("Prenom_createur", None),
+            Annee_realisation=request.args.get("Annee_realisation", None),
+            Lieu_conservation=request.args.get("Lieu_conservation", None)
+        )
+
+
+        if statut is True:
+            flash("Suppression réussie !", "success")
+            return redirect("/index_romanciere")
+        else:
+            flash("Les erreurs suivantes ont été rencontrées : " + ", ".join(donnees), "danger")
+            return redirect("pages/supprimer_portrait.html")
+    else:
+        return render_template("pages/supprimer_portrait.html", nom="WmLitterature", oeuvre=oeuvre_a_supprimer)
+
 
 
 

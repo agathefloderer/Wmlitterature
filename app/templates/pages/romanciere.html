@@ -82,7 +82,7 @@
     {% if current_user.is_authenticated %}
         <center>
             <p>
-                <a href="{{url_for('modification_romanciere', identifier=romanciere.id_femme)}}">Modifier la romancière</a> || <a href="{{url_for('suppression_romanciere', identifier=romanciere.id_femme)}}">Supprimer la romancière</a> || <a href="{{url_for('creation_oeuvre', id_femme=romanciere.id_femme)}}">Ajouter une oeuvre</a> {% if not portraits %}|| <a href="{{(url_for('creation_portrait', id_femme=romanciere.id_femme))}}">Ajouter un portrait</a>{% else %}{% endif %}
+                <a href="{{url_for('modification_romanciere', identifier=romanciere.id_femme)}}">Modifier la romancière</a> || <a href="{{url_for('suppression_romanciere', identifier=romanciere.id_femme)}}">Supprimer la romancière</a> || <a href="{{url_for('creation_oeuvre', id_femme=romanciere.id_femme)}}">Ajouter une oeuvre</a>
             </p>
         </center>
     {% endif %}

@@ -299,7 +299,7 @@ class Oeuvres_principales(db.Model):
 
         #On ouvre un double bloc "try-except" afin de gérer les erreurs
         try:
-             # On ajoute la romanciere a la base de donnees
+             # On ajoute le portrait a la base de donnees
             db.session.add(created_oeuvres_principales)
             db.session.commit()
            
@@ -368,7 +368,7 @@ class Oeuvres_principales(db.Model):
 
         #On ajoute un bloc "try-except" afin de "gérer" les erreurs
         try:
-            # On ajoute la romanciere a la base de donnees
+            # On ajoute le portrait à la base de données
             db.session.add(update_oeuvres_principales)
             db.session.commit()
 
@@ -407,7 +407,7 @@ class Oeuvres_principales(db.Model):
     
         #On ajoute un bloc "try-except" afin de "gérer" les erreurs
         try:
-            #On supprime la romancière de la base de données
+            #On supprime le portrait de la base de données
             db.session.delete(delete_oeuvres_principales)
             db.session.commit()
             return True, delete_oeuvres_principales
@@ -545,13 +545,47 @@ class Portrait(db.Model):
 
         #On ajoute un bloc "try-except" afin de "gérer" les erreurs
         try:
-            # On ajoute la romanciere a la base de donnees
+            # On ajoute le portrait a la base de donnees
             db.session.add(update_portrait)
             db.session.commit()
 
             return True, update_portrait
 
         #Exécution de except uniquement si une erreur apparaît. 
+        except Exception as erreur:
+            return False, [str(erreur)]
+
+
+    @staticmethod
+    def supprimer_portrait(id_portrait, Url_portrait, Nom_createur, Prenom_createur, Annee_realisation, Lieu_conservation):
+        """
+        Fonction qui permet de supprimer un portrait de la base de données
+        :param id_portrait : identifiant numérique du portrait
+        :param Url_portrait: url du portrait pour appeler l'image dans l'application
+        :param Nom_createur: nom de la personne ayant produit le portrait
+        :param Prenom_createur: prénom de la personne ayant produit le portrait
+        :param Annee_realisation: année où le portrait a été réalisé
+        :param Lieu_conservation: institut de conservation du portrait, s'il y en a une
+        :type Url_portrait, Nom_createur, Prenom_createur, Annee_realisation, Techniques, Lieu_conservation : string
+        :returns: booleens
+        """
+
+        #On récupère une oeuvre dans la base grâce à son identifiant
+        delete_portrait = Portrait.query.get(id_portrait)
+
+        delete_portrait.id_portrait = id_portrait
+        delete_portrait.url_portrait = Url_portrait
+        delete_portrait.nom_createur = Nom_createur
+        delete_portrait.prenom_createur = Prenom_createur
+        delete_portrait.annee_realisation = Annee_realisation
+        delete_portrait.lieu_conservation = Lieu_conservation
+        
+        #On ajoute un bloc "try-except" afin de "gérer" les erreurs
+        try:
+            #On supprime le portrait de la base de données
+            db.session.delete(delete_portrait)
+            db.session.commit()
+            return True, delete_portrait
         except Exception as erreur:
             return False, [str(erreur)]
 

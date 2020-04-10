@@ -1,0 +1,18 @@
+{% extends "conteneur.html" %}
+
+{% block titre %}| Suppression du portrait{%endblock%}
+
+{% block corps %}
+<section>
+	<h3>Suppression du portrait</h3>
+<form method="POST" action="{{url_for('suppression_portrait', id_portrait=portrait.id_portrait)}}" style="text-align:center">
+	<div>
+       <p name="portrait" value="{{portrait.id_portrait}}">Etes-vous sûr-e de vouloir procéder à cette suppression ?</p>
+	<div>
+	<div>
+        <button type="submit">Confirmer</button>
+    </div>
+ </form>
+</section>
+
+{% endblock %}
