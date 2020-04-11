@@ -105,9 +105,8 @@ class User(UserMixin, db.Model):
 
     def get_id(self):
         """ Retourne l'id de l'objet actuellement utilisé
-
-        :returns: ID de l'utilisateur
-        :rtype: int
+        :returns: identifiant numérique de l'utilisateur
+        :rtype: integer
         """
         return self.user_id
 

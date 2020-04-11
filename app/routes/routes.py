@@ -23,7 +23,7 @@ from app.app import app, login
 from app.modeles.donnees import Femme_de_lettres, Oeuvres_principales, Portrait
 from app.modeles.utilisateurs import User
 
-from app.constantes import femme_par_page
+from app.constantes import resultats_par_page
 #A partir du fichier constantes.py, contenu dans le dossier app, on importe la variable femme_par_page
 
                                                 ####PAGES GENERALES####  
@@ -41,9 +41,24 @@ def accueil():
 def index_romanciere() :
     """Route permettant l'affichage de l'index des romancières enregistrées
     """
-    romancieres = Femme_de_lettres.query.order_by(Femme_de_lettres.nom_auteur).all()
-    #Une fois que le modèles sont mis en place dans donnnees.py et utilisateurs.py, on peut faire des requetes. 
-    return render_template("pages/index_romanciere.html", nom="WmLitterature", romancieres=romancieres)
+    titre="index_romanciere"
+
+    #On vérifie que la base de données n'est pas vide
+    romancieres = Femme_de_lettres.query.all()
+
+    if len(romancieres) == 0:
+        return render_template("pages/index_romanciere.html", romanciere=romanciere, titre=titre)
+    else : 
+        page = request.args.get("page", 1)
+
+        if isinstance(page, str) and page.isdigit():
+            page = int(page)
+        else:
+            page = 1
+
+    romancieres = Femme_de_lettres.query.order_by(Femme_de_lettres.nom_auteur
+            ).paginate(page=page, per_page=resultats_par_page)
+    return render_template("pages/index_romanciere.html", nom="WmLitterature", romancieres=romancieres, titre=titre)
 
 @app.route("/romanciere/<int:id_femme>")
 #Définition d'une route a paramètres. On conditionne le type de id_femme (il s'agit d'un nombre entier)
@@ -56,6 +71,29 @@ def romanciere(id_femme):
     portraits = unique_femme.portraits
     return render_template("pages/romanciere.html", nom="WmLitterature", romanciere=unique_femme, oeuvres=oeuvres, portraits=portraits)
 
+@app.route("/index_oeuvres")
+def index_oeuvres() :
+    """Route permettant l'affichage de l'index des oeuvres enregistrés
+    """
+    titre="index_oeuvres"
+
+    #On vérifie que la base de données n'est pas vide
+    oeuvres = Oeuvres_principales.query.all()
+
+    if len(oeuvres) == 0:
+        return render_template("pages/index_oeuvres.html", oeuvres=oeuvres, titre=titre)
+    else : 
+        page = request.args.get("page", 1)
+
+        if isinstance(page, str) and page.isdigit():
+            page = int(page)
+        else:
+            page = 1
+
+    oeuvres = Oeuvres_principales.query.order_by(Oeuvres_principales.titre
+            ).paginate(page=page, per_page=resultats_par_page)
+    return render_template("pages/index_oeuvres.html", nom="WmLitterature", oeuvres=oeuvres, titre=titre)
+
 @app.route("/romanciere/oeuvre/<int:id_oeuvre>")
 def oeuvre(id_oeuvre):
     """
@@ -63,15 +101,15 @@ def oeuvre(id_oeuvre):
     :param id_oeuvre : idenfiant numérique de la romancière
     """
     unique_oeuvre = Oeuvres_principales.query.get(id_oeuvre)
-    return render_template("pages/oeuvre.html", nom="WmLitterature", oeuvre=unique_oeuvre)
+    romanciere = unique_oeuvre.romanciere
+    return render_template("pages/oeuvre.html", nom="WmLitterature", oeuvre=unique_oeuvre, romanciere=romanciere)
 
 @app.route("/galerie")
 def portrait():
     """Route permettant l'affichage de la galerie de portraits des romancières
     """
-    romanciere = Femme_de_lettres.query.all()
     portraits = Portrait.query.all()
-    return render_template("pages/galerie.html", nom="WmLitterature", portraits=portraits, romanciere=romanciere)
+    return render_template("pages/galerie.html", nom="WmLitterature", portraits=portraits)
 
 @app.route("/romanciere/portrait/<int:id_portrait>")
 def portrait_individuel(id_portrait):
@@ -80,7 +118,8 @@ def portrait_individuel(id_portrait):
     :param id_portrait : idenfiant numérique de la romancière
     """
     unique_portrait = Portrait.query.get(id_portrait)
-    return render_template("pages/portrait.html", nom="WmLitterature", portrait=unique_portrait)
+    romanciere = unique_portrait.romanciere
+    return render_template("pages/portrait.html", nom="WmLitterature", portrait=unique_portrait, romanciere=romanciere)
 
 #Recherche
 @app.route("/recherche")
@@ -114,7 +153,7 @@ def recherche():
                 Femme_de_lettres.lieu_mort.like("%{}%".format(motclef)),
                 Femme_de_lettres.pseudonyme.like("%{}%".format(motclef)),
                 )
-        ).order_by(Femme_de_lettres.nom_auteur.asc()).paginate(page=page, per_page=femme_par_page)
+        ).order_by(Femme_de_lettres.nom_auteur.asc()).paginate(page=page, per_page=resultats_par_page)
         titre = "Résultat pour la recherche '" + motclef + "'"
     return render_template("pages/recherche.html", resultats=resultats, titre=titre, keyword=motclef)
 
@@ -400,7 +439,7 @@ def suppression_portrait(id_portrait):
             flash("Les erreurs suivantes ont été rencontrées : " + ", ".join(donnees), "danger")
             return redirect("pages/supprimer_portrait.html")
     else:
-        return render_template("pages/supprimer_portrait.html", nom="WmLitterature", oeuvre=oeuvre_a_supprimer)
+        return render_template("pages/supprimer_portrait.html", nom="WmLitterature", portrait=portrait_a_supprimer)
 
 
 

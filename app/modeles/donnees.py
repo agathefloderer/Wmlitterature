@@ -49,27 +49,29 @@ class Femme_de_lettres(db.Model):
         #On crée une liste vide pour les erreurs
         erreurs = []
 
-        #On vérifie que la romancière que l'utilisateur veut ajouter n'existe pas déjà dans la base.
-        new_femme_de_lettres = Femme_de_lettres.query.filter(db.and_(Femme_de_lettres.nom_auteur == new_nom_auteur, Femme_de_lettres.prenom_auteur == new_prenom_auteur)).count()
-        if new_femme_de_lettres > 0:
-            erreurs.append("La romancière existe déjà dans la base de données")
-
         #On vérifie que l'utilisateur complète au moins deux champs de données considérés comme essentiels
         if not new_nom_auteur:
             erreurs.append("le champ 'nom d'auteur' est obligatoire")
         if not new_prenom_auteur:
             erreurs.append("le champ 'prénom d'auteur' est obligatoire")
         #Les autres données ne sont pas forcément disponibles et sont donc optionnelles.
+        
         #Si on a au moins une erreur, retourner un message d'erreur
         if len(erreurs) > 0:
             return False, erreurs
 
         #On vérifie que la longueur des caractères de la date ne dépasse pas la limite de 10 (format MM-JJ-AAAA)
-        if new_date_naissance:
+        if new_date_naissance and new_date_mort:
             if not len(new_date_naissance) == 10 or not len(new_date_mort) == 10:
                 erreurs.append("Les dates doivent faire 10 caractères. Format MM-JJ-AAAA demandé.")
             if len(erreurs) > 0:
                 return False, erreurs
+
+        #On vérifie que la romancière que l'utilisateur veut ajouter n'existe pas déjà dans la base.
+        new_femme_de_lettres = Femme_de_lettres.query.filter(db.and_(Femme_de_lettres.nom_auteur == new_nom_auteur, Femme_de_lettres.prenom_auteur == new_prenom_auteur)).count()
+        if new_femme_de_lettres > 0:
+            erreurs.append("La romancière existe déjà dans la base de données")
+
 
          # Si on a au moins une erreurs, on affiche un message d'erreur
         if len(erreurs) > 0:
@@ -96,8 +98,8 @@ class Femme_de_lettres(db.Model):
 
             return True, new_femme_de_lettres
         #Exécution de except uniquement si une erreur apparaît. 
-        except Exception as erreur_creation:
-            return False, [str(erreur_creation)]
+        except Exception as erreur:
+            return False, [str(erreur)]
 
     @staticmethod
     #@staticmethod permet d'intéragir avec une classe pour un objet qui n'existe pas encore.
@@ -130,8 +132,7 @@ class Femme_de_lettres(db.Model):
             erreurs.append("le champ 'nom d'auteur' est obligatoire")
         if not Prenom_auteur:
             erreurs.append("le champ 'prénom d'auteur' est obligatoire")
-        #Les autres données ne sont pas forcément disponibles et sont donc optionnelles.
-        #Si on a au moins une erreur, retourner un message d'erreur
+        #Les autres données ne sont pas forcément disponibles et sont donc optionnelles.      
         if len(erreurs) > 0:
             return False, erreurs
 
@@ -155,7 +156,7 @@ class Femme_de_lettres(db.Model):
             return False, erreurs
 
         #On vérifie que la longueur des caractères de la date ne dépasse pas la limite de 10 (format MM-JJ-AAAA)
-        if Date_naissance:
+        if Date_naissance and Date_mort:
             if not len(Date_naissance) == 10 or not len(Date_mort) == 10:
                 erreurs.append("Les dates doivent faire 10 caractères. Format MM-JJ-AAAA demandé.")
             if len(erreurs) > 0:
@@ -266,27 +267,7 @@ class Oeuvres_principales(db.Model):
         Sinon, elle renvoie True, suivi de l'objet créé (ici new_oeuvres_principales).
         """
 
-        #On crée une liste vide pour les erreurs
-        erreurs=[]
-
-         #On vérifie que l'utilisateur complète au moins un champ de données considéré comme essentiel
-        if not new_titre:
-            erreurs.append("le champ 'titre' est obligatoire")
-        #Les autres données ne sont pas forcément disponibles et sont donc optionnelles.
-
-
-        if new_date_premiere_pub:
-            if not len(new_date_premiere_pub) == 4:
-                erreurs.append("La date de l'année de réalisation  doit faire 4 caractères. Format AAAA demandé.")
-            if len(erreurs) > 0:
-                return False, erreurs
-
-
-        #Si on a au moins une erreur, retourner un message d'erreur
-        if len(erreurs) > 0:
-            return False, erreurs
-
-        # S'il n'y a pas d'erreur, on ajoute une nouvelle entrée dans la table oeuvres_principales avec les champs correspondant aux paramètres du modèle.
+        # On ajoute une nouvelle entrée dans la table oeuvres_principales avec les champs correspondant aux paramètres du modèle.
         created_oeuvres_principales = Oeuvres_principales(
             titre = new_titre,
             date_premiere_pub = new_date_premiere_pub,
@@ -328,17 +309,20 @@ class Oeuvres_principales(db.Model):
          S'il y a une erreur, la fonction renvoie False suivi d'une liste d'erreurs.
         Sinon, elle renvoie True, suivi de l'objet mis à jour (ici une oeuvre).
         """
-
         #On crée une liste vide pour les erreurs
         erreurs=[]
 
         #On vérifie que l'utilisateur complète au moins deux champs de données considérés comme essentiels
         if not Titre:
             erreurs.append("le champ 'titre' est obligatoire")
+        if not Date_premiere_pub:
+            erreurs.append("le champ 'date de la première publication' est obligatoire")
         #Les autres données ne sont pas forcément disponibles et sont donc optionnelles.
+        
         #Si on a au moins une erreur, retourner un message d'erreur
         if len(erreurs) > 0:
             return False, erreurs
+
 
         #On récupère une oeuvre dans la base grâce à son identifiant
         update_oeuvres_principales = Oeuvres_principales.query.get(id_oeuvre)
@@ -353,6 +337,17 @@ class Oeuvres_principales(db.Model):
                 and update_oeuvres_principales.resume == Resume:
             erreurs.append("Aucune modification n'a été réalisée")
 
+        if len(erreurs) > 0:
+            return False, erreurs
+
+        #On vérifie que la longueur des caractères de la date ne dépasse pas la limite de 4 (format AAAA)
+        if Date_premiere_pub :
+            if not len(Date_premiere_pub) == 4 :
+                erreurs.append("Les dates doivent faire 4 caractères. Format AAAA demandé.")
+            if len(erreurs) > 0:
+                return False, erreurs
+
+         # Si on a au moins une erreurs, on affiche un message d'erreur
         if len(erreurs) > 0:
             return False, erreurs
 
@@ -451,28 +446,6 @@ class Portrait(db.Model):
         Sinon, elle renvoie True, suivi de l'objet créé (ici un portrait).
         """
 
-        #On crée une liste vide pour les erreurs
-        erreurs = []
-
-        #On vérifie que l'utilisateur complète au moins un champ de données considérés comme essentiels
-        if not new_url_portrait:
-            erreurs.append("le champ 'url du portrait' est obligatoire")
-        #Les autres données ne sont pas forcément disponibles et sont donc optionnelles.
-
-
-        if new_annee_realisation:
-            if not len(new_annee_realisation) == 4:
-                erreurs.append("La date de l'année de réalisation  doit faire 4 caractères. Format AAAA demandé.")
-            if len(erreurs) > 0:
-                return False, erreurs
-
-
-
-        #Si on a au moins une erreur, retourner un message d'erreur
-        if len(erreurs) > 0:
-            return False, erreurs
-
-
         # S'il n'y a pas d'erreur, on ajoute une nouvelle entrée dans la table portrait avec les champs correspondant aux paramètres du modèle
         created_portrait = Portrait(
             url_portrait = new_url_portrait,
@@ -498,7 +471,6 @@ class Portrait(db.Model):
 
     @staticmethod
     #@staticmethod permet d'intéragir avec une classe pour un objet qui n'existe pas encore.
-
     def modifier_portrait(id_portrait, Url_portrait, Nom_createur, Prenom_createur, Annee_realisation, Techniques, Lieu_conservation):
         """
         Fonction qui permet de modifier les informations d'un portrait dans la base de données (modifications rendues possibles par un utilisateur.rice).
@@ -513,15 +485,13 @@ class Portrait(db.Model):
          S'il y a une erreur, la fonction renvoie False suivi d'une liste d'erreurs.
         Sinon, elle renvoie True, suivi de l'objet mis à jour (ici une oeuvre).
         """
-
-        #On crée une liste vide pour les erreurs
         erreurs=[]
 
         #On récupère une oeuvre dans la base grâce à son identifiant
         update_portrait = Portrait.query.get(id_portrait)
 
-        #On vérifie que l'utilisateur-trice modifie au moins un champ
 
+        #On vérifie que l'utilisateur-trice modifie au moins un champ
         if update_portrait.url_portrait == Url_portrait \
                 and update_portrait.nom_createur == Nom_createur \
                 and update_portrait.prenom_createur == Prenom_createur \
@@ -533,6 +503,14 @@ class Portrait(db.Model):
         if len(erreurs) > 0:
             return False, erreurs
 
+        #On vérifie que la longueur des caractères de la date ne dépasse pas la limite de 4 (format AAAA)
+        if Annee_realisation :
+            if not len(Annee_realisation) == 4 :
+                erreurs.append("Les dates doivent faire 4 caractères. Format AAAA demandé.")
+
+         # Si on a au moins une erreurs, on affiche un message d'erreur
+        if len(erreurs) > 0:
+            return False, erreurs
 
         #S'il n'y a pas d'erreurs, on met à jour les données du portrait :
         else :
@@ -590,8 +568,7 @@ class Portrait(db.Model):
             return False, [str(erreur)]
 
 
-
-                                                                ####Authorship####
+                                                         ####Authorship####
 
 class Authorship_femme_de_lettres(db.Model):
 #On crée notre modèle Authorship pour la table Femme_de_lettres.

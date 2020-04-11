@@ -6,72 +6,70 @@
 {% block titre %}| Création d'une romancière{%endblock%}
 
 {% block corps %}
-
-<section>
-	<div>
-		<h1>Création d'une romancière</h1>
-		<p>Pour ajouter une nouvelle romancière à la base de données, complétez le formulaire et cliquez sur "Créer".</p>
-	</div>
-<form class="container" method="POST" action="{{url_for('creation_romanciere')}}">
-	<div>
+	<header>
+		<h1 id="titre1">Création d'une romancière</h1>
+	</header>
+	<p>Pour ajouter une nouvelle romancière à la base de données, complétez le formulaire et cliquez sur "Créer".</p>
+	<form class="container" method="POST" action="{{url_for('creation_romanciere')}}">
 		<div>
 			<label for="new_nom_naissance">Nom de naissance</label>
 			<div>
-				<input type="text" id="new_nom_naissance" name="new_nom_naissance" maxlength="300">
+				<input type="text" name="new_nom_naissance" maxlength="300">
 			</div>
 		</div>
 		<div>
 			<label for="new_prenom_naissance">Prénom de naissance</label>
 			<div>
-				<input type="text" id="new_prenom_naissance" name="new_prenom_naissance" maxlength="300">
+				<input type="text" name="new_prenom_naissance" maxlength="300">
 			</div>
 		</div>
 		<div>
-			<label for="new_nom_auteur">Nom d'auteur</label>
+			<label for="new_nom_auteur">*Nom d'auteur</label>
 			<div>
-				<input type="text" id="new_nom_auteur" name="new_nom_auteur" maxlength="300">
+				<input type="text" name="new_nom_auteur" maxlength="300">
 			</div>
 		</div>
 		<div>
-			<label for="new_prenom_auteur">Prénom d'auteur</label>
+			<label for="new_prenom_auteur">*Prénom d'auteur</label>
 			<div>
-				<input type="text" id="new_prenom_auteur" name="new_prenom_auteur" maxlength="300">
+				<input type="text" name="new_prenom_auteur" maxlength="300">
 			</div>
 		</div>
 			<div>
 				<label for="new_date_naissance">Date de naissance</label>
 			<div>
-				<input type="text" id="new_date_naissance" name="new_date_naissance" placeholder="MM-JJ-AAAA" maxlength="10">
+				<input type="text" name="new_date_naissance" placeholder="MM-JJ-AAAA" minlength="10" maxlength="10">
 			</div>
 		</div>
 		<div>
 			<label for="new_lieu_naissance">Lieu de naissance</label>
 			<div>
-				<input type="text" id="new_lieu_naissance" name="new_lieu_naissance" placeholder="Indiquer le nom de la ville" maxlength="300">
+				<input type="text" name="new_lieu_naissance" placeholder="Indiquer le nom de la ville" maxlength="300">
 			</div>
 		</div>
 		<div>
 			<label for="new_date_mort">Date de décès</label>
 			<div>
-				<input type="text" id="new_date_mort" name="new_date_mort" placeholder="MM-JJ-AAAA" maxlength="10">
+				<input type="text" name="new_date_mort" placeholder="MM-JJ-AAAA" minlength="10"maxlength="10">
 			</div>
 		</div>
 		<div>
 			<label for="new_lieu_mort">Lieu de décès. Ville ou village</label>
 			<div>
-				<input type="text" id="new_lieu_mort" name="new_lieu_mort" placeholder="Indiquer le nom de la ville" maxlength="300">
+				<input type="text" name="new_lieu_mort" placeholder="Indiquer le nom de la ville" maxlength="300">
 			</div>
 		</div>
 		<div>
 			<label for="new_pseudonyme">Pseudonyme</label>
 			<div>
-				<input type="text" id="new_pseudonyme" name="new_pseudonyme" maxlength="300">
+				<input type="text" name="new_pseudonyme" maxlength="300">
 			</div>
 		</div>
 		<div>
 			<button type="submit" value="créer">Créer</button>
 		</div>
-	</div>
-</form>
-</section>
+		<div>
+			<p>*Les champs précédés d'un astérisque sont obligatoires !</p>
+		</div>
+	</form>
 {% endblock %}

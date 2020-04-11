@@ -1,15 +1,15 @@
 <!--Page 'galerie' du site -->
 {% extends "conteneur.html" %}
 {% block corps %}
-<section>
-    <h1>Galerie des femmes de lettres française</h1>
-
+    <header>
+        <h1 id="titre1">Galerie des femmes de lettres française</h1>
+    </header>
     {% if portraits %}
         {% for portrait in portraits %}
             {% if portrait.url_portrait %}
             <div class="gallery">
                 <a target="_blank" href="{{portrait.url_portrait}}">
-                    <img src="{{portrait.url_portrait}}"/>
+                    <img src="{{portrait.url_portrait}}">
                 </a>
                 <div>
                     <p>{% if not portrait.techniques %}Portrait {% else %} {{portrait.techniques}}{% endif %} réalisé {% if not portrait.nom_createur %}{% else %}par {{portrait.prenom_createur}} {{portrait.nom_createur}}{% endif %} {% if not portrait.annee_realisation %}{% else %}en {{portrait.annee_realisation}}{% endif %}. {% if not portrait.lieu_conservation %}{% else %}Lieu de conservation : {{portrait.lieu_conservation}}.{% endif %}</p>
@@ -22,6 +22,5 @@
         <p>La base de données est en cours de constitution.</p>
     </div>
     {% endif %}
-</section>
 {% endblock %}
 

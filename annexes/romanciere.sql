@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS "oeuvres_principales" (
 	"nombre_pages"	TEXT,
 	"oeuvres_principales_id_femmme"	INTEGER NOT NULL,
 	"resume"	TEXT,
-	FOREIGN KEY("oeuvres_principales_id_femmme") REFERENCES "femme_de_lettres"("id_femme")
+	FOREIGN KEY("oeuvres_principales_id_femmme") REFERENCES "femme_de_lettres"("id_femme") ON DELETE CASCADE
 );
 CREATE TABLE IF NOT EXISTS "femme_de_lettres" (
 	"id_femme"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS "portrait" (
 	"techniques"	TEXT,
 	"lieu_conservation"	TEXT,
 	"portrait_id_femme"	INTEGER NOT NULL,
-	FOREIGN KEY("portrait_id_femme") REFERENCES "femme_de_lettres"("id_femme")
+	FOREIGN KEY("portrait_id_femme") REFERENCES "femme_de_lettres"("id_femme") ON DELETE CASCADE
 );
 CREATE TABLE IF NOT EXISTS "user" (
 	"user_id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,

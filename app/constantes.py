@@ -2,7 +2,7 @@
 
 from warnings import warn
 
-femme_par_page = 10
+resultats_par_page = 10
 
 SECRET_KEY = "JE SUIS UN SECRET !"
 #On stocke dans constantes.py un "secret" qui permettra à Flask d'effectuer des transactions sécurisées

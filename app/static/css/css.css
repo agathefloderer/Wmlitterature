@@ -51,9 +51,9 @@ dd {
   color: black;
 }
 
-/* Header */
+/* Conteneur.html */
 
-header
+#header_conteneur
 {
     display: flex;
     justify-content: space-between;
@@ -81,7 +81,7 @@ header
     height: 60px;
 }
 
-header h1
+#h1_conteneur
 {
     font-family: 'BallparkWeiner', serif;
     font-size: 3em;
@@ -91,7 +91,7 @@ header h1
 
 /* Corps */
 
-section h1
+#titre1
 {
     font-family: 'BallparkWeiner', serif;
     font-size: 2em;
@@ -100,33 +100,21 @@ section h1
 
 }
 
-section h2
+#titre2
 {
   font-family: 'Dayrom', serif;
     font-size: 1em;
 }
 
-section h3
+#titre3
 {
 	font-family: 'BallparkWeiner', serif;
     font-size: 1em;
     text-align: center;
 }
 
-#first
-{
-    float:left;
-    width:50%;
-    height:100%;
-}
-#second
-{
-    float:left;
-    width:50%;
-    height:100%;
-}
 
-/* Navigation */
+/* Navigation*/
 
 nav ul
 {
@@ -136,8 +124,9 @@ nav ul
 
 nav li
 {
-    margin-right: 15px;
-    margin-top: 100;
+    margin-right: 40px;
+    margin-top: 20px;
+    position: relative;
 }
 
 nav a
@@ -152,6 +141,40 @@ nav a:hover
 {
     color: #760001;
     border-bottom: 3px solid #760001;
+}
+
+.sous{
+  display:none;
+  box-shadow: 0px 1px 2px #CCC;
+  background-color: F0F8FF;
+  position: absolute;
+  width: 100%;
+  z-index: 1000;
+}
+nav > ul li:hover .sous{
+  display: block;
+}
+
+.deroulant > a::after{
+  content:"▼";
+  font-size: 12px;
+}
+
+.sous li{
+  float: none;
+  width: 100%;
+  text-align: left;
+}
+
+.sous a{
+  padding: 10 px;
+  border-bottom: none;
+}
+
+.sous a:hover{
+  border-bottom: none;
+  color: #760001;
+  border-bottom: 3px solid #760001;
 }
 
 /* Gestion des messages flash */

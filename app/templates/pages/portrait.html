@@ -5,7 +5,9 @@
 {% endblock %}
 
 {% block corps %}
-<div>
+    <header>
+        <h1 id="titre1">Portrait de {{romanciere.prenom_auteur}} {{romanciere.nom_auteur}}</h1>
+    </header>
     {% if portrait %}
     <div>
         <figure style="text-align: center">
@@ -19,16 +21,16 @@
             <dt>Lieu/Institution de conservation</dt>{% if not portrait.lieu_conservation %}<dd>Non renseigné-e</dd>{% else %}<dd>{{portrait.lieu_conservation}}</dd>{% endif %}
         </dl>
         {% if current_user.is_authenticated %}
-            <div>
-                <p style="text-align:center">
-                    <a href="{{url_for('modification_portrait', id_portrait=portrait.id_portrait)}}">Modifier la notice</a>
-                </p>
-            </div>
-        {% endif %}
+        <div>
+            <p style="text-align:center">
+                <a href="{{url_for('modification_portrait', id_portrait=portrait.id_portrait)}}">Modifier le portrait</a> || <a href="{{url_for('suppression_portrait', id_portrait=portrait.id_portrait)}}">Supprimer le portrait</a>
+            </p>
+        </div>
+    </div>
+    {% endif %}
     {% else %}
     <div>
         <p style="text-align:center">La notice que vous recherchez n'existe pas ou plus.</p>
     </div>
     {% endif %}
-</div>
 {% endblock %}

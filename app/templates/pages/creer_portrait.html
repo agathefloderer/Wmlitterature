@@ -6,54 +6,51 @@
 {% block titre %}| Ajout d'un portrait {%endblock%}
 
 {% block corps %}
-
-<section>
+	<header>
+		<h1 id="titre1">Ajout d'un portrait</h1>
+	</header>
 	<div>
-		<h1>Ajout d'un portrait</h1>
 		<p>Pour ajouter un nouveau portrait à la base de données, complétez le formulaire et cliquez sur "Ajouter".</p>
 	</div>
 	<form method="POST" action="{{url_for('creation_portrait', id_femme=romanciere.id_femme)}}">
-		<div>
 			<div>
 				<label for="new_url_portrait">Url complet du portrait</label>
 				<div>
-					<input type="text" id="new_url_portrait" name="new_url_portrait" placeholder="Ex: https://upload.wikimedia.org/wikipedia/commons/f/fb/Claire_de_Duras.jpg">
+					<input type="text" name="new_url_portrait" placeholder="Ex: https://upload.wikimedia.org/wikipedia/commons/f/fb/Claire_de_Duras.jpg">
 				</div>
 			</div>
 			<div>
 				<label for="new_nom_createur">Nom du créateur du portrait</label>
 				<div>
-					<input type="text" id="new_nom_createur" name="new_nom_createur">
+					<input type="text" name="new_nom_createur">
 				</div>
 			</div>
 			<div>
 				<label for="new_prenom_createur">Prénom du créateur du portrait</label>
 				<div>
-					<input type="text" id="new_prenom_createur" name="new_prenom_createur" maxlength="300">
+					<input type="text" name="new_prenom_createur" maxlength="300">
 				</div>
 			</div>
 		<div>
 			<label for="new_annee_realisation">Année de réalisation du portrait</label>
 		<div>
-			<input type="text" id="new_annee_realisation" name="new_annee_realisation" maxlength="4" placeholder="AAAA">
+			<input type="text" name="new_annee_realisation" minlength="4" maxlength="4" placeholder="AAAA">
 		</div>
 		</div>
 		<div>
 			<label for="new_techniques">Technique utilisée</label>
 		<div>
-			<input type="text" id="new_techniques" name="new_techniques" maxlength="300">
+			<input type="text" name="new_techniques" maxlength="300">
 		</div>
 		</div>
 		<div>
 			<label for="new_lieu_conservation">Lieu de conservation</label>
 		<div>
-			<input type="text" id="new_lieu_conservation" name="new_lieu_conservation" maxlength="300">
+			<input type="text" name="new_lieu_conservation" maxlength="300">
 		</div>
 		</div>
 		<div>
 			<button type="submit" value="créer">Ajouter</button>
 		</div>
-	</div>
-</form>
-</section>
+	</form>
 {% endblock %}

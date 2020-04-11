@@ -5,20 +5,19 @@
 {% block titre %}| Recherche{%endblock%}
 
 {% block corps %}
-<section>
-  <h1>Résultats de votre recherche</h1>
+  <header>
+    <h1 id="titre1">Résultats de votre recherche</h1>
     {% if resultats %}
-    <h3>Voici {{resultats.total}} romancières qui répondent à votre requête :</h3>
-        <div>
-          <ul>
-            {% for romanciere in resultats.items %}
-                <li><a href="{{url_for('romanciere', id_femme=romanciere.id_femme)}}"> {{romanciere.prenom_auteur}} {{romanciere.nom_auteur}}</a></li>
-            {% endfor %}
-          </ul>
-        </div>
-      <nav>
-        <ul>
-        {%- for page in resultats.iter_pages() %}
+    <h3 id="titre3">Voici {{resultats.total}} romancières qui répondent à votre requête :</h3>
+  </header>
+  <ul>
+    {% for romanciere in resultats.items %}
+    <li><a href="{{url_for('romanciere', id_femme=romanciere.id_femme)}}"> {{romanciere.prenom_auteur}} {{romanciere.nom_auteur}}</a></li>
+    {% endfor %}
+  </ul>
+  <nav>
+    <ul>
+      {% for page in resultats.iter_pages() %}
             {% if page %}
 
               {% if page != resultats.page %}
@@ -37,9 +36,8 @@
                 </li>
             {% endif %}
 
-        {%- endfor %}
-      </ul>
-    </nav> 
-    {% endif %}
-</section>
+      {% endfor %}
+    </ul>
+  </nav> 
+  {% endif %}
 {% endblock %}

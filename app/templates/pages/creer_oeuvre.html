@@ -6,48 +6,45 @@
 {% block titre %}| Ajout d'une oeuvre{%endblock%}
 
 {% block corps %}
-
-<section>
+	<header>
+		<h1 id="titre1">Ajout d'une oeuvre</h1>
+	</header>
 	<div>
-		<h1>Ajout d'une oeuvre</h1>
 		<p>Pour ajouter une nouvelle oeuvre à la base de données, complétez le formulaire et cliquez sur "Ajouter".</p>
 	</div>
-<form method="POST" action="{{url_for('creation_oeuvre', id_femme=romanciere.id_femme)}}">
-	<div>
+	<form method="POST" action="{{url_for('creation_oeuvre', id_femme=romanciere.id_femme)}}">
 		<div>
 			<label for="new_titre">Titre de l'oeuvre</label>
 			<div>
-				<input type="text" id="new_titre" name="new_titre" maxlength="300">
+				<input type="text" name="new_titre" maxlength="300">
 			</div>
 			</div>
 		<div>
 			<label for="new_date_premiere_pub">Date de la première publication</label>
 			<div>
-				<input type="text" id="new_date_premiere_pub" name="new_date_premiere_pub" placeholder="AAAA" maxlength="4">
+				<input type="text" name="new_date_premiere_pub" placeholder="AAAA" minlength="4"maxlength="4">
 			</div>
 		</div>
 		<div>
 			<label for="new_editeur">Editeur</label>
 			<div>
-				<input type="text" id="new_editeur" name="new_editeur" maxlength="300">
+				<input type="text" name="new_editeur" maxlength="300">
 			</div>
 		</div>
 		<div>
 			<label for="new_lieu_publication">Lieu de publication</label>
 			<div>
-				<input type="text" id="new_lieu_publication" name="new_lieu_publication" maxlength="300">
+				<input type="text" name="new_lieu_publication" maxlength="300">
 			</div>
 		</div>
 		<div>
 			<label for="new_nombre_pages">Nombre de pages</label>
 			<div>
-				<input type="text" id="new_nombre_pages" name="new_nombre_pages" maxlength="5">
+				<input type="text" name="new_nombre_pages" maxlength="5">
 			</div>
 		</div>
 		<div>
 			<button type="submit">Ajouter</button>
 		</div>
-	</div>
-</form>
-</section>
+	</form>
 {% endblock %}

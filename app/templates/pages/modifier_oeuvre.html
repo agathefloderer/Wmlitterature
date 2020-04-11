@@ -4,52 +4,52 @@
 {% block titre %}| Modification d'une oeuvre{%endblock%}
 
 {% block corps %}
-
-<section>
-	<h1>Modification des données d'une oeuvre</h1>
-	<h2>Pour modifier les données d'une oeuvre déjà existante, complétez le formulaire et cliquez sur "Modifier".</h2>
+	<header>
+		<h1 id="titre1">Modification des données d'une oeuvre</h1>
+		<h2 id="titre2">Pour modifier les données d'une oeuvre déjà existante, complétez le formulaire et cliquez sur "Modifier".</h2>
+	</header>
 	<form method="POST" action="{{url_for('modification_oeuvre', id_oeuvre=oeuvre.id_oeuvre)}}">
+		<div>
+			<label for="Titre">*Titre de l'oeuvre</label>
 			<div>
-				<div>
-					<label for="Titre">Titre de l'oeuvre</label>
-					<div>
-						<input type="text" id="Titre" name="Titre" maxlength="300" value="{{oeuvre.titre}}">
-					</div>
-				</div>
-				<div>
-					<label for="Date_premiere_pub">Date de la première publication</label>
-					<div>
-						<input type="text" id="Date_premiere_pub" name="Date_premiere_pub" placeholder="AAAA" maxlength="4" value="{{oeuvre.date_premiere_pub}}">
-					</div>
-				</div>
-				<div>
-					<label for="Editeur">Editeur</label>
-					<div>
-						<input type="text" id="Editeur" name="Editeur" maxlength="300" value="{{oeuvre.editeur}}">
-					</div>
-				</div>
-				<div>
-					<label for="Lieu_publication">Lieu de publication</label>
-					<div>
-						<input type="text" id="Lieu_publication" name="Lieu_publication" maxlength="300" value="{{oeuvre.lieu_publication}}">
-					</div>
-				</div>
-				<div>
-					<label for="Nombre_pages">Nombre de pages</label>
-					<div>
-						<input type="text" id="Nombre_pages" name="Nombre_pages" maxlength="5" value="{{oeuvre.nombre_pages}}">
-					</div>
-				</div>
-				<div>
-					<label for="Resume">Résumé de l'oeuvre</label>
-					<div>
-						<input type="text" id="Resume" name="Resume" value="{{oeuvre.resume}}">
-					</div>
-				</div>
-				<div>
-					<button type="submit" value="créer">Modifier</button>
-				</div>
+				<input type="text" name="Titre" maxlength="300" value="{{oeuvre.titre}}">
 			</div>
+		</div>
+		<div>
+			<label for="Date_premiere_pub">*Date de la première publication</label>
+			<div>
+				<input type="text" name="Date_premiere_pub" placeholder="AAAA" maxlength="4" value="{{oeuvre.date_premiere_pub}}">
+			</div>
+		</div>
+		<div>
+			<label for="Editeur">Editeur</label>
+			<div>
+				<input type="text" name="Editeur" maxlength="300" value="{{oeuvre.editeur}}">
+			</div>
+		</div>
+		<div>
+			<label for="Lieu_publication">Lieu de publication</label>
+			<div>
+				<input type="text" name="Lieu_publication" maxlength="300" value="{{oeuvre.lieu_publication}}">
+			</div>
+		</div>
+		<div>
+			<label for="Nombre_pages">Nombre de pages</label>
+			<div>
+				<input type="text" name="Nombre_pages" maxlength="5" value="{{oeuvre.nombre_pages}}">
+			</div>
+		</div>
+		<div>
+			<label for="Resume">Résumé de l'oeuvre</label>
+			<div>
+				<input type="text" name="Resume" value="{{oeuvre.resume}}">
+			</div>
+		</div>
+		<div>
+			<button type="submit" value="créer">Modifier</button>
+		</div>
+		<div>
+			<p>*Les champs précédés d'un astérisque sont obligatoires !</p>
+		</div>
 	</form>
-</section>
 {% endblock %}

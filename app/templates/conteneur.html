@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="fr">
     <head>
-    	<meta charset="UTF-8">
+        <meta charset="UTF-8">
         <link rel="stylesheet" href="/static/css/css.css" />
         <title>WmLitterature {% block titre %}{% endblock %}</title>
         <!-- On définit un bloc titre qui pourra être completé dans les templates enfants avec les informations spécifiques à chaque page. -->
@@ -11,17 +11,26 @@
     </head>
     <body>
         <div id="bloc_page">
-            <header>
+            <header id="header_conteneur">
                 <nav>
                     <div id="titre_principal">
                         <div id="logo">
                             <a href="{{url_for('accueil')}}"><img  src="{{ url_for('static', filename='images/logo.png')}}" height="100" width="200"/></a>
-                            <h1>WmLitterature</h1>
+                            <h1 id="h1_conteneur">WmLitterature</h1>
                         </div>
                     </div>
                     <ul>
                         <li>
                             <a href="{{url_for('accueil')}}">Accueil</a>
+                        </li>
+                        <li class="deroulant"><a>Index</a>
+                            <ul class="sous">
+                                <li><a href="{{url_for('index_romanciere')}}">Romancières</a></li>
+                                <li><a href="{{url_for('index_oeuvres')}}">Oeuvres</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="{{url_for('portrait')}}">Galerie</a>
                         </li>
                         {% if not current_user.is_authenticated %}
                         <li>
@@ -39,23 +48,15 @@
                         </li>
                         {% endif %}
                         <li>
-                            <a href="{{url_for('index_romanciere')}}">Index</a>
-                        </li>
-                        <li>
-                            <a href="{{url_for('portrait')}}">Galerie</a>
-                        </li>
-                        <li>
                             <form action="{{url_for('recherche')}}" method="GET">
                                 <input name="keyword" type="search" placeholder="Recherche rapide" aria-label="Recherche">
                                 <button type="submit">Rechercher</button>
                             </form>
                         </li>
                     </ul>
-            </nav>
-        </header>
-
-            {% block afternav %}{%endblock%}
-        <div class="container">
+                </nav>
+            </header>
+            <div class="container">
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                 <div class="row">
@@ -73,14 +74,14 @@
                 </div>
             </div>
         </div>
+        </div>
     </body>
 
 
 <!-- Footer -->
 <footer>
   <!-- Copyright -->
-  <center>
-  <div>
+  <div style="text-align:center;">
       <p>© WmLitterature - TNAH, promotion 2020</p> 
     <figure>
         <a href="http://www.chartes.psl.eu/fr/cursus/master-technologies-numeriques-appliquees-histoire"><img src="http://www.chartes.psl.eu/sites/all/themes/enc_base/images/public/logo-ecole-nationale-des-chartes-header.png" alt="" width="170"></a>
@@ -88,9 +89,7 @@
         <figcaption>En savoir plus</figcaption>
     </figure>
   </div>
-</center>
   <!-- Copyright -->
-
 </footer>
 <!-- Footer -->
 </html>

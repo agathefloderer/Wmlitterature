@@ -6,21 +6,44 @@
 {% block titre %}| Index des romancières{%endblock%}
 
 {% block corps %}
-<section>
-    <h1>Index des romancières</h1>
+    <header>
+        <h1 id="titre1">Index des romancières</h1>
+    </header>
     {% if romancieres %}
-        <h2>Il y a {{romancieres|length}} romancières enregistrées :</h2>
-            <div>
-    	       <ul>
-    	       {% for romanciere in romancieres %}
-                <li><a href="{{url_for('romanciere', id_femme=romanciere.id_femme)}}"> {% if not romanciere.prenom_auteur %}{% else %}{{romanciere.prenom_auteur}}{% endif %} {{romanciere.nom_auteur}}</a></li>
+    <h2 id="titre2">Il y a {{romancieres.total}} romancières enregistrées :</h2>
+    	<ul>
+    	   {% for romanciere in romancieres.items %}
+            <li><a href="{{url_for('romanciere', id_femme=romanciere.id_femme)}}"> {% if not romanciere.prenom_auteur %}{% else %}{{romanciere.prenom_auteur}}{% endif %} {{romanciere.nom_auteur}}</a></li>
                 {% endfor %}
-                </ul>
-            </div>
+        </ul>
+        <nav>
+            <ul>
+                {% for page in romancieres.iter_pages() %}
+                {% if page %}
+
+                    {% if page != romancieres.page %}
+                    <li>
+                        <a href="{{ url_for('index_romanciere', page=page) }}">{{page}}</a>
+                    </li>
+                    {% else %}
+                    <li>
+                        <a>{{page}} <span>(actuelle)</span></a>
+                    </li>
+                    {% endif %}
+
+            {% else %}
+                <li>
+                  <a>...</a>
+                </li>
+            {% endif %}
+
+        {% endfor %}
+      </ul>
+    </nav>
+
     {% else %}
     <div>
     	<p>La base de données est en cours de constitution.</p>
     </div>
     {% endif %}
- </section>
 {% endblock %}

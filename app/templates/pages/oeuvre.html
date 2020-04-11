@@ -5,40 +5,40 @@
 {% endblock %}
 
 {% block corps %}
-<section>
-    {% if oeuvre %}
-        <h1>{{oeuvre.titre}}</h1>
-                <div>
-                    <div>
-                        <dl>
-                            <dt>Année de la première publication</dt>{% if not oeuvre.date_premiere_pub %}<dd>Non renseignée</dd>{% else %}<dd>{{oeuvre.date_premiere_pub}}</dd>{% endif %}
-                            <dt>Editeur, maison d'édition</dt>{% if not oeuvre.editeur %}<dd>Non renseigné.e</dd>{% else %}<dd>{{oeuvre.editeur}}</dd>{% endif %}
-                            <dt>Lieu de publication</dt>{% if not oeuvre.lieu_publication %}<dd>Non renseigné</dd>{% else %}<dd>{{oeuvre.lieu_publication}}</dd>{% endif %}
-                            <dt>Nombre de pages</dt>{% if not oeuvre.nombre_pages %}<dd>Non renseigné</dd>{% else %}<dd>{{oeuvre.nombre_pages}}</dd>{% endif %}
-                        </dl>
-                    </div>
-                    <div>
-                        <h2>Résumé de l'oeuvre</h2>
-                            <div>
-                                {% if oeuvre.resume %}
-                                    <p>{{oeuvre.resume}}</p>
-                                {% else %}
-                                    <p>Aucun résumé de cette oeuvre n'a été enregistré... Souhaitez-vous remedier à la situation ? Inscrivez-vous <a href="{{url_for('inscription')}}">ici</a> pour pouvoir enrichir le site !</p>
-                                {% endif %}
-                            </div>
-                    </div>
-                    {% if current_user.is_authenticated %}
-                    <div>
-                        <p style="text-align:center">
-                            <a href="{{url_for('modification_oeuvre', id_oeuvre=oeuvre.id_oeuvre)}}">Modifier la notice</a> || <a href="{{url_for('suppression_oeuvre', id_oeuvre=oeuvre.id_oeuvre)}}">Supprimer la notice</a>
-                        </p>
-                    </div>
-                </div>
-                {% endif %}
-    {% else %}
+{% if oeuvre %}
     <div>
-        <p style="text-align:center">La notice que vous recherchez n'existe pas ou plus.</p>
+        <header>
+            <h1 id="titre1">{{oeuvre.titre}}</h1>
+        </header>
+        <dl>
+            <dt>Auteure</dt><dd>{{romanciere.prenom_auteur}} {{romanciere.nom_auteur}}</dd>
+            <dt>Année de la première publication</dt>{% if not oeuvre.date_premiere_pub %}<dd>Non renseignée</dd>{% else %}<dd>{{oeuvre.date_premiere_pub}}</dd>{% endif %}
+            <dt>Editeur, maison d'édition</dt>{% if not oeuvre.editeur %}<dd>Non renseigné.e</dd>{% else %}<dd>{{oeuvre.editeur}}</dd>{% endif %}
+            <dt>Lieu de publication</dt>{% if not oeuvre.lieu_publication %}<dd>Non renseigné</dd>{% else %}<dd>{{oeuvre.lieu_publication}}</dd>{% endif %}
+            <dt>Nombre de pages</dt>{% if not oeuvre.nombre_pages %}<dd>Non renseigné</dd>{% else %}<dd>{{oeuvre.nombre_pages}}</dd>{% endif %}
+        </dl>
     </div>
+    <div>
+        <header>
+            <h2 id="titre2">Résumé de l'oeuvre</h2>
+        </header>
+        {% if oeuvre.resume %}
+        <p>{{oeuvre.resume}}</p>
+        {% else %}
+        <p>Aucun résumé de cette oeuvre n'a été enregistré... Souhaitez-vous remedier à la situation ? Inscrivez-vous <a href="{{url_for('inscription')}}">ici</a> pour pouvoir enrichir le site !</p>
+        {% endif %}
+    </div>
+    {% if current_user.is_authenticated %}
+    <div>
+        <p style="text-align:center">
+            <a href="{{url_for('modification_oeuvre', id_oeuvre=oeuvre.id_oeuvre)}}">Modifier la notice</a> || <a href="{{url_for('suppression_oeuvre', id_oeuvre=oeuvre.id_oeuvre)}}">Supprimer la notice</a>
+        </p>
+    </div>       
     {% endif %}
-</section>
+
+{% else %}
+<div>
+    <p style="text-align:center">La notice que vous recherchez n'existe pas ou plus.</p>
+</div>
+{% endif %}
 {% endblock %}
