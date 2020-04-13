@@ -21,8 +21,8 @@ class Femme_de_lettres(db.Model):
     pseudonyme = db.Column(db.Text)
     #Jointures. 
     #Relations many to one identifiées par des clefs étrangères du côté de la relation simple.
-    oeuvres = db.relationship('Oeuvres_principales', cascade="all,delete", backref='romanciere')
-    portraits = db.relationship('Portrait', cascade="all,delete", backref='romanciere')
+    oeuvres = db.relationship('Oeuvres_principales', backref='romanciere', cascade='all, delete, delete-orphan')
+    portraits = db.relationship('Portrait', backref='romanciere', cascade='all, delete, delete-orphan')
     authorships_femme_de_lettres = db.relationship("Authorship_femme_de_lettres", back_populates='femme_de_lettres_femme_de_lettres')
 
     @staticmethod
@@ -30,7 +30,7 @@ class Femme_de_lettres(db.Model):
 
     def creer_romanciere(new_nom_naissance, new_prenom_naissance, new_nom_auteur, new_prenom_auteur, new_date_naissance, new_lieu_naissance, new_date_mort, new_lieu_mort, new_pseudonyme):
         """
-        Fonction qui permet de créer une nouvelle romancière et de l'ajouter la base de données (ajout rendu possible par un utilisateur)
+        Fonction qui permet de créer une nouvelle r mancière et de l'ajouter la base de données (ajout rendu possible par un utilisateur)
         :param new_nom_naissance: nom de famille de naissance de la romancière
         :param new_prenom_naissance: prénom de naissance de la romancière
         :param new_nom_auteur: nom d'auteur de la romancière
@@ -267,7 +267,38 @@ class Oeuvres_principales(db.Model):
         Sinon, elle renvoie True, suivi de l'objet créé (ici new_oeuvres_principales).
         """
 
-        # On ajoute une nouvelle entrée dans la table oeuvres_principales avec les champs correspondant aux paramètres du modèle.
+        #On crée une liste vide pour les erreurs
+        erreurs = []
+
+        #On vérifie que l'utilisateur complète au moins deux champs de données considérés comme essentiels
+        if not new_titre:
+            erreurs.append("le champ 'titre' est obligatoire")
+        if not new_date_premiere_pub:
+            erreurs.append("le champ 'date de la première publication' est obligatoire")
+        #Les autres données ne sont pas forcément disponibles et sont donc optionnelles.
+        
+        #Si on a au moins une erreur, retourner un message d'erreur
+        if len(erreurs) > 0:
+            return False, erreurs
+
+        #On vérifie que la longueur des caractères de la date ne dépasse pas la limite de 4 (AAAA)
+        if new_date_premiere_pub :
+            if not len(new_date_premiere_pub) == 4 :
+                erreurs.append("Les dates doivent faire 4 caractères. Format AAAA demandé.")
+            if len(erreurs) > 0:
+                return False, erreurs
+
+        #On vérifie que l'oeuvre que l'utilisateur veut ajouter n'existe pas déjà dans la base.
+        new_oeuvres_principales = Oeuvres_principales.query.filter(db.and_(Oeuvres_principales.titre == new_titre, Oeuvres_principales.date_premiere_pub == new_date_premiere_pub)).count()
+        if new_oeuvres_principales > 0:
+            erreurs.append("Cette oeuvre existe déjà dans la base de données")
+
+
+         # Si on a au moins une erreurs, on affiche un message d'erreur
+        if len(erreurs) > 0:
+            return False, erreurs
+
+        # Si on n'a pas d'erreurs, on ajoute une nouvelle entrée dans la table oeuvres_principales avec les champs correspondant aux paramètres du modèle.
         created_oeuvres_principales = Oeuvres_principales(
             titre = new_titre,
             date_premiere_pub = new_date_premiere_pub,
@@ -322,7 +353,6 @@ class Oeuvres_principales(db.Model):
         #Si on a au moins une erreur, retourner un message d'erreur
         if len(erreurs) > 0:
             return False, erreurs
-
 
         #On récupère une oeuvre dans la base grâce à son identifiant
         update_oeuvres_principales = Oeuvres_principales.query.get(id_oeuvre)
@@ -445,6 +475,34 @@ class Portrait(db.Model):
          S'il y a une erreur, la fonction renvoie False suivi d'une liste d'erreurs.
         Sinon, elle renvoie True, suivi de l'objet créé (ici un portrait).
         """
+        #On crée une liste vide pour les erreurs
+        erreurs = []
+
+        #On vérifie que l'utilisateur complète au moins un champ de données considéré comme essentiel
+        if not new_url_portrait:
+            erreurs.append("le champ 'url complet du portrait' est obligatoire")
+        #Les autres données ne sont pas forcément disponibles et sont donc optionnelles.
+        
+        #Si on a au moins une erreur, retourner un message d'erreur
+        if len(erreurs) > 0:
+            return False, erreurs
+
+        #On vérifie que la longueur des caractères de la date ne dépasse pas la limite de 4 (AAAA)
+        if new_annee_realisation :
+            if not len(new_annee_realisation) == 4 :
+                erreurs.append("Les dates doivent faire 4 caractères. Format AAAA demandé.")
+            if len(erreurs) > 0:
+                return False, erreurs
+
+        #On vérifie que l'oeuvre que l'utilisateur veut ajouter n'existe pas déjà dans la base.
+        new_portrait = Portrait.query.filter(db.and_(Portrait.url_portrait == new_url_portrait)).count()
+        if new_portrait > 0:
+            erreurs.append("Ce portrait existe déjà dans la base de données... Vous vous êtes sans doute tromper de romancière... ")
+
+
+         # Si on a au moins une erreurs, on affiche un message d'erreur
+        if len(erreurs) > 0:
+            return False, erreurs
 
         # S'il n'y a pas d'erreur, on ajoute une nouvelle entrée dans la table portrait avec les champs correspondant aux paramètres du modèle
         created_portrait = Portrait(
@@ -486,7 +544,7 @@ class Portrait(db.Model):
         Sinon, elle renvoie True, suivi de l'objet mis à jour (ici une oeuvre).
         """
         erreurs=[]
-
+        
         #On récupère une oeuvre dans la base grâce à son identifiant
         update_portrait = Portrait.query.get(id_portrait)
 

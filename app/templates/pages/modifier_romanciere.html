@@ -14,13 +14,13 @@
 		<div>
 			<label for="Nom_naissance">Nom de naissance</label>
 			<div>
-				<input type="text" name="Nom_naissance" maxlength="300" value="{{romanciere.nom_naissance}}">
+				<input type="text" name="Nom_naissance" maxlength="300" {% if romanciere.nom_naissance %} value="{{romanciere.nom_naissance}}" {% endif %}>
 			</div>
 		</div>
 		<div>
 			<label for="Prenom_naissance">Prénom de naissance</label>
 			<div>
-				<input type="text" name="Prenom_naissance" maxlength="300" value="{{romanciere.prenom_naissance}}">
+				<input type="text" name="Prenom_naissance" maxlength="300" {% if romanciere.prenom_naissance %} value="{{romanciere.prenom_naissance}}" {% endif %}>
 			</div>
 		</div>
 		<div>
@@ -38,31 +38,31 @@
 		<div>
 			<label for="Date_naissance">Date de naissance</label>
 			<div>
-				<input type="text" name="Date_naissance" placeholder="MM-JJ-AAAA" minlength="4" maxlength="10" value="{{romanciere.date_naissance}}">
+				<input type="text" name="Date_naissance" placeholder="MM-JJ-AAAA" minlength="4" maxlength="10" {% if romanciere.date_naissance %} value="{{romanciere.date_naissance}}" {% endif %}>
 			</div>
 		</div>
 		<div>
 			<label for="Lieu_naissance">Lieu de naissance</label>
 			<div>
-				<input type="text" name="Lieu_naissance" placeholder="Indiquer le nom de la ville" maxlength="300" value="{{romanciere.lieu_naissance}}">
+				<input type="text" name="Lieu_naissance" placeholder="Indiquer le nom de la ville" maxlength="300" {% if romanciere.lieu_naissance %} value="{{romanciere.lieu_naissance}} {% endif %}">
 			</div>
 		</div>
 		<div>
 			<label for="Date_mort">Date de décès</label>
 			<div>
-				<input type="text" name="Date_mort" placeholder="MM-JJ-AAAA" minlength="4" maxlength="10" value="{{romanciere.date_mort}}">
+				<input type="text" name="Date_mort" placeholder="MM-JJ-AAAA" minlength="4" maxlength="10" {% if romanciere.date_mort %} value="{{romanciere.date_mort}}" {% endif %}>
 			</div>
 		</div>
 		<div>
 			<label for="Lieu_mort">Lieu de décès</label>
 			<div>
-				<input type="text" name="Lieu_mort" placeholder="Indiquer le nom de la ville" maxlength="300" value="{{romanciere.lieu_mort}}">
+				<input type="text" name="Lieu_mort" placeholder="Indiquer le nom de la ville" maxlength="300" {% if romanciere.lieu_mort %} value="{{romanciere.lieu_mort}}" {% endif %}>
 				</div>
 		</div>
 		<div>
 			<label for="Pseudonyme">Pseudonyme</label>
 			<div>
-				<input type="text" name="Pseudonyme" maxlength="300" value="{{romanciere.pseudonyme}}">
+				<input type="text" name="Pseudonyme" maxlength="300" {% if romanciere.pseudonyme %} value="{{romanciere.pseudonyme}}" {% endif %}>
 			</div>
 		</div>
 		<div>

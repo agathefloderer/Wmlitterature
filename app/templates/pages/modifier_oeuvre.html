@@ -24,25 +24,25 @@
 		<div>
 			<label for="Editeur">Editeur</label>
 			<div>
-				<input type="text" name="Editeur" maxlength="300" value="{{oeuvre.editeur}}">
+				<input type="text" name="Editeur" maxlength="300" {% if oeuvre.editeur %} value="{{oeuvre.editeur}}" {% endif %}>
 			</div>
 		</div>
 		<div>
 			<label for="Lieu_publication">Lieu de publication</label>
 			<div>
-				<input type="text" name="Lieu_publication" maxlength="300" value="{{oeuvre.lieu_publication}}">
+				<input type="text" name="Lieu_publication" maxlength="300" {% if oeuvre.lieu_publication %} value="{{oeuvre.lieu_publication}}" {% endif %}>
 			</div>
 		</div>
 		<div>
 			<label for="Nombre_pages">Nombre de pages</label>
 			<div>
-				<input type="text" name="Nombre_pages" maxlength="5" value="{{oeuvre.nombre_pages}}">
+				<input type="text" name="Nombre_pages" maxlength="5" {% if oeuvre.nombre_pages %} value="{{oeuvre.nombre_pages}} {% endif %}">
 			</div>
 		</div>
 		<div>
 			<label for="Resume">Résumé de l'oeuvre</label>
 			<div>
-				<input type="text" name="Resume" value="{{oeuvre.resume}}">
+				<input type="text" name="Resume" {% if oeuvre.resume %} value="{{oeuvre.resume}}" {% endif %}>
 			</div>
 		</div>
 		<div>

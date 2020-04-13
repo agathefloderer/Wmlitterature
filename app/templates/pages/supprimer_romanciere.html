@@ -4,7 +4,7 @@
 
 {% block corps %}
 <header>
-	<h3>Suppression de la romancière {{romanciere.prenom_auteur}} {{romanciere.nom_auteur}}</h3>
+	<h3 id="titre3">Suppression de la romancière {{romanciere.prenom_auteur}} {{romanciere.nom_auteur}}</h3>
 </header>
 <form method="POST" action="{{url_for('suppression_romanciere', identifier=romanciere.id_femme)}}" style="text-align:center">
 	<div>

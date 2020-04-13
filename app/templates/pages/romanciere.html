@@ -60,12 +60,11 @@
 </div>
 {% endif %}
 
-
-{% if oeuvres %}
 <div>
     <header>
         <h2 id="titre2">Oeuvres principales de la romancière :</h2>
     </header>
+    {% if oeuvres %}
     {%for oeuvre in oeuvres %}
         <dl>
             <dt>
@@ -74,6 +73,10 @@
             <dd><a href="{{url_for('oeuvre', id_oeuvre=oeuvre.id_oeuvre)}}">En savoir plus</a></dd>
         </dl>
     {% endfor %}
+</div>
+{% else %}
+<div>
+    <p>Aucune oeuvre n'a été ajoutée pour cette romancière.... </p></br>
 </div>
 {% endif %}
 

@@ -282,7 +282,7 @@ def creation_oeuvre(id_femme):
             return redirect("/index_romanciere")
         else:
             flash("L'ajout d'une nouvelle oeuvre a échoué pour les raisons suivantes : " + ", ".join(donnees), "danger")
-            return render_template("pages/creer_oeuvre.html")
+            return render_template("pages/creer_oeuvre.html", romanciere=femme_de_lettres)
     else:
         return render_template("pages/creer_oeuvre.html", nom="WmLitterature", romanciere=femme_de_lettres)
 
@@ -376,7 +376,7 @@ def creation_portrait(id_femme):
             return redirect("/index_romanciere")
         else:
             flash("L'ajout du portrait de la romancière a échoué pour les raisons suivantes : " + ", ".join(donnees), "danger")
-            return render_template("pages/creer_portrait.html")
+            return render_template("pages/creer_oeuvre.html", romanciere=femme_de_lettres)
     else:
         return render_template("pages/creer_portrait.html", nom="WmLitterature", romanciere=femme_de_lettres)
 

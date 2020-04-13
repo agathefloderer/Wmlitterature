@@ -14,7 +14,7 @@
 	</div>
 	<form method="POST" action="{{url_for('creation_portrait', id_femme=romanciere.id_femme)}}">
 			<div>
-				<label for="new_url_portrait">Url complet du portrait</label>
+				<label for="new_url_portrait">*Url complet du portrait</label>
 				<div>
 					<input type="text" name="new_url_portrait" placeholder="Ex: https://upload.wikimedia.org/wikipedia/commons/f/fb/Claire_de_Duras.jpg">
 				</div>
@@ -51,6 +51,9 @@
 		</div>
 		<div>
 			<button type="submit" value="créer">Ajouter</button>
+		</div>
+		<div>
+			<p>*Le champ précédé d'un astérisque est obligatoire !</p>
 		</div>
 	</form>
 {% endblock %}

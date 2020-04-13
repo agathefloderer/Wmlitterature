@@ -14,13 +14,13 @@
 	</div>
 	<form method="POST" action="{{url_for('creation_oeuvre', id_femme=romanciere.id_femme)}}">
 		<div>
-			<label for="new_titre">Titre de l'oeuvre</label>
+			<label for="new_titre">*Titre de l'oeuvre</label>
 			<div>
 				<input type="text" name="new_titre" maxlength="300">
 			</div>
 			</div>
 		<div>
-			<label for="new_date_premiere_pub">Date de la première publication</label>
+			<label for="new_date_premiere_pub">*Date de la première publication</label>
 			<div>
 				<input type="text" name="new_date_premiere_pub" placeholder="AAAA" minlength="4"maxlength="4">
 			</div>
@@ -45,6 +45,9 @@
 		</div>
 		<div>
 			<button type="submit">Ajouter</button>
+		</div>
+		<div>
+			<p>*Les champs précédés d'un astérisque sont obligatoires !</p>
 		</div>
 	</form>
 {% endblock %}

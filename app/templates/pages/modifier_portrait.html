@@ -11,7 +11,7 @@
 	</header>
 	<form method="POST" action="{{url_for('modification_portrait', id_portrait=portrait.id_portrait)}}">
 		<div>
-			<label for="Url_portrait">Url du portrait</label>
+			<label for="Url_portrait">Url complet du portrait</label>
 			<div>
 				<input type="text" name="Titre" maxlength="300" value="{{portrait.url_portrait}}">
 			</div>
@@ -19,31 +19,31 @@
 		<div>
 			<label for="Nom_createur">Nom du réalisateur du portrait</label>
 			<div>
-				<input type="text" name="Nom_createur" value="{{portrait.nom_createur}}">
+				<input type="text" name="Nom_createur" {% if portrait.nom_createur %} value="{{portrait.nom_createur}}" {% endif %}>
 			</div>
 		</div>
 		<div>
 			<label for="Prenom_createur">Prénom du réalisateur du portrait</label>
 			<div>
-				<input type="text" name="Prenom_createur" maxlength="300" value="{{portrait.prenom_createur}}">
+				<input type="text" name="Prenom_createur" maxlength="300" {% if portrait.prenom_createur %} value="{{portrait.prenom_createur}}" {% endif %}>
 			</div>
 		</div>
 		<div>
 			<label for="Annee_realisation">Année de réalisation</label>
 			<div>
-				<input type="text" name="Annee_realisation" maxlength="4" value="{{portrait.annee_realisation}}" placeholder="AAAA">
+				<input type="text" name="Annee_realisation" maxlength="4" {% if portrait.annee_realisation %} value="{{portrait.annee_realisation}}" {% endif %} placeholder="AAAA">
 			</div>
 		</div>
 		<div>
 			<label for="Techniques">Techniques utilisées</label>
 			<div>
-				<input type="text" name="Techniques" maxlength="300" value="{{portrait.techniques}}">
+				<input type="text" name="Techniques" maxlength="300" {% if portrait.techniques %} value="{{portrait.techniques}}" {% endif %}>
 			</div>
 		</div>
 		<div>
 			<label for="Lieu_conservation">Lieu/Institution de conservation</label>
 			<div>
-				<input type="text" name="Lieu_conservation" maxlength="300" value="{{portrait.lieu_conservation}}">
+				<input type="text" name="Lieu_conservation" maxlength="300" {% if portrait.lieu_conservation %} value="{{portrait.lieu_conservation}}" {% endif %}>
 			</div>
 		</div>
 		<div>
