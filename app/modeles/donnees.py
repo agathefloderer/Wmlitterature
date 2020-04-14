@@ -23,6 +23,7 @@ class Femme_de_lettres(db.Model):
     #Relations many to one identifiées par des clefs étrangères du côté de la relation simple.
     oeuvres = db.relationship('Oeuvres_principales', backref='romanciere', cascade='all, delete, delete-orphan')
     portraits = db.relationship('Portrait', backref='romanciere', cascade='all, delete, delete-orphan')
+    #Grâce aux suppressions en cascade, lorsqu'une romancière sera supprimée, ses objets enfants (ici les oeuvres et le portrait) le seront également.
     authorships_femme_de_lettres = db.relationship("Authorship_femme_de_lettres", back_populates='femme_de_lettres_femme_de_lettres')
 
     @staticmethod
@@ -192,44 +193,24 @@ class Femme_de_lettres(db.Model):
 
 
     @staticmethod
-    def supprimer_romanciere(Id_femme, Nom_naissance, Prenom_naissance, Nom_auteur, Prenom_auteur, Date_naissance, Lieu_naissance, Date_mort, Lieu_mort, Pseudonyme):
+    def supprimer_romanciere(Id_femme):
         """
         Fonction qui permet de supprimer la notice d'une romancière.
         :param Id_femme: identifiant numérique de la romancière
-        :param Nom_naissance: nom de famille de naissance de la romanciere
-        :param Prenom_naissance: prenom de naissance de la romanciere
-        :param Nom_auteur: nom d'auteur de la romancière
-        :param Prenom_auteur: prénom d'auteur de la romancière 
-        :param Date_naissance: date de naissance de la romancière
-        :param Lieu_naissance: lieu de naissance (ville ou village) de la romancière
-        :param Date_mort: date de mort de la romancière 
-        :param Lieu_mort: lieu de mort (ville ou village) de la romancière 
-        :param Pseudonyme: pseudonyme de la romancière 
         :type Id_femme: integer
-        :type Nom_naissance, Prenom_naissance, Nom_auteur, Prenom_auteur, Date_naissance, Lieu_naissance, Date_mort, Lieu_mort, Pseudonyme: string
         :returns: booleens
         """
 
         #On récupère une romancière dans la base grâce à son identifiant
         delete_femme_de_lettres = Femme_de_lettres.query.get(Id_femme)
 
-        delete_femme_de_lettres.id_femme = Id_femme
-        delete_femme_de_lettres.nom_naissance=Nom_naissance
-        delete_femme_de_lettres.prenom_naissance=Prenom_naissance
-        delete_femme_de_lettres.nom_auteur=Nom_auteur
-        delete_femme_de_lettres.prenom_auteur=Prenom_auteur
-        delete_femme_de_lettres.date_naissance=Date_naissance
-        delete_femme_de_lettres.lieu_naissance=Lieu_naissance
-        delete_femme_de_lettres.date_mort=Date_mort
-        delete_femme_de_lettres.lieu_mort=Lieu_mort
-        delete_femme_de_lettres.pseudonyme=Pseudonyme
-
+    
         #On ajoute un bloc "try-except" afin de "gérer" les erreurs
         try:
             #On supprime la romancière de la base de données
             db.session.delete(delete_femme_de_lettres)
             db.session.commit()
-            return True, delete_femme_de_lettres
+            return True
 
         except Exception as erreur:
             return False, [str(erreur)]
@@ -544,7 +525,7 @@ class Portrait(db.Model):
         Sinon, elle renvoie True, suivi de l'objet mis à jour (ici une oeuvre).
         """
         erreurs=[]
-        
+      
         #On récupère une oeuvre dans la base grâce à son identifiant
         update_portrait = Portrait.query.get(id_portrait)
 

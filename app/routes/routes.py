@@ -231,27 +231,20 @@ def suppression_romanciere(identifier):
     :param identifier : identifiant de la romancière
     """
     femme_a_supprimer = Femme_de_lettres.query.get(identifier)
+    oeuvres = femme_a_supprimer.oeuvres
+    portraits = femme_a_supprimer.portraits
 
     if request.method == "POST":
-        statut, donnees = Femme_de_lettres.supprimer_romanciere(
-            Id_femme=identifier,
-            Nom_naissance=request.args.get("Nom_naissance", None),
-            Prenom_naissance=request.args.get("Prenom_naissance", None),
-            Nom_auteur=request.args.get("Nom_auteur", None),
-            Prenom_auteur=request.args.get("Prenom_auteur", None),
-            Lieu_naissance=request.args.get("Lieu_naissance", None),
-            Date_naissance=request.args.get("Date_naissance", None),
-            Lieu_mort=request.args.get("Lieu_mort", None),
-            Date_mort=request.args.get("Date_mort", None),
-            Pseudonyme=request.args.get("Pseudonyme", None)
+        statut = Femme_de_lettres.supprimer_romanciere(
+            Id_femme=identifier
         )
 
         if statut is True:
             flash("Suppression réussie !", "success")
-            return redirect("/accueil")
+            return redirect("/index_romanciere")
         else:
-            flash("Les erreurs suivantes ont été rencontrées : " + ", ".join(donnees), "danger")
-            return redirect("pages/supprimer_romanciere.html")
+            flash("Echec de la suppression...", "danger")
+            return redirect("/index_romanciere")
     else:
         return render_template("pages/supprimer_romanciere.html", nom="WmLitterature", romanciere=femme_a_supprimer)
 
