@@ -524,7 +524,17 @@ class Portrait(db.Model):
          S'il y a une erreur, la fonction renvoie False suivi d'une liste d'erreurs.
         Sinon, elle renvoie True, suivi de l'objet mis à jour (ici une oeuvre).
         """
+        #On crée une liste vide pour les erreurs
         erreurs=[]
+
+        #On vérifie que l'utilisateur complète au moins un champ de données considéré comme essentiel
+        if not Url_portrait:
+            erreurs.append("le champ 'Url complet du portrait' est obligatoire")
+        #Les autres données ne sont pas forcément disponibles et sont donc optionnelles.
+        
+        #Si on a au moins une erreur, retourner un message d'erreur
+        if len(erreurs) > 0:
+            return False, erreurs
       
         #On récupère une oeuvre dans la base grâce à son identifiant
         update_portrait = Portrait.query.get(id_portrait)

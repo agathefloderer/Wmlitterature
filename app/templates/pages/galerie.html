@@ -8,7 +8,7 @@
         {% for portrait in portraits %}
             {% if portrait.url_portrait %}
             <div class="gallery">
-                <a target="_blank" href="{{portrait.url_portrait}}">
+                <a target="_blank" href="{{url_for('portrait_individuel', id_portrait=portrait.id_portrait)}}">
                     <img src="{{portrait.url_portrait}}">
                 </a>
                 <div>
