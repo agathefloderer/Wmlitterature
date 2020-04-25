@@ -3,7 +3,7 @@
 
 body
 {
-    font-family: 'Trebuchet MS', Arial, sans-serif;
+    font-family: Arial, sans-serif;
     background-color: #F0F8FF;
 }
 
@@ -13,12 +13,6 @@ body
     margin: auto;
 }
 
-section h1 nav a
-{
-    font-family: Dayrom, serif;
-    font-weight: normal;
-}
-
 .container {
   width: 100%;
   padding-right: 15px;
@@ -26,32 +20,6 @@ section h1 nav a
   margin-right: auto;
   margin-left: auto;
 }
-
-/* Les liens */
-a {
-text-decoration: none;
-color: #696969;
-}
-
-a:hover{
-  color: navy;
-}
-
-dl {
-  margin-top: 0;
-  margin-bottom: 1rem;
-  font-weight: bold;
-  color: teal;
-}
-
-dd {
-  margin-bottom: .5rem;
-  margin-left: 0;
-  font-weight: normal;
-  color: black;
-}
-
-/* Conteneur.html */
 
 #header_conteneur
 {
@@ -83,17 +51,20 @@ dd {
 
 #h1_conteneur
 {
-    font-family: 'BallparkWeiner', serif;
+    font-family: serif;
     font-size: 3em;
     font-weight: normal;
     margin: 0 0 0 10px;
 }
 
+
 /* Corps */
+
+  /* Les titres */
 
 #titre1
 {
-    font-family: 'BallparkWeiner', serif;
+    font-family: serif;
     font-size: 2em;
     color:#000080;
     text-align: center;
@@ -102,17 +73,42 @@ dd {
 
 #titre2
 {
-  font-family: 'Dayrom', serif;
+  font-family: serif;
     font-size: 1em;
 }
 
 #titre3
 {
-	font-family: 'BallparkWeiner', serif;
+  font-family: serif;
     font-size: 1em;
     text-align: center;
 }
 
+  /* Les liens */
+
+a {
+text-decoration: none;
+color: #696969;
+}
+
+a:hover{
+  color: navy;
+}
+
+  /* Les listes */
+dl {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  color: teal;
+}
+
+dd {
+  margin-bottom: .5rem;
+  margin-left: 0;
+  font-weight: normal;
+  color: black;
+}
 
 /* Navigation*/
 
@@ -158,17 +154,6 @@ nav > ul li:hover .sous{
 .deroulant > a::after{
   content:"▼";
   font-size: 12px;
-}
-
-.sous li{
-  float: none;
-  width: 100%;
-  text-align: left;
-}
-
-.sous a{
-  padding: 10 px;
-  border-bottom: none;
 }
 
 .sous a:hover{

@@ -21,6 +21,8 @@ class User(UserMixin, db.Model):
     user_email = db.Column(db.Text, nullable=False)
     user_password = db.Column(db.String(100), nullable=False)
     #Jointure
+    #Les relations many to one sont identifiées par des clefs étrangères du côté de la relation simple.
+    #db.relationship() permet de construire des relations directes entre les objets et de naviguer entre eux. Cette fonction, contrairement à db.Column(), n'intervient pas sur la structure MySQL mais elle permet simplement de lier les classes.
     author_femme_de_lettres = db.relationship("Authorship_femme_de_lettres", back_populates="user_femme_de_lettres")
     author_oeuvres_principales = db.relationship("Authorship_oeuvres_principales", back_populates="user_oeuvres_principales")
     author_portrait = db.relationship("Authorship_portrait", back_populates="user_portrait")
@@ -35,12 +37,12 @@ class User(UserMixin, db.Model):
         return (self.user_id)
 
     @staticmethod
-    #@staticmethod permet d'intérafur avec une classe pour un objet qui n'existe pas encore.
+    #@staticmethod permet d'intéragir avec une classe pour un objet qui n'existe pas encore.
     def identification(login, motdepasse):
-        """ Identifie un utilisateur. Si cela fonctionne, renvoie les données de l'utilisateur.
+        """ Identifie un-e utilisateur-rice. Si cela fonctionne, renvoie les données de l'utilisateur.
 
-        :param login: Login de l'utilisateur
-        :param motdepasse: Mot de passe envoyé par l'utilisateur
+        :param login: Login de l'utilisateur-rice
+        :param motdepasse: Mot de passe envoyé par l'utilisateur-rice
         :returns: Si réussite, données de l'utilisateur. Sinon None
         :rtype: User or None
         """

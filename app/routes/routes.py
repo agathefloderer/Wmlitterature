@@ -30,16 +30,20 @@ from app.constantes import resultats_par_page
 
 
 @app.route("/")
-# Le décorateur app.route crée une associaton entre l'URL donnée comme argument et la fonction. Comme nous sommes sur la page daccueil, on ecrit l'URL("/")
+# Le décorateur app.route crée une associaton entre l'URL donnée comme argument et la fonction. Comme nous sommes sur la page d'accueil, on écrit l'URL("/")
 def accueil():
-    """Route permettant l'affichage d'une page d'accueil
+    """
+    Route permettant l'affichage d'une page d'accueil
+    :return : affichage du template accueil.html
     """
     return render_template("pages/accueil.html", nom="WmLitterature")
     #La fonction render_template prend en premier argument le chemin du template (à partir du sous-dossier du template), puis les arguments nommés. Ces arguments sont ensuite utilisés comme des variables dans les templates.
 
 @app.route("/index_romanciere")
 def index_romanciere() :
-    """Route permettant l'affichage de l'index des romancières enregistrées
+    """
+    Route permettant l'affichage de l'index des romancières enregistrées
+    :return : affichage du template index_romanciere.html
     """
     titre="index_romanciere"
 
@@ -65,15 +69,19 @@ def index_romanciere() :
 def romanciere(id_femme):
     """Route permettant l'affichage des données concernant une romancière
     :param id_femme : identifiant numérique de la romancière
+    :return : affichage du template romanciere.html
     """
     unique_femme = Femme_de_lettres.query.get(id_femme)
+    #On fait des jointures pour pouvoir afficher sur la page des romancières des données provenant des Oeuvres_principales et Portrait
     oeuvres = unique_femme.oeuvres
     portraits = unique_femme.portraits
     return render_template("pages/romanciere.html", nom="WmLitterature", romanciere=unique_femme, oeuvres=oeuvres, portraits=portraits)
 
 @app.route("/index_oeuvres")
 def index_oeuvres() :
-    """Route permettant l'affichage de l'index des oeuvres enregistrés
+    """
+    Route permettant l'affichage de l'index des oeuvres enregistrés
+    :return : affichage du template index_oeuvres.html
     """
     titre="index_oeuvres"
 
@@ -99,14 +107,18 @@ def oeuvre(id_oeuvre):
     """
     Route permettant d'afficher les données d'une oeuvre
     :param id_oeuvre : idenfiant numérique de la romancière
+    :return : affichage du template oeuvre.html
     """
     unique_oeuvre = Oeuvres_principales.query.get(id_oeuvre)
+    #On crée une jointure pour pouvoir afficher sur les pages concernant des oeuvres le nom des romancières.
     romanciere = unique_oeuvre.romanciere
     return render_template("pages/oeuvre.html", nom="WmLitterature", oeuvre=unique_oeuvre, romanciere=romanciere)
 
 @app.route("/galerie")
 def portrait():
-    """Route permettant l'affichage de la galerie de portraits des romancières
+    """
+    Route permettant l'affichage de la galerie de portraits des romancières
+    :return : affichage du template galerie.html
     """
     portraits = Portrait.query.all()
     return render_template("pages/galerie.html", nom="WmLitterature", portraits=portraits)
@@ -116,8 +128,10 @@ def portrait_individuel(id_portrait):
     """
     Route permettant d'afficher les données d'un portrait
     :param id_portrait : idenfiant numérique de la romancière
+    :return : affichage du template portrait.html
     """
     unique_portrait = Portrait.query.get(id_portrait)
+    #On crée une jointure pour pouvoir afficher sur les pages concernant les portraits le nom des romancières.
     romanciere = unique_portrait.romanciere
     return render_template("pages/portrait.html", nom="WmLitterature", portrait=unique_portrait, romanciere=romanciere)
 
@@ -126,6 +140,7 @@ def portrait_individuel(id_portrait):
 def recherche():
     """
     Route permettant d'effectuer de la recherche plein-texte
+    :return : affichage du template recherche.html
     """
     motclef = request.args.get("keyword", None)
     page = request.args.get("page", 1)
@@ -140,7 +155,7 @@ def recherche():
 
     titre = "Recherche"
     if motclef:
-    #Si on un mot-clef, on requête la table femme_de_lettres de notre base de données pour vérifier s'il y a des correspondances entre le mot entré par l'utilisateur et les données de notre table
+    #Si on un mot-clef, on requête la table femme_de_lettres de notre base de données pour vérifier s'il y a des correspondances entre le mot entré par l'utilisateur-rice et les données de notre table
         resultats = Femme_de_lettres.query.filter(
             or_(
                 Femme_de_lettres.nom_naissance.like("%{}%".format(motclef)),
@@ -163,9 +178,13 @@ def recherche():
 @app.route("/creer_romanciere", methods=["GET", "POST"])
 @login_required
 def creation_romanciere():
-    """ Route permettant a l'utilisateur de créer une notice romancière """
+    """ 
+    Route permettant a l'utilisateur de créer une notice romancière 
+    :return : affichage du template creer_romanciere.html ou redirection
+    """
     femme_de_lettres = Femme_de_lettres.query.all()
     if request.method == "POST":
+        #On utilise la fonction creer_romanciere qu'on a crée dans le fichier donnees.py
         statut, donnees = Femme_de_lettres.creer_romanciere(
         new_nom_naissance = request.form.get("new_nom_naissance", None),
         new_prenom_naissance = request.form.get("new_prenom_naissance", None),
@@ -179,10 +198,10 @@ def creation_romanciere():
         )
 
         if statut is True:
-            flash("Création d'une nouvelle romanciere réussie !", "success")
-            return redirect("/creer_romanciere")
+            flash("Création d'une nouvelle romanciere réussie !")
+            return redirect("/index_romanciere")
         else:
-            flash("La création d'une nouvelle romanciere a échoué pour les raisons suivantes : " + ", ".join(donnees), "danger")
+            flash("La création d'une nouvelle romanciere a échoué pour les raisons suivantes : " + ", ".join(donnees))
             return render_template("pages/creer_romanciere.html")
     else:
         return render_template("pages/creer_romanciere.html", nom="WmLitterature")
@@ -194,8 +213,9 @@ def modification_romanciere(identifier):
     """
     Route gérant la modification d'une romancière
     :param identifier: identifiant de la romancière
+    :return : affichage du template modifier_romanciere.html ou redirection
     """
-    # On renvoie sur la page html les éléments de l'objet site correspondant à l'identifiant de la route
+    # On renvoie sur la page html les éléments de l'objet correspondant à l'identifiant de la route
     if request.method == "GET":
         femme_a_modifier = Femme_de_lettres.query.get(identifier)
         return render_template("pages/modifier_romanciere.html", romanciere=femme_a_modifier)
@@ -216,10 +236,10 @@ def modification_romanciere(identifier):
         )
 
         if statut is True:
-            flash("Modification réussie !", "success")
-            return render_template ("pages/accueil.html")
+            flash("Modification réussie !")
+            return redirect ("/index_romanciere")
         else:
-            flash("Les erreurs suivantes ont été rencontrées : " + ",".join(donnees), "danger")
+            flash("Les erreurs suivantes ont été rencontrées : " + ",".join(donnees))
             femme_a_modifier = Femme_de_lettres.query.get(identifier)
             return render_template("pages/modifier_romanciere.html", nom="WmLitterature", romanciere=femme_a_modifier)
 
@@ -229,8 +249,10 @@ def suppression_romanciere(identifier):
     """ 
     Route pour supprimer une romancière dans la base
     :param identifier : identifiant de la romancière
+    :return : affichage du template supprimer_romanciere.html ou redirection
     """
     femme_a_supprimer = Femme_de_lettres.query.get(identifier)
+    #Afin de pouvoir appliquer la suppresion en cascade (définie dans donnees.py), on fait ici des jointures.
     oeuvres = femme_a_supprimer.oeuvres
     portraits = femme_a_supprimer.portraits
 
@@ -255,6 +277,7 @@ def creation_oeuvre(id_femme):
     """ 
     Route permettant a l'utilisateur de créer une notice oeuvre 
     :param id_femme : identifiant de la romancière
+    :return : affichage du template creer_oeuvre.html ou redirection
     """
     
     femme_de_lettres = Femme_de_lettres.query.get(id_femme)
@@ -279,22 +302,23 @@ def creation_oeuvre(id_femme):
     else:
         return render_template("pages/creer_oeuvre.html", nom="WmLitterature", romanciere=femme_de_lettres)
 
-@app.route("/modifier_oeuvre/<int:id_oeuvre>", methods=["POST", "GET"])
+@app.route("/modifier_oeuvre/<int:identifier>", methods=["POST", "GET"])
 @login_required
-def modification_oeuvre(id_oeuvre):
+def modification_oeuvre(identifier):
     """
     Route gérant la modification d'une oeuvre
     :param id_oeuvre: identifiant de l'oeuvre
+    :return : affichage du template modifier_romanciere.html ou redirection
     """
     # On renvoie sur la page html les éléments de l'objet oeuvre correspondant à l'identifiant de la route
     if request.method == "GET":
-        oeuvre_a_modifier = Oeuvres_principales.query.get(id_oeuvre)
+        oeuvre_a_modifier = Oeuvres_principales.query.get(identifier)
         return render_template("pages/modifier_oeuvre.html", oeuvre=oeuvre_a_modifier)
 
     # on récupère les données du formulaire modifié
     else:
         statut, donnees= Oeuvres_principales.modifier_oeuvres_principales(
-            id_oeuvre=id_oeuvre,
+            Id_oeuvre=identifier,
             Titre=request.form.get("Titre", None),
             Date_premiere_pub=request.form.get("Date_premiere_pub", None),
             Editeur=request.form.get("Editeur", None),
@@ -304,43 +328,36 @@ def modification_oeuvre(id_oeuvre):
         )
 
         if statut is True:
-            flash("Modification réussie !", "success")
-            return render_template ("pages/accueil.html")
+            flash("Modification réussie !")
+            return redirect ("/index_oeuvres")
         else:
-            flash("Les erreurs suivantes ont été rencontrées : " + ",".join(donnees), "danger")
-            oeuvre_a_modifier = Oeuvres_principales.query.get(id_oeuvre)
+            flash("Les erreurs suivantes ont été rencontrées : " + ",".join(donnees))
+            oeuvre_a_modifier = Oeuvres_principales.query.get(identifier)
             return render_template("pages/modifier_oeuvre.html", nom="WmLitterature", oeuvre=oeuvre_a_modifier)
 
-
-@app.route("/supprimer_oeuvre/<int:id_oeuvre>", methods=["POST", "GET"])
+@app.route("/supprimer_oeuvre/<int:identifier>", methods=["POST", "GET"])
 @login_required
-def suppression_oeuvre(id_oeuvre):
+def suppression_oeuvre(identifier):
     """ 
-    Route pour supprimer une oeuvre dans la base
-    :param identifier : identifiant de l'oeuvre
+    Route pour supprimer une romancière dans la base
+    :param identifier : identifiant de la romancière
+    :return : affichage du template supprimer_romanciere.html ou redirection
     """
-    oeuvre_a_supprimer = Oeuvres_principales.query.get(id_oeuvre)
+    oeuvre_a_supprimer = Oeuvres_principales.query.get(identifier)
 
     if request.method == "POST":
-        statut, donnees = Oeuvres_principales.supprimer_oeuvres_principales(
-            id_oeuvre=id_oeuvre,
-            Titre=request.args.get("Titre", None),
-            Date_premiere_pub=request.args.get("Date_premiere_pub", None),
-            Editeur=request.args.get("Editeur", None),
-            Lieu_publication=request.args.get("Lieu_publication", None),
-            Nombre_pages=request.args.get("Nombre_pages", None),
-            Resume=request.args.get("Resume", None)
+        statut = Oeuvres_principales.supprimer_oeuvres_principales(
+            Id_oeuvre=identifier
         )
 
         if statut is True:
-            flash("Suppression réussie !", "success")
-            return redirect("/index_romanciere")
+            flash("Suppression réussie !")
+            return redirect("/index_oeuvres")
         else:
-            flash("Les erreurs suivantes ont été rencontrées : " + ", ".join(donnees), "danger")
-            return redirect("pages/supprimer_oeuvre.html")
+            flash("Echec de la suppression...")
+            return redirect("/index_oeuvres")
     else:
         return render_template("pages/supprimer_oeuvre.html", nom="WmLitterature", oeuvre=oeuvre_a_supprimer)
-
 
 
 @app.route("/romanciere/<int:id_femme>/creer_portrait", methods=["GET", "POST"])
@@ -349,6 +366,7 @@ def creation_portrait(id_femme):
     """
     Route permettant a l'utilisateur de créer un portrait 
     :param id_femme : identifiant de la romancière
+    :return : affichage du template creer_portrait.html ou redirection
     """
     
     femme_de_lettres = Femme_de_lettres.query.get(id_femme)
@@ -361,6 +379,7 @@ def creation_portrait(id_femme):
         new_annee_realisation = request.form.get("new_annee_realisation", None),
         new_techniques = request.form.get("new_techniques", None), 
         new_lieu_conservation = request.form.get("new_lieu_conservation", None),
+        new_provenance_image = request.form.get("new_provenance_image", None),
         id_femme = id_femme
         )
 
@@ -369,71 +388,66 @@ def creation_portrait(id_femme):
             return redirect("/index_romanciere")
         else:
             flash("L'ajout du portrait de la romancière a échoué pour les raisons suivantes : " + ", ".join(donnees), "danger")
-            return render_template("pages/creer_oeuvre.html", romanciere=femme_de_lettres)
+            return render_template("pages/creer_portrait.html", romanciere=femme_de_lettres)
     else:
         return render_template("pages/creer_portrait.html", nom="WmLitterature", romanciere=femme_de_lettres)
 
-@app.route("/modifier_portrait/<int:id_portrait>", methods=["POST", "GET"])
+@app.route("/modifier_portrait/<int:identifier>", methods=["POST", "GET"])
 @login_required
-def modification_portrait(id_portrait):
+def modification_portrait(identifier):
     """
     Route gérant la modification d'un portrait
     :param id_oeuvre: identifiant numérique du protrait
+    :return : affichage du template modifier_romanciere.html ou redirection
     """
     # On renvoie sur la page html les éléments de l'objet portrait correspondant à l'identifiant de la route
     if request.method == "GET":
-        portrait_a_modifier = Portrait.query.get(id_portrait)
+        portrait_a_modifier = Portrait.query.get(identifier)
         return render_template("pages/modifier_portrait.html", portrait=portrait_a_modifier)
 
     # on récupère les données du formulaire modifié
     else:
         statut, donnees= Portrait.modifier_portrait(
-            id_portrait=id_portrait,
+            Id_portrait=identifier,
             Url_portrait=request.form.get("Url_portrait", None),
             Nom_createur=request.form.get("Nom_createur", None),
             Prenom_createur=request.form.get("Prenom_createur", None),
             Annee_realisation=request.form.get("Annee_realisation", None),
             Techniques=request.form.get("Techniques", None),
-            Lieu_conservation=request.form.get("Lieu_conservation", None)
+            Lieu_conservation=request.form.get("Lieu_conservation", None),
+            Provenance_image=request.form.get("Provenance_image", None)
         )
 
         if statut is True:
-            flash("Modification réussie !", "success")
-            return render_template ("pages/accueil.html")
+            flash("Modification réussie !")
+            return redirect ("/galerie")
         else:
-            flash("Les erreurs suivantes ont été rencontrées : " + ",".join(donnees), "danger")
-            portrait_a_modifier = Portrait.query.get(id_portrait)
+            flash("Les erreurs suivantes ont été rencontrées : " + ",".join(donnees))
+            portrait_a_modifier = Portrait.query.get(identifier)
             return render_template("pages/modifier_portrait.html", nom="WmLitterature", portrait=portrait_a_modifier)
 
-@app.route("/supprimer_portrait/<int:id_portrait>", methods=["POST", "GET"])
+@app.route("/supprimer_portrait/<int:identifier>", methods=["POST", "GET"])
 @login_required
-def suppression_portrait(id_portrait):
+def suppression_portrait(identifier):
     """ 
-    Route pour supprimer une portrait dans la base
-    :param identifier : identifiant du portrait
+    Route pour supprimer une romancière dans la base
+    :param identifier : identifiant de la romancière
     """
-    portrait_a_supprimer = Portrait.query.get(id_portrait)
+    portrait_a_supprimer = Portrait.query.get(identifier)
 
     if request.method == "POST":
-        statut, donnees = Portrait.supprimer_portrait(
-            id_portrait=id_portrait,
-            Url_portrait=request.args.get("Url_portrait", None),
-            Nom_createur=request.args.get("Nom_createur", None),
-            Prenom_createur=request.args.get("Prenom_createur", None),
-            Annee_realisation=request.args.get("Annee_realisation", None),
-            Lieu_conservation=request.args.get("Lieu_conservation", None)
+        statut = Portrait.supprimer_portrait(
+            Id_portrait=identifier
         )
 
-
         if statut is True:
-            flash("Suppression réussie !", "success")
-            return redirect("/index_romanciere")
+            flash("Suppression réussie !")
+            return redirect("/galerie")
         else:
-            flash("Les erreurs suivantes ont été rencontrées : " + ", ".join(donnees), "danger")
-            return redirect("pages/supprimer_portrait.html")
+            flash("Echec de la suppression...")
+            return redirect("/galerie")
     else:
         return render_template("pages/supprimer_portrait.html", nom="WmLitterature", portrait=portrait_a_supprimer)
-
 
 
 
@@ -441,9 +455,11 @@ def suppression_portrait(id_portrait):
 
 @app.route("/register", methods=["GET", "POST"])
 def inscription():
-    """ Route gérant les inscriptions
     """
-    # Si on est en POST, cela veut dire que le formulaire a ete envoye
+    Route gérant les inscriptions
+    :return : affichage du template inscription.html ou redirection
+    """
+    # Si on est en POST, cela veut dire que le formulaire a été envoyé
     if request.method == "POST":
         statut, donnees = User.creer(
             login=request.form.get("login", None),
@@ -452,43 +468,48 @@ def inscription():
             motdepasse=request.form.get("motdepasse", None)
         )
         if statut is True:
-            flash("Enregistrement effectué. Identifiez-vous maintenant", "success")
+            flash("Enregistrement effectué. Identifiez-vous maintenant")
             return redirect("/")
         else:
-            flash("Les erreurs suivantes ont été rencontrées : " + ",".join(donnees), "error")
-            return render_template("pages/inscription.html")
+            flash("Les erreurs suivantes ont été rencontrées : " + ",".join(donnees))
+            return render_template("pages/inscription.html", nom="WmLitterature")
     else:
-        return render_template("pages/inscription.html")
+        return render_template("pages/inscription.html", nom="WmLitterature")
 
 @app.route("/connexion", methods=["POST", "GET"])
 def connexion():
-    """ Route gérant les connexions
+    """
+    Route gérant les connexions
+    :return : affichage du template connexion.html ou redirection
     """
     if current_user.is_authenticated is True:
-        flash("Vous êtes déjà connecté-e", "info")
+        flash("Vous êtes déjà connecté-e")
         return redirect("/")
-    # Si on est en POST, cela veut dire que le formulaire a ete envoye
+
+    # Si on est en POST, cela veut dire que le formulaire a été envoyé
     if request.method == "POST":
         utilisateur = User.identification(
             login=request.form.get("login", None),
             motdepasse=request.form.get("motdepasse", None)
         )
         if utilisateur:
-            flash("Connexion effectuée", "success")
+            flash("Connexion effectuée")
             login_user(utilisateur)
             return redirect("/")
         else:
-            flash("Les identifiants n'ont pas été reconnus", "error")
+            flash("Les identifiants n'ont pas été reconnus")
 
-    return render_template("pages/connexion.html")
+    return render_template("pages/connexion.html", nom="WmLitterature")
 login.login_view = 'connexion'
 
 
 @app.route("/deconnexion", methods=["POST", "GET"])
 def deconnexion():
-    """Route gérant les déconnexions
+    """
+    Route gérant les déconnexions
+    :return : redirection vers la page d'accueil
     """
     if current_user.is_authenticated is True:
         logout_user()
-    flash("Vous êtes déconnecté-e", "info")
+    flash("Vous êtes déconnecté-e")
     return redirect("/")

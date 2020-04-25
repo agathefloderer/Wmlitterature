@@ -3,7 +3,7 @@
 
 {% extends "conteneur.html" %}
 
-{% block titre %}| Index des romancières{%endblock%}
+{% block titre %}| Index romancières{%endblock%}
 
 {% block corps %}
     <header>
@@ -13,8 +13,8 @@
     <h2 id="titre2">Il y a {{romancieres.total}} romancières enregistrées :</h2>
     	<ul>
     	   {% for romanciere in romancieres.items %}
-            <li><a href="{{url_for('romanciere', id_femme=romanciere.id_femme)}}"> {% if not romanciere.prenom_auteur %}{% else %}{{romanciere.prenom_auteur}}{% endif %} {{romanciere.nom_auteur}}</a></li>
-                {% endfor %}
+            <li><a href="{{url_for('romanciere', id_femme=romanciere.id_femme)}}"> {% if not romanciere.prenom_auteur %}{% else %}{{romanciere.prenom_auteur}}{% endif %} {{romanciere.nom_auteur}}</a></li><br/>
+            {% endfor %}
         </ul>
         <nav>
             <ul>

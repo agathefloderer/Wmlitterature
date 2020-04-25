@@ -4,6 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="/static/css/css.css" />
+        <link rel="icon" type="image/png" href="static/images/logo.png">
         <title>WmLitterature {% block titre %}{% endblock %}</title>
         <!-- On définit un bloc titre qui pourra être completé dans les templates enfants avec les informations spécifiques à chaque page. -->
         <!--On inclut dans le fichier conteneur.html des sous-élements concernant les metadata. -->
@@ -23,7 +24,7 @@
                         <li>
                             <a href="{{url_for('accueil')}}">Accueil</a>
                         </li>
-                        <li class="deroulant"><a>Index</a>
+                        <li class="deroulant"><a>Les deux index</a>
                             <ul class="sous">
                                 <li><a href="{{url_for('index_romanciere')}}">Romancières</a></li>
                                 <li><a href="{{url_for('index_oeuvres')}}">Oeuvres</a></li>
@@ -41,10 +42,10 @@
                         </li>
                         {% else %}
                         <li>
-                            <a href="{{url_for('deconnexion')}}">Déconnexion ({{current_user.user_nom}})</a>
+                            <a href="{{url_for('deconnexion')}}">Déconnexion</a>
                         </li>
                         <li>
-                            <a class="nav-link" href="{{url_for('creation_romanciere')}}">Ajouter une romancière</a>
+                            <a class="nav-link" href="{{url_for('creation_romanciere')}}">Ajout romancière</a>
                         </li>
                         {% endif %}
                         <li>
@@ -68,6 +69,7 @@
                 </div>
                 {% endif %}
             {% endwith %}
+            <br/>
             <div class="row">
                 <div class="col">
                 {% block corps %}{% endblock %}

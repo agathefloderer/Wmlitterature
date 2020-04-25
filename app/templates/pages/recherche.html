@@ -12,7 +12,7 @@
   </header>
   <ul>
     {% for romanciere in resultats.items %}
-    <li><a href="{{url_for('romanciere', id_femme=romanciere.id_femme)}}"> {{romanciere.prenom_auteur}} {{romanciere.nom_auteur}}</a></li>
+    <li><a href="{{url_for('romanciere', id_femme=romanciere.id_femme)}}"> {{romanciere.prenom_auteur}} {{romanciere.nom_auteur}}</a></li><br/>
     {% endfor %}
   </ul>
   <nav>

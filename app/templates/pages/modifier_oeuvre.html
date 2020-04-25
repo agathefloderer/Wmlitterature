@@ -1,14 +1,14 @@
 
 {% extends "conteneur.html" %}
 
-{% block titre %}| Modification d'une oeuvre{%endblock%}
+{% block titre %}| Modification oeuvre{%endblock%}
 
 {% block corps %}
 	<header>
 		<h1 id="titre1">Modification des données d'une oeuvre</h1>
 		<h2 id="titre2">Pour modifier les données d'une oeuvre déjà existante, complétez le formulaire et cliquez sur "Modifier".</h2>
 	</header>
-	<form method="POST" action="{{url_for('modification_oeuvre', id_oeuvre=oeuvre.id_oeuvre)}}">
+	<form method="POST" action="{{url_for('modification_oeuvre', identifier=oeuvre.id_oeuvre)}}">
 		<div>
 			<label for="Titre">*Titre de l'oeuvre</label>
 			<div>

@@ -1,7 +1,7 @@
 
 {% extends "conteneur.html" %}
 
-{% block titre %}| Modification d'un portrait{%endblock%}
+{% block titre %}| Modification portrait{%endblock%}
 
 {% block corps %}
 
@@ -9,7 +9,7 @@
 		<h1 id="titre1">Modification des données d'un portrait</h1>
 		<h2 id="titre2">Pour modifier les données d'un portrait déjà existant, complétez le formulaire et cliquez sur "Modifier".</h2>
 	</header>
-	<form method="POST" action="{{url_for('modification_portrait', id_portrait=portrait.id_portrait)}}">
+	<form method="POST" action="{{url_for('modification_portrait', identifier=portrait.id_portrait)}}">
 		<div>
 			<label for="Url_portrait">Url complet du portrait</label>
 			<div>
@@ -44,6 +44,12 @@
 			<label for="Lieu_conservation">Lieu/Institution de conservation</label>
 			<div>
 				<input type="text" name="Lieu_conservation" maxlength="300" {% if portrait.lieu_conservation %} value="{{portrait.lieu_conservation}}" {% endif %}>
+			</div>
+		</div>
+		<div>
+			<label for="Provenance_image">Provenance du portrait</label>
+			<div>
+				<input type="text" name="Provenance_image" maxlength="300" {% if portrait.provenance_image %} value="{{portrait.provenance_image}}"{% else %}Image libre de droits nécessaire{% endif %}>
 			</div>
 		</div>
 		<div>

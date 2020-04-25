@@ -9,7 +9,7 @@ import datetime
 class Femme_de_lettres(db.Model):
 #On crée notre modèle Femme_de_lettres. Les modèles permettent de générer automatiquement des requêtes.
     id_femme = db.Column(db.Integer, unique=True, nullable=False, primary_key=True, autoincrement=True)
-    # On enregistre ensuite les differents champs du modele.
+    # On enregistre ensuite les differents champs du modèle.
     nom_naissance = db.Column(db.Text)
     prenom_naissance = db.Column(db.Text)
     nom_auteur = db.Column(db.Text)
@@ -19,11 +19,12 @@ class Femme_de_lettres(db.Model):
     date_mort = db.Column(db.Text)
     lieu_mort = db.Column(db.Text)
     pseudonyme = db.Column(db.Text)
-    #Jointures. 
-    #Relations many to one identifiées par des clefs étrangères du côté de la relation simple.
+    #Jointures : 
+    #Les relations many to one sont identifiées par des clefs étrangères du côté de la relation simple.
+    #db.relationship() permet de construire des relations directes entre les objets et de naviguer entre eux. Cette fonction, contrairement à db.Column(), n'intervient pas sur la structure MySQL mais elle permet simplement de lier les classes.
     oeuvres = db.relationship('Oeuvres_principales', backref='romanciere', cascade='all, delete, delete-orphan')
     portraits = db.relationship('Portrait', backref='romanciere', cascade='all, delete, delete-orphan')
-    #Grâce aux suppressions en cascade, lorsqu'une romancière sera supprimée, ses objets enfants (ici les oeuvres et le portrait) le seront également.
+    #Grâce aux suppressions en cascade, lorsqu'une romancière est supprimée, les objets qui lui sont enfants/associés (ici les oeuvres et le portrait) le seront également.
     authorships_femme_de_lettres = db.relationship("Authorship_femme_de_lettres", back_populates='femme_de_lettres_femme_de_lettres')
 
     @staticmethod
@@ -31,7 +32,7 @@ class Femme_de_lettres(db.Model):
 
     def creer_romanciere(new_nom_naissance, new_prenom_naissance, new_nom_auteur, new_prenom_auteur, new_date_naissance, new_lieu_naissance, new_date_mort, new_lieu_mort, new_pseudonyme):
         """
-        Fonction qui permet de créer une nouvelle r mancière et de l'ajouter la base de données (ajout rendu possible par un utilisateur)
+        Fonction qui permet de créer une nouvelle romancière et de l'ajouter la base de données (ajout rendu possible par un-e utilisateur-rice)
         :param new_nom_naissance: nom de famille de naissance de la romancière
         :param new_prenom_naissance: prénom de naissance de la romancière
         :param new_nom_auteur: nom d'auteur de la romancière
@@ -41,7 +42,7 @@ class Femme_de_lettres(db.Model):
         :param new_date_mort: date de mort de la romancière
         :param new_lieu_mort: lieu de mort (ville ou village) de la romancière
         :param new_pseudonyme: pseudonyme de la romancière 
-        :type param: string
+        :type new_nom_naissance, new_prenom_naissance, new_nom_auteur, new_prenom_auteur, new_date_naissance, new_lieu_naissance, new_date_mort, new_lieu_mort, new_pseudonyme: string
         :returns: tuple (booléen, liste/objet)
          S'il y a une erreur, la fonction renvoie False suivi d'une liste d'erreurs.
         Sinon, elle renvoie True, suivi de l'objet créé (ici une romancière).
@@ -95,9 +96,8 @@ class Femme_de_lettres(db.Model):
              # On ajoute la romanciere a la base de donnees
             db.session.add(created_romanciere)
             db.session.commit()
-           
 
-            return True, new_femme_de_lettres
+            return True, created_romanciere
         #Exécution de except uniquement si une erreur apparaît. 
         except Exception as erreur:
             return False, [str(erreur)]
@@ -107,7 +107,7 @@ class Femme_de_lettres(db.Model):
 
     def modifier_romanciere(Id_femme, Nom_naissance, Prenom_naissance, Nom_auteur, Prenom_auteur, Date_naissance, Lieu_naissance, Date_mort, Lieu_mort, Pseudonyme):
         """
-        Fonction qui permet de modifier les informations d'une romancière dans la base de données (modifications rendues possibles par un utilisateur.rice).
+        Fonction qui permet de modifier les informations d'une romancière dans la base de données (modifications rendues possibles par un-e utilisateur-rice).
         :param Id_femme: identifiant numérique de la romancière
         :param Nom_naissance: nom de famille de naissance de la romancière
         :param Prenom_naissance: prénom de naissance de la romancière
@@ -212,6 +212,7 @@ class Femme_de_lettres(db.Model):
             db.session.commit()
             return True
 
+        #Exécution de except uniquement si une erreur apparaît. 
         except Exception as erreur:
             return False, [str(erreur)]
 
@@ -228,7 +229,9 @@ class Oeuvres_principales(db.Model):
     nombre_pages = db.Column(db.Text)
     resume = db.Column(db.Text)
     #Jointure
+    #Les relations many to one sont identifiées par des clefs étrangères du côté de la relation simple.
     oeuvres_principales_id_femmme = db.Column(db.Integer, db.ForeignKey('femme_de_lettres.id_femme'))
+    #db.relationship() permet de construire des relations directes entre les objets et de naviguer entre eux. Cette fonction, contrairement à db.Column(), n'intervient pas sur la structure MySQL mais elle permet simplement de lier les classes.
     authorships_oeuvres_principales = db.relationship("Authorship_oeuvres_principales", back_populates="oeuvres_principales_oeuvres_principales")
 
     @staticmethod
@@ -236,7 +239,7 @@ class Oeuvres_principales(db.Model):
 
     def creer_oeuvres_principales(new_titre, new_date_premiere_pub, new_editeur, new_lieu_publication, new_nombre_pages, new_resume, id_femme):
         """
-        Fonction qui permet de créer une nouvelle oeuvre et de l'ajouter à la base de données (ajout rendu possible par un utilisateur)
+        Fonction qui permet de créer une nouvelle oeuvre et de l'ajouter à la base de données (ajout rendu possible par un-e utilisateur-rice)
         :param new_titre: titre de l'oeuvre
         :param new_date_premiere_pub: date de la première publication de l'oeuvre
         :param new_editeur: nom et prénom de l'éditeur
@@ -245,7 +248,7 @@ class Oeuvres_principales(db.Model):
         :type param: string
         :returns: tuple (booléen, liste/objet)
          S'il y a une erreur, la fonction renvoie False suivi d'une liste d'erreurs.
-        Sinon, elle renvoie True, suivi de l'objet créé (ici new_oeuvres_principales).
+        Sinon, elle renvoie True, suivi de l'objet créé (ici une nouvelle oeuvre).
         """
 
         #On crée une liste vide pour les erreurs
@@ -305,17 +308,17 @@ class Oeuvres_principales(db.Model):
     @staticmethod
     #@staticmethod permet d'intéragir avec une classe pour un objet qui n'existe pas encore.
 
-    def modifier_oeuvres_principales(id_oeuvre, Titre, Date_premiere_pub, Editeur, Lieu_publication, Nombre_pages, Resume):
+    def modifier_oeuvres_principales(Id_oeuvre, Titre, Date_premiere_pub, Editeur, Lieu_publication, Nombre_pages, Resume):
         """
-        Fonction qui permet de modifier les informations d'une oeuvre dans la base de données (modifications rendues possibles par un utilisateur.rice).
-        :param id_oeuvre: identifiant numérique de l'oeuvre
+        Fonction qui permet de modifier les informations d'une oeuvre dans la base de données (modifications rendues possibles par un-e utilisateur-rice).
+        :param Id_oeuvre: identifiant numérique de l'oeuvre
         :param Titre: titre de l'oeuvre
         :param Date_premiere_pub: Date de la première publication de l'oeuvre
         :param Editeur: éditeur ou maison d'édition de l'oeuvre
         :param Lieu_publication: lieu de publication de l'oeuvre
         :param Nombre_pages: nombre de pages de l'oeuvre
         :param Resume: résumé de l'oeuvre
-        :type id_oeuvre: integer
+        :type Id_oeuvre: integer
         :type Titre, Date_premiere_pub, Editeur, Lieu_publication, Nombre_pages, Resume: string
         :returns: tuple (booléen, liste/objet)
          S'il y a une erreur, la fonction renvoie False suivi d'une liste d'erreurs.
@@ -336,7 +339,7 @@ class Oeuvres_principales(db.Model):
             return False, erreurs
 
         #On récupère une oeuvre dans la base grâce à son identifiant
-        update_oeuvres_principales = Oeuvres_principales.query.get(id_oeuvre)
+        update_oeuvres_principales = Oeuvres_principales.query.get(Id_oeuvre)
 
         #On vérifie que l'utilisateur-trice modifie au moins un champ
 
@@ -385,41 +388,28 @@ class Oeuvres_principales(db.Model):
             return False, [str(erreur)]
 
     @staticmethod
-    def supprimer_oeuvres_principales(id_oeuvre, Titre, Date_premiere_pub, Editeur, Lieu_publication, Nombre_pages, Resume):
+    def supprimer_oeuvres_principales(Id_oeuvre):
         """
         Fonction qui permet de supprimer la notice d'une oeuvre.
-        :param id_oeuvre: identifiant numérique de l'oeuvre
-        :param Titre: titre de l'oeuvre
-        :param Date_premiere_pub: Date de la première publication de l'oeuvre
-        :param Editeur: éditeur ou maison d'édition de l'oeuvre
-        :param Lieu_publication: lieu de publication de l'oeuvre
-        :param Nombre_pages: nombre de pages de l'oeuvre
-        :param Resume: résumé de l'oeuvre
-        :type id_oeuvre: integer
-        :type Titre, Date_premiere_pub, Editeur, Lieu_publication, Nombre_pages, Resume: string
+        :param Id_oeuvre: identifiant numérique de l'oeuvre
+        :type Id_oeuvre: integer
         :returns: booleens
         """
 
-        #On récupère une oeuvre dans la base grâce à son identifiant
-        delete_oeuvres_principales = Oeuvres_principales.query.get(id_oeuvre)
+        #On récupère une romancière dans la base grâce à son identifiant
+        delete_oeuvres_principales = Oeuvres_principales.query.get(Id_oeuvre)
 
-        delete_oeuvres_principales.id_oeuvre = id_oeuvre
-        delete_oeuvres_principales.titre = Titre
-        delete_oeuvres_principales.date_premiere_pub = Date_premiere_pub
-        delete_oeuvres_principales.editeur = Editeur
-        delete_oeuvres_principales.lieu_publication = Lieu_publication
-        delete_oeuvres_principales.nombre_pages = Nombre_pages
-        delete_oeuvres_principales.resume = Resume
     
         #On ajoute un bloc "try-except" afin de "gérer" les erreurs
         try:
-            #On supprime le portrait de la base de données
+            #On supprime la romancière de la base de données
             db.session.delete(delete_oeuvres_principales)
             db.session.commit()
-            return True, delete_oeuvres_principales
+            return True
+
         except Exception as erreur:
             return False, [str(erreur)]
-
+    
 
                                                                 ####Portrait####
 class Portrait(db.Model):
@@ -432,8 +422,11 @@ class Portrait(db.Model):
     annee_realisation = db.Column(db.Text)
     techniques = db.Column(db.Text)
     lieu_conservation = db.Column(db.Text)
+    provenance_image = db.Column(db.Text)
     #Jointure
+    #Les relations many to one sont identifiées par des clefs étrangères du côté de la relation simple.
     portrait_id_femme = db.Column(db.Integer, db.ForeignKey('femme_de_lettres.id_femme'))
+    #db.relationship() permet de construire des relations directes entre les objets et de naviguer entre eux. Cette fonction, contrairement à db.Column(), n'intervient pas sur la structure MySQL mais elle permet simplement de lier les classes.
     authorships_portrait = db.relationship("Authorship_portrait", back_populates='portrait_portrait')
 
 
@@ -441,16 +434,17 @@ class Portrait(db.Model):
     @staticmethod
     #@staticmethod permet d'intéragir avec une classe pour un objet qui n'existe pas encore.
 
-    def creer_portrait(new_url_portrait, new_nom_createur, new_prenom_createur, new_annee_realisation, new_techniques, new_lieu_conservation, id_femme):
+    def creer_portrait(new_url_portrait, new_nom_createur, new_prenom_createur, new_annee_realisation, new_techniques, new_lieu_conservation, new_provenance_image, id_femme):
         """
-        Fonction qui permet de créer une nouveau portrait et de l'ajouter à la base de données (ajout rendu possible par un utilisateur)
+        Fonction qui permet de créer une nouveau portrait et de l'ajouter à la base de données (ajout rendu possible par un-e utilisateur-rice)
         :param new_url_portrait: url du portrait pour appeler l'image dans l'application
         :param new_nom_createur: nom de la personne ayant produit le portrait
         :param new_prenom_createur: prénom de la personne ayant produit le portrait
         :param new_annee_realisation: année où le portrait a été réalisé
         :param new_lieu_conservation: institut de conservation du portrait, s'il y en a une
+        :param new_provenance_image: site d'où provient l'image
         :param id_femme : identifiant numérique de la romancière qui est représenté par le portrait
-        :type new_url_portrait, new_nom_createur, new_prenom_createur, new_annee_realisation, new_techniques, new_lieu_conservation : string
+        :type new_url_portrait, new_nom_createur, new_prenom_createur, new_annee_realisation, new_techniques, new_lieu_conservation, new_provenance_image : string
         :type id_femme: integer
         :returns: tuple (booléen, liste/objet)
          S'il y a une erreur, la fonction renvoie False suivi d'une liste d'erreurs.
@@ -493,6 +487,7 @@ class Portrait(db.Model):
             annee_realisation = new_annee_realisation,
             techniques = new_techniques,
             lieu_conservation = new_lieu_conservation,
+            provenance_image = new_provenance_image,
             portrait_id_femme = id_femme)
 
         #On ouvre un double bloc "try-except" afin de gérer les erreurs
@@ -502,7 +497,7 @@ class Portrait(db.Model):
             db.session.commit()
            
 
-            return True, created_portrait
+            return True, new_portrait
         #Exécution de except uniquement si une erreur apparaît. 
         except Exception as erreur:
             return False, [str(erreur)]
@@ -510,34 +505,26 @@ class Portrait(db.Model):
 
     @staticmethod
     #@staticmethod permet d'intéragir avec une classe pour un objet qui n'existe pas encore.
-    def modifier_portrait(id_portrait, Url_portrait, Nom_createur, Prenom_createur, Annee_realisation, Techniques, Lieu_conservation):
+    def modifier_portrait(Id_portrait, Url_portrait, Nom_createur, Prenom_createur, Annee_realisation, Techniques, Lieu_conservation, Provenance_image):
         """
         Fonction qui permet de modifier les informations d'un portrait dans la base de données (modifications rendues possibles par un utilisateur.rice).
-        :param id_portrait : identifiant numérique du portrait
+        :param Id_portrait : identifiant numérique du portrait
         :param Url_portrait: url du portrait pour appeler l'image dans l'application
         :param Nom_createur: nom de la personne ayant produit le portrait
         :param Prenom_createur: prénom de la personne ayant produit le portrait
         :param Annee_realisation: année où le portrait a été réalisé
         :param Lieu_conservation: institut de conservation du portrait, s'il y en a une
-        :type Url_portrait, Nom_createur, Prenom_createur, Annee_realisation, Techniques, Lieu_conservation : string
+        :param Provenance_image : site d'où provient l'image
+        :type Url_portrait, Nom_createur, Prenom_createur, Annee_realisation, Techniques, Lieu_conservation, Provenance_image : string
         :returns: tuple (booléen, liste/objet)
          S'il y a une erreur, la fonction renvoie False suivi d'une liste d'erreurs.
         Sinon, elle renvoie True, suivi de l'objet mis à jour (ici une oeuvre).
         """
         #On crée une liste vide pour les erreurs
         erreurs=[]
-
-        #On vérifie que l'utilisateur complète au moins un champ de données considéré comme essentiel
-        if not Url_portrait:
-            erreurs.append("le champ 'Url complet du portrait' est obligatoire")
-        #Les autres données ne sont pas forcément disponibles et sont donc optionnelles.
-        
-        #Si on a au moins une erreur, retourner un message d'erreur
-        if len(erreurs) > 0:
-            return False, erreurs
       
         #On récupère une oeuvre dans la base grâce à son identifiant
-        update_portrait = Portrait.query.get(id_portrait)
+        update_portrait = Portrait.query.get(Id_portrait)
 
 
         #On vérifie que l'utilisateur-trice modifie au moins un champ
@@ -546,7 +533,8 @@ class Portrait(db.Model):
                 and update_portrait.prenom_createur == Prenom_createur \
                 and update_portrait.annee_realisation == Annee_realisation \
                 and update_portrait.techniques == Techniques \
-                and update_portrait.lieu_conservation == Lieu_conservation :
+                and update_portrait.lieu_conservation == Lieu_conservation \
+                and update_portrait.provenance_image == Provenance_image :
             erreurs.append("Aucune modification n'a été réalisée")
 
         if len(erreurs) > 0:
@@ -569,6 +557,7 @@ class Portrait(db.Model):
             update_portrait.annee_realisation = Annee_realisation
             update_portrait.techniques = Techniques
             update_portrait.lieu_conservation = Lieu_conservation
+            update_portrait.provenance_image = Provenance_image
 
         #On ajoute un bloc "try-except" afin de "gérer" les erreurs
         try:
@@ -584,40 +573,33 @@ class Portrait(db.Model):
 
 
     @staticmethod
-    def supprimer_portrait(id_portrait, Url_portrait, Nom_createur, Prenom_createur, Annee_realisation, Lieu_conservation):
+    def supprimer_portrait(Id_portrait):
         """
-        Fonction qui permet de supprimer un portrait de la base de données
-        :param id_portrait : identifiant numérique du portrait
-        :param Url_portrait: url du portrait pour appeler l'image dans l'application
-        :param Nom_createur: nom de la personne ayant produit le portrait
-        :param Prenom_createur: prénom de la personne ayant produit le portrait
-        :param Annee_realisation: année où le portrait a été réalisé
-        :param Lieu_conservation: institut de conservation du portrait, s'il y en a une
-        :type Url_portrait, Nom_createur, Prenom_createur, Annee_realisation, Techniques, Lieu_conservation : string
+        Fonction qui permet de supprimer un portrait.
+        :param Id_portrait: identifiant numérique du portrait
+        :type Id_portrait: integer
         :returns: booleens
         """
 
-        #On récupère une oeuvre dans la base grâce à son identifiant
-        delete_portrait = Portrait.query.get(id_portrait)
+        #On récupère une romancière dans la base grâce à son identifiant
+        delete_portrait = Portrait.query.get(Id_portrait)
 
-        delete_portrait.id_portrait = id_portrait
-        delete_portrait.url_portrait = Url_portrait
-        delete_portrait.nom_createur = Nom_createur
-        delete_portrait.prenom_createur = Prenom_createur
-        delete_portrait.annee_realisation = Annee_realisation
-        delete_portrait.lieu_conservation = Lieu_conservation
-        
+    
         #On ajoute un bloc "try-except" afin de "gérer" les erreurs
         try:
-            #On supprime le portrait de la base de données
+            #On supprime la romancière de la base de données
             db.session.delete(delete_portrait)
             db.session.commit()
-            return True, delete_portrait
+            return True
+
         except Exception as erreur:
             return False, [str(erreur)]
 
 
                                                          ####Authorship####
+
+#Il faut établir des relations many-to-many entre la table User et les  tables Femme_de_lettres, Oeuvres_principles, Portrait (tables sur lesquelles les utilisateur-rice-s peuvent apporter des modifications).
+#Pour cela, on va créer des table Authorship.
 
 class Authorship_femme_de_lettres(db.Model):
 #On crée notre modèle Authorship pour la table Femme_de_lettres.
@@ -627,6 +609,8 @@ class Authorship_femme_de_lettres(db.Model):
     authorship_femme_de_lettres_id_femme = db.Column(db.Integer, db.ForeignKey('femme_de_lettres.id_femme'))
     authorship_femme_de_lettres_date = db.Column(db.DateTime, default=datetime.datetime.utcnow) 
     #Jointures
+    #Les relations many to one sont identifiées par des clefs étrangères du côté de la relation simple.
+    #db.relationship() permet de construire des relations directes entre les objets et de naviguer entre eux. Cette fonction, contrairement à db.Column(), n'intervient pas sur la structure MySQL mais elle permet simplement de lier les classes.
     user_femme_de_lettres = db.relationship("User", back_populates="author_femme_de_lettres")
     femme_de_lettres_femme_de_lettres = db.relationship("Femme_de_lettres", back_populates="authorships_femme_de_lettres")
 
@@ -638,6 +622,7 @@ class Authorship_oeuvres_principales(db.Model):
     authorship_oeuvres_principales_id_oeuvre = db.Column(db.Integer, db.ForeignKey('oeuvres_principales.id_oeuvre'))
     authorship_oeuvres_principales_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     #Jointures
+    #db.relationship() permet de construire des relations directes entre les objets et de naviguer entre eux. Cette fonction, contrairement à db.Column(), n'intervient pas sur la structure MySQL mais elle permet simplement de lier les classes.
     user_oeuvres_principales = db.relationship("User", back_populates="author_oeuvres_principales")
     oeuvres_principales_oeuvres_principales = db.relationship("Oeuvres_principales", back_populates="authorships_oeuvres_principales")
 
@@ -649,5 +634,6 @@ class Authorship_portrait(db.Model):
     authorship_portrait_id_portrait = db.Column(db.Integer, db.ForeignKey('portrait.id_portrait'))
     authorship_portrait_date = db.Column(db.DateTime, default=datetime.datetime.utcnow) 
     #Jointures
+    #db.relationship() permet de construire des relations directes entre les objets et de naviguer entre eux. Cette fonction, contrairement à db.Column(), n'intervient pas sur la structure MySQL mais elle permet simplement de lier les classes.
     user_portrait = db.relationship("User", back_populates="author_portrait")
     portrait_portrait = db.relationship("Portrait", back_populates="authorships_portrait")

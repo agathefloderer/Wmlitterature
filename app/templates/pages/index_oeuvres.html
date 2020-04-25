@@ -2,7 +2,7 @@
 
 {% extends "conteneur.html" %}
 
-{% block titre %}| Index des oeuvres{%endblock%}
+{% block titre %}| Index oeuvres{%endblock%}
 
 {% block corps %}
     <header>
@@ -12,7 +12,7 @@
     <h2 id="titre2">Il y a {{oeuvres.total}} oeuvres enregistrées :</h2>
     <ul>
         {% for oeuvre in oeuvres.items %}
-        <li><a href="{{url_for('oeuvre', id_oeuvre=oeuvre.id_oeuvre)}}">{{oeuvre.titre}}</a></li>
+        <li><a href="{{url_for('oeuvre', id_oeuvre=oeuvre.id_oeuvre)}}">{{oeuvre.titre}}</a></li><br/>
         {% endfor %}
     </ul>
     <nav >

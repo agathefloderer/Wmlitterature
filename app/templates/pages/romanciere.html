@@ -3,8 +3,7 @@
 {% extends "conteneur.html" %}
 
 {% block titre %}
-    {%if romanciere %}| Romancière : 
-    {{romanciere.prenom_auteur}} {{romanciere.nom_auteur}} {% endif %}
+    {%if romanciere %}| {{romanciere.prenom_auteur}} {{romanciere.nom_auteur}} {% endif %}
 {% endblock %}
 
 {% block corps %}
@@ -59,12 +58,13 @@
     <p style="text-align:center">La notice que vous recherchez n'existe pas ou plus.</p>
 </div>
 {% endif %}
+<br/>
 
+{% if oeuvres %}
 <div>
     <header>
         <h2 id="titre2">Oeuvres principales de la romancière :</h2>
     </header>
-    {% if oeuvres %}
     {%for oeuvre in oeuvres %}
         <dl>
             <dt>
