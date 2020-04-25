@@ -392,40 +392,6 @@ def creation_portrait(id_femme):
     else:
         return render_template("pages/creer_portrait.html", nom="WmLitterature", romanciere=femme_de_lettres)
 
-@app.route("/modifier_portrait/<int:identifier>", methods=["POST", "GET"])
-@login_required
-def modification_portrait(identifier):
-    """
-    Route gérant la modification d'un portrait
-    :param id_oeuvre: identifiant numérique du protrait
-    :return : affichage du template modifier_romanciere.html ou redirection
-    """
-    # On renvoie sur la page html les éléments de l'objet portrait correspondant à l'identifiant de la route
-    if request.method == "GET":
-        portrait_a_modifier = Portrait.query.get(identifier)
-        return render_template("pages/modifier_portrait.html", portrait=portrait_a_modifier)
-
-    # on récupère les données du formulaire modifié
-    else:
-        statut, donnees= Portrait.modifier_portrait(
-            Id_portrait=identifier,
-            Url_portrait=request.form.get("Url_portrait", None),
-            Nom_createur=request.form.get("Nom_createur", None),
-            Prenom_createur=request.form.get("Prenom_createur", None),
-            Annee_realisation=request.form.get("Annee_realisation", None),
-            Techniques=request.form.get("Techniques", None),
-            Lieu_conservation=request.form.get("Lieu_conservation", None),
-            Provenance_image=request.form.get("Provenance_image", None)
-        )
-
-        if statut is True:
-            flash("Modification réussie !")
-            return redirect ("/galerie")
-        else:
-            flash("Les erreurs suivantes ont été rencontrées : " + ",".join(donnees))
-            portrait_a_modifier = Portrait.query.get(identifier)
-            return render_template("pages/modifier_portrait.html", nom="WmLitterature", portrait=portrait_a_modifier)
-
 @app.route("/supprimer_portrait/<int:identifier>", methods=["POST", "GET"])
 @login_required
 def suppression_portrait(identifier):

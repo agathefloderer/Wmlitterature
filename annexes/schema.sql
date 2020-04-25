@@ -78,7 +78,7 @@ INSERT INTO "portrait" VALUES (11,'https://upload.wikimedia.org/wikipedia/common
 INSERT INTO "femme_de_lettres" VALUES (1,'MARONNAT','Anne Pierrette','AMERO','Marie','1838-04-03','Luzy','1913-30-12','Neuilly-sur-Seine','Daniel Arnault');
 INSERT INTO "femme_de_lettres" VALUES (2,'COETNEMPREN DE KERSAINT','Claire Louisa Rose Bonne de','DURAS','Claire de','1777-03-22','Brest','1828-01-16','Nice','Claire Lechat de Kersaint');
 INSERT INTO "femme_de_lettres" VALUES (3,'DUPIN','Amantine Aurore Lucile','SAND','Georges','1804-07-01','Paris','1876-06-08','Nohant',NULL);
-INSERT INTO "femme_de_lettres" VALUES (4,'SOLMS','Marie Thérèse de','BENTZON','Thérèse','1840-09-21','Seine-Port','1907-02-1907','Paris ou Meudon',NULL);
+INSERT INTO "femme_de_lettres" VALUES (4,'SOLMS','Marie Thérèse de','BENTZON','Thérèse','1840-09-21','Seine-Port','1907-02-07','Paris ou Meudon',NULL);
 INSERT INTO "femme_de_lettres" VALUES (5,'DUDEVANT-SAND','Solange','CLESINGER-SAND','Solange','1828-09-13','Nohant','1899-03-17','Paris','Dubois de Vavray');
 INSERT INTO "femme_de_lettres" VALUES (6,'CONSTANT DE REBECQUE','Anne Marie Louise','ESTOURNELLES','Louise','1792-06-04','Brevans','1860-02-08','La Flèche',NULL);
 INSERT INTO "femme_de_lettres" VALUES (7,'RODRIGUES-HENRIQUES','Rebecca Eugénie','FOA','Eugénie','1796-06-10','Bordeaux','1852-05-03','Paris','Edmond de Fontanes');
