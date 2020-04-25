@@ -10,7 +10,7 @@ Sur cette application, vous pourrez plus spécifiquement :
 
 - parcourir l'index des femmes de lettres, de leurs oeuvres et une galerie de leur portrait et en explorer les notices
 - effectuer des recherches rapide parmi les femmes de lettres
-- créer un compte puis enrichir l'application en créant, modifiant ou supprimer des notices "femme de lettres", "oeuvre" et "portrait".
+- créer un compte puis enrichir l'application en créant, modifiant ou supprimant les notices "femme de lettres", "oeuvre" et "portrait".
 
 
 ## Comment procéder au lancement de WmLitterature ?
