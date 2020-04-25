@@ -1,14 +1,12 @@
 # WmLitterature
 
-ATTENTION : application en cours de développement.
-
 ## Présentation du projet
 
 "WmLitterature" est une application Web, reposant sur une base de données, qui répertorie des femmes de lettres françaises, et plus spécifiquement des romancières.
 
 Cette application a été créée dans le cadre du master 2 Technologies numériques appliquées à l'histoire de l'Ecole nationale des chartes. Elle est développée avec *Python3*.
 
-En ce qui concerne le design de l'application, *Boostrap* a été utilisé.
+En ce qui concerne le design de l'application, *Boostrap* a été utilisé quelques fois.
 
 ## Comment procéder au lancement de WmLitterature ?
 
