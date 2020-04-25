@@ -27,7 +27,7 @@
         {% if current_user.is_authenticated %}
         <div>
             <p style="text-align:center">
-                <a href="{{url_for('modification_portrait', identifier=portrait.id_portrait)}}">Modifier le portrait</a> || <a href="{{url_for('suppression_portrait', identifier=portrait.id_portrait)}}">Supprimer le portrait</a>
+                <a href="{{url_for('suppression_portrait', identifier=portrait.id_portrait)}}">Supprimer le portrait</a>
             </p>
         </div>
     </div>

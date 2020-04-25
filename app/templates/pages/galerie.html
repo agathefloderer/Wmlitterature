@@ -14,7 +14,7 @@
                 <a target="_blank" href="{{url_for('portrait_individuel', id_portrait=portrait.id_portrait)}}">
                 <img src="{{portrait.url_portrait}}" alt="Portrait d'une romancière"></a>
                 <div>
-                    <p>{% if not portrait.techniques %}Portrait {% else %} {{portrait.techniques}}{% endif %} réalisé {% if portrait.nom_createur %}par {{portrait.prenom_createur}} {{portrait.nom_createur}}{% endif %} {% if portrait.annee_realisation %}en {{portrait.annee_realisation}}{% endif %}. {% if portrait.lieu_conservation %}Lieu de conservation : {{portrait.lieu_conservation}}.{% endif %} {% if portrait.provenance_image %}{{portrait.provenance_image}}.{% endif %}</p>
+                     <p>{% if portrait.nom_createur %}Portrait réalisé par {{portrait.prenom_createur}} {{portrait.nom_createur}}. {% endif %}{% if portrait.annee_realisation %}Année de réalisation : {{portrait.annee_realisation}}. {% endif %}{% if portrait.lieu_conservation %}Lieu de conservation : {{portrait.lieu_conservation}}. {% endif %} {% if portrait.provenance_image %}{{portrait.provenance_image}}.{% endif %}</p>
                 </div>
             </div>
             {% endif %}
