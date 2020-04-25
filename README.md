@@ -27,5 +27,5 @@ Afin de lancer l'application pour la première fois, il est nécessaire de proc�
 - Se placer à l'intérieur du repository via le terminal et taper : `source env/bin/activate`
 - Lancer le fichier run.py : `python3 run.py`
 
-## Contributeur 
+## Contributrice
 Agathe Floderer
