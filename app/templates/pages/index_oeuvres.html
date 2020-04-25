@@ -1,0 +1,48 @@
+<!--Page 'index_romanciere' du site -->
+
+{% extends "conteneur.html" %}
+
+{% block titre %}| Index oeuvres{%endblock%}
+
+{% block corps %}
+    <header>
+        <h1 id="titre1">Index des oeuvres</h1>
+    </header>
+    {% if oeuvres %}
+    <h2 id="titre2">Il y a {{oeuvres.total}} oeuvres enregistrées :</h2>
+    <ul>
+        {% for oeuvre in oeuvres.items %}
+        <li><a href="{{url_for('oeuvre', id_oeuvre=oeuvre.id_oeuvre)}}">{{oeuvre.titre}}</a></li><br/>
+        {% endfor %}
+    </ul>
+    <nav >
+        <ul class="ul_page">
+            {% for page in oeuvres.iter_pages() %}
+            {% if page %}
+
+                    {% if page != oeuvres.page %}
+                    <li class="li_page">
+                        <a class="a_page" href="{{ url_for('index_oeuvres', page=page) }}">{{page}}</a>
+                    </li class="li_page">
+                    {% else %}
+                    <li class="li_page">
+                        <a class="a_page">{{page}} <span>(actuelle)</span></a>
+                    </li>
+                    {% endif %}
+
+            {% else %}
+                <li>
+                  <a>...</a>
+                </li>
+            {% endif %}
+
+        {% endfor %}
+      </ul>
+    </nav>
+
+    {% else %}
+    <div>
+    	<p>La base de données est en cours de constitution.</p>
+    </div>
+    {% endif %}
+{% endblock %}

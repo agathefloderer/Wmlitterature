@@ -1,0 +1,65 @@
+<!--Page 'creer_oeuvre' du site -->
+
+
+{% extends "conteneur.html" %}
+
+{% block titre %}| Ajout d'un portrait {%endblock%}
+
+{% block corps %}
+	<header>
+		<h1 id="titre1">Ajout d'un portrait</h1>
+	</header>
+	<div>
+		<p>Pour ajouter un nouveau portrait à la base de données, complétez le formulaire et cliquez sur "Ajouter".</p>
+	</div>
+	<form method="POST" action="{{url_for('creation_portrait', id_femme=romanciere.id_femme)}}">
+		<div>
+			<label for="new_url_portrait">*Url complet du portrait</label>
+			<div>
+				<input type="text" name="new_url_portrait" placeholder="Ex: https://upload.wikimedia.org/wikipedia/commons/f/fb/Claire_de_Duras.jpg">
+			</div>
+		</div>
+		<div>
+			<label for="new_nom_createur">Nom du créateur du portrait</label>
+			<div>
+				<input type="text" name="new_nom_createur">
+			</div>
+		</div>
+		<div>
+			<label for="new_prenom_createur">Prénom du créateur du portrait</label>
+			<div>
+				<input type="text" name="new_prenom_createur" maxlength="300">
+			</div>
+		</div>
+		<div>
+			<label for="new_annee_realisation">Année de réalisation du portrait</label>
+			<div>
+				<input type="text" name="new_annee_realisation" minlength="4" maxlength="4" placeholder="AAAA">
+			</div>
+		</div>
+		<div>
+			<label for="new_techniques">Technique utilisée</label>
+			<div>
+				<input type="text" name="new_techniques" maxlength="300">
+			</div>
+		</div>
+		<div>
+			<label for="new_lieu_conservation">Lieu de conservation</label>
+			<div>
+				<input type="text" name="new_lieu_conservation" maxlength="300">
+			</div>
+		</div>
+		<div>
+			<label for="new_provenance_image">Provenance du portrait</label>
+			<div>
+				<input type="text" name="new_provenance_image" maxlength="300" placeholder="Image libre de droits nécessaire">
+			</div>
+		</div>
+		<div>
+			<button type="submit" value="créer">Ajouter</button>
+		</div>
+		<div>
+			<p>*Le champ précédé d'un astérisque est obligatoire !</p>
+		</div>
+	</form>
+{% endblock %}

@@ -1,1 +1,1 @@
-#fichier initialisant le dossier en package
+#Fichier initialisant le dossier en package

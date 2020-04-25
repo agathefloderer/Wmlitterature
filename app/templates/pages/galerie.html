@@ -1,0 +1,28 @@
+<!--Page 'galerie' du site -->
+{% extends "conteneur.html" %}
+
+{% block titre %}| Galerie{%endblock%}
+
+{% block corps %}
+    <header>
+        <h1 id="titre1">Galerie : femmes de lettres française</h1>
+    </header>
+    {% if portraits %}
+        {% for portrait in portraits %}
+            {% if portrait.url_portrait %}
+            <div class="gallery">
+                <a target="_blank" href="{{url_for('portrait_individuel', id_portrait=portrait.id_portrait)}}">
+                <img src="{{portrait.url_portrait}}" alt="Portrait d'une romancière"></a>
+                <div>
+                    <p>{% if not portrait.techniques %}Portrait {% else %} {{portrait.techniques}}{% endif %} réalisé {% if portrait.nom_createur %}par {{portrait.prenom_createur}} {{portrait.nom_createur}}{% endif %} {% if portrait.annee_realisation %}en {{portrait.annee_realisation}}{% endif %}. {% if portrait.lieu_conservation %}Lieu de conservation : {{portrait.lieu_conservation}}.{% endif %} {% if portrait.provenance_image %}{{portrait.provenance_image}}.{% endif %}</p>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+    <div>
+        <p>La base de données est en cours de constitution.</p>
+    </div>
+    {% endif %}
+{% endblock %}
+

@@ -1,0 +1,25 @@
+{% extends "conteneur.html" %}
+
+{% block titre %}| Suppression de la romancière {{romanciere.prenom_auteur}} {romanciere.nom_auteur}}{%endblock%}
+
+{% block corps %}
+<br/>
+<header>
+	<h1 id="titre1">Suppression de la romancière {{romanciere.prenom_auteur}} {{romanciere.nom_auteur}}</h1>
+</header>
+<br/>
+<br/>
+<form method="POST" action="{{url_for('suppression_romanciere', identifier=romanciere.id_femme)}}" style="text-align:center">
+	<div>
+       <p name="romanciere" value="{{romanciere.id_femme}}">Etes-vous sûr-e de vouloir procéder à cette suppression ?</p>
+	<div>
+	<br/>
+	<div>
+        <button type="submit">Confirmer</button>
+    </div>
+    <br/>
+    <br/>
+    <br/>
+ </form>
+
+{% endblock %}

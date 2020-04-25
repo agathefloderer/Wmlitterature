@@ -1,0 +1,1 @@
+#Fichier initialisant le fichier en package

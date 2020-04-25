@@ -1,0 +1,75 @@
+<!--Page 'editer_romanciere' du site -->
+
+
+{% extends "conteneur.html" %}
+
+{% block titre %}| Modification romancière{%endblock%}
+
+{% block corps %}
+	<header>
+		<h1 id="titre1">Modification des données d'une romancière</h1>
+		<h2 id="titre2">Pour modifier les données d'une romancière déjà existante, complétez le formulaire et cliquez sur "Modifier".</h2>
+	</header>
+	<form method="POST" action="{{url_for('modification_romanciere', identifier=romanciere.id_femme)}}">
+		<div>
+			<label for="Nom_naissance">Nom de naissance</label>
+			<div>
+				<input type="text" name="Nom_naissance" maxlength="300" {% if romanciere.nom_naissance %} value="{{romanciere.nom_naissance}}" {% endif %}>
+			</div>
+		</div>
+		<div>
+			<label for="Prenom_naissance">Prénom de naissance</label>
+			<div>
+				<input type="text" name="Prenom_naissance" maxlength="300" {% if romanciere.prenom_naissance %} value="{{romanciere.prenom_naissance}}" {% endif %}>
+			</div>
+		</div>
+		<div>
+			<label for="Nom_auteur">*Nom d'auteur</label>
+			<div>
+				<input type="text" name="Nom_auteur" maxlength="300" value="{{romanciere.nom_auteur}}">
+			</div>
+		</div>
+		<div>
+			<label for="Prenom_auteur">*Prénom d'auteur</label>
+			<div>
+				<input type="text" name="Prenom_auteur" maxlength="300" value="{{romanciere.prenom_auteur}}">
+			</div>
+		</div>
+		<div>
+			<label for="Date_naissance">Date de naissance</label>
+			<div>
+				<input type="text" name="Date_naissance" placeholder="MM-JJ-AAAA" maxlength="10" {% if romanciere.date_naissance %} value="{{romanciere.date_naissance}}" {% endif %}>
+			</div>
+		</div>
+		<div>
+			<label for="Lieu_naissance">Lieu de naissance</label>
+			<div>
+				<input type="text" name="Lieu_naissance" placeholder="Indiquer le nom de la ville" maxlength="300" {% if romanciere.lieu_naissance %} value="{{romanciere.lieu_naissance}} {% endif %}">
+			</div>
+		</div>
+		<div>
+			<label for="Date_mort">Date de décès</label>
+			<div>
+				<input type="text" name="Date_mort" placeholder="MM-JJ-AAAA" maxlength="10" {% if romanciere.date_mort %} value="{{romanciere.date_mort}}" {% endif %}>
+			</div>
+		</div>
+		<div>
+			<label for="Lieu_mort">Lieu de décès</label>
+			<div>
+				<input type="text" name="Lieu_mort" placeholder="Indiquer le nom de la ville" maxlength="300" {% if romanciere.lieu_mort %} value="{{romanciere.lieu_mort}}" {% endif %}>
+				</div>
+		</div>
+		<div>
+			<label for="Pseudonyme">Pseudonyme</label>
+			<div>
+				<input type="text" name="Pseudonyme" maxlength="300" {% if romanciere.pseudonyme %} value="{{romanciere.pseudonyme}}" {% endif %}>
+			</div>
+		</div>
+		<div>
+			<button type="submit" value="créer">Modifier</button>
+		</div>
+		<div>
+			<p>*Les champs précédés d'un astérisque sont obligatoires !</p>
+		</div>
+	</form>
+{% endblock %}

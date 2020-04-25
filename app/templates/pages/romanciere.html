@@ -1,0 +1,90 @@
+<!--Page 'romanciere' du site -->
+
+{% extends "conteneur.html" %}
+
+{% block titre %}
+    {%if romanciere %}| {{romanciere.prenom_auteur}} {{romanciere.nom_auteur}} {% endif %}
+{% endblock %}
+
+{% block corps %}
+<!--Dans le bloc corps, les conditions ont ete multipliees. Enfin, l'ensemble des informations ne pourront pas etre completees pour l'ensemble des romancieres.-->
+
+{% if portraits %}
+    {% for portrait in portraits %}
+        <figure>
+            <a href="{{url_for('portrait_individuel', id_portrait=portrait.id_portrait)}}"><img src="{{portrait.url_portrait}}" width="256" class="rounded-circle" style="position: absolute; left:900px; top:220px"></a>
+        </figure>
+    {% endfor %}
+{% else %}
+    <figure>
+        <img src="{{ url_for('static', filename='images/silhouette.jpg')}}" width="256" class="rounded-circle" style="position: absolute; left:900px; top:220px"/>
+    </figure>
+{% endif %}
+
+{% if romanciere %}
+<div>
+    <header>
+        <h1 id="titre1">{{romanciere.prenom_auteur}} {{romanciere.nom_auteur}}</h1>
+        {% if romanciere.pseudonyme %}
+        <h3 id="titre3">Dite {{romanciere.pseudonyme}}</h3>  
+        {% endif %}
+    </header>
+    <dl> 
+        {% if romanciere.prenom_naissance %}
+        <dt>Nom de naissance</dt><dd>{{romanciere.prenom_naissance}} {{romanciere.nom_naissance}}</dd>
+        {% endif %}
+        {% if not romanciere.date_naissance %}
+        <dt>Date de naissance</dt><dd>Non renseignée</dd>
+        {% else %}
+        <dt>Date de naissance</dt><dd>{{romanciere.date_naissance}}</dd>
+        {% endif %}
+        {% if not romanciere.lieu_naissance %}
+        <dt>Lieu de naissance</dt><dd>Non renseigné</dd>
+        {% else %}
+        <dt>Lieu de naissance</dt><dd>{{romanciere.lieu_naissance}}</dd>
+        {% endif %}
+        {% if not romanciere.date_mort %} 
+        <dt>Date de décès</dt><dd>Non renseignée</dd>
+        {% else %}
+        <dt>Date de décès</dt><dd>{{romanciere.date_mort}}</dd>
+        {% endif %}
+        {% if not romanciere.lieu_mort %}
+        <dt>Lieu de décès</dt><dd>Non renseigné</dd>
+        {% else %}
+        <dt>Lieu de décès</dt><dd>{{romanciere.lieu_mort}}</dd>
+        {% endif %}
+    </dl>
+{% else %}
+    <p style="text-align:center">La notice que vous recherchez n'existe pas ou plus.</p>
+</div>
+{% endif %}
+<br/>
+
+{% if oeuvres %}
+<div>
+    <header>
+        <h2 id="titre2">Oeuvres principales de la romancière :</h2>
+    </header>
+    {%for oeuvre in oeuvres %}
+        <dl>
+            <dt>
+                <em>{{oeuvre.titre}}</em>
+            </dt>
+            <dd><a href="{{url_for('oeuvre', id_oeuvre=oeuvre.id_oeuvre)}}">En savoir plus</a></dd>
+        </dl>
+    {% endfor %}
+</div>
+{% else %}
+<div>
+    <p>Aucune oeuvre n'a été ajoutée pour cette romancière.... </p></br>
+</div>
+{% endif %}
+
+{% if current_user.is_authenticated %}
+<div style="text-align:center">
+    <p>
+        <a href="{{url_for('modification_romanciere', identifier=romanciere.id_femme)}}">Modifier la romancière</a> || <a href="{{url_for('suppression_romanciere', identifier=romanciere.id_femme)}}">Supprimer la romancière</a> || <a href="{{url_for('creation_oeuvre', id_femme=romanciere.id_femme)}}">Ajouter une oeuvre</a> {% if not portraits %} || <a href="{{url_for('creation_portrait', id_femme=romanciere.id_femme)}}">Ajouter un portrait</a>{% endif %}
+    </p>
+</div>
+{% endif %}
+{% endblock %}

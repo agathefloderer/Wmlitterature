@@ -1,25 +1,97 @@
-<!--Definition de la structure generale des pages avec les elements voues à se repeter, que l'on etendra ensuite dans chaque page.-->
+<!--Définition de la structure générale des pages, à compléter-->
 <!DOCTYPE html>
 <html lang="fr">
     <head>
-    	<meta charset="UTF-8">
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="/static/css/css.css" />
+        <link rel="icon" type="image/png" href="static/images/logo.png">
         <title>WmLitterature {% block titre %}{% endblock %}</title>
-        <!-- On definit un bloc titre qui pourra etre complete dans les templates enfants avec les informations specifiques a chaque page. -->
-        {% include "partials/css.html" %}
-        <!--On inclut dans le fichier conteneur.html des sous-elements concernant le css et les metadata. -->
+        <!-- On définit un bloc titre qui pourra être completé dans les templates enfants avec les informations spécifiques à chaque page. -->
+        <!--On inclut dans le fichier conteneur.html des sous-élements concernant les metadata. -->
         {% include "partials/metadata.html" %}
     </head>
     <body>
-       <div class="container">
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-          <a class="navbar-brand" href="{{ url_for('accueil') }}">WmLitterature</a>
-        </nav>
-        <div class="row">
-            <div class="col">
-            {% block corps %}{% endblock %}
-            <!--On definit un bloc corps qui pourra etre complete dans les templates enfants avec des informations specifiques a chaque page -->
+        <div id="bloc_page">
+            <header id="header_conteneur">
+                <nav>
+                    <div id="titre_principal">
+                        <div id="logo">
+                            <a href="{{url_for('accueil')}}"><img  src="{{ url_for('static', filename='images/logo.png')}}" height="100" width="200"/></a>
+                            <h1 id="h1_conteneur">WmLitterature</h1>
+                        </div>
+                    </div>
+                    <ul>
+                        <li>
+                            <a href="{{url_for('accueil')}}">Accueil</a>
+                        </li>
+                        <li class="deroulant"><a>Les deux index</a>
+                            <ul class="sous">
+                                <li><a href="{{url_for('index_romanciere')}}">Romancières</a></li>
+                                <li><a href="{{url_for('index_oeuvres')}}">Oeuvres</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="{{url_for('portrait')}}">Galerie</a>
+                        </li>
+                        {% if not current_user.is_authenticated %}
+                        <li>
+                            <a href="{{url_for('inscription')}}">Inscription</a>
+                        </li>
+                        <li>
+                            <a href="{{url_for('connexion')}}">Connexion</a>
+                        </li>
+                        {% else %}
+                        <li>
+                            <a href="{{url_for('deconnexion')}}">Déconnexion</a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="{{url_for('creation_romanciere')}}">Ajout romancière</a>
+                        </li>
+                        {% endif %}
+                        <li>
+                            <form action="{{url_for('recherche')}}" method="GET">
+                                <input name="keyword" type="search" placeholder="Recherche rapide" aria-label="Recherche">
+                                <button type="submit">Rechercher</button>
+                            </form>
+                        </li>
+                    </ul>
+                </nav>
+            </header>
+            <div class="container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                <div class="row">
+                    <div class="col">
+                        {% for category, message in messages %}
+                            <div class="alert-warning">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            {% endwith %}
+            <br/>
+            <div class="row">
+                <div class="col">
+                {% block corps %}{% endblock %}
+                </div>
             </div>
         </div>
-      </div>
-</html>
+        </div>
+    </body>
 
+
+<!-- Footer -->
+<footer>
+  <!-- Copyright -->
+  <div style="text-align:center;">
+      <p>© WmLitterature - TNAH, promotion 2020</p> 
+    <figure>
+        <a href="http://www.chartes.psl.eu/fr/cursus/master-technologies-numeriques-appliquees-histoire"><img src="http://www.chartes.psl.eu/sites/all/themes/enc_base/images/public/logo-ecole-nationale-des-chartes-header.png" alt="" width="170"></a>
+        <a href="https://github.com/agathefloderer/Wmlitterature"><img  src="{{ url_for('static', filename='images/logo_github.png')}}" width="50" title="Le github de l'application"></a>
+        <figcaption>En savoir plus</figcaption>
+    </figure>
+  </div>
+  <!-- Copyright -->
+</footer>
+<!-- Footer -->
+</html>

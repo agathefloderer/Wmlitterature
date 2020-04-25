@@ -1,0 +1,43 @@
+<!--Page 'recherche' du site -->
+
+{% extends "conteneur.html" %}
+
+{% block titre %}| Recherche{%endblock%}
+
+{% block corps %}
+  <header>
+    <h1 id="titre1">Résultats de votre recherche</h1>
+    {% if resultats %}
+    <h3 id="titre3">Voici {{resultats.total}} romancières qui répondent à votre requête :</h3>
+  </header>
+  <ul>
+    {% for romanciere in resultats.items %}
+    <li><a href="{{url_for('romanciere', id_femme=romanciere.id_femme)}}"> {{romanciere.prenom_auteur}} {{romanciere.nom_auteur}}</a></li><br/>
+    {% endfor %}
+  </ul>
+  <nav>
+    <ul>
+      {% for page in resultats.iter_pages() %}
+            {% if page %}
+
+              {% if page != resultats.page %}
+                <li>
+                    <a href="{{ url_for('recherche', keyword=keyword, page=page) }}">{{page}}</a>
+                </li>
+              {% else %}
+                <li>
+                  <a>{{page}} <span>(actuelle)</span></a>
+                </li>
+              {% endif %}
+
+            {% else %}
+                <li>
+                  <a>...</a>
+                </li>
+            {% endif %}
+
+      {% endfor %}
+    </ul>
+  </nav> 
+  {% endif %}
+{% endblock %}
