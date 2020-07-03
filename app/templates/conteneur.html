@@ -3,8 +3,8 @@
 <html lang="fr">
     <head>
         <meta charset="UTF-8">
-        <link rel="stylesheet" href="/static/css/css.css" />
-        <link rel="icon" type="image/png" href="static/images/logo.png">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/css.css')}}" />
+        <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png')}}">
         <title>WmLitterature {% block titre %}{% endblock %}</title>
         <!-- On définit un bloc titre qui pourra être completé dans les templates enfants avec les informations spécifiques à chaque page. -->
         <!--On inclut dans le fichier conteneur.html des sous-élements concernant les metadata. -->
@@ -86,8 +86,8 @@
   <div style="text-align:center;">
       <p>© WmLitterature - TNAH, promotion 2020</p> 
     <figure>
-        <a href="http://www.chartes.psl.eu/fr/cursus/master-technologies-numeriques-appliquees-histoire"><img src="http://www.chartes.psl.eu/sites/all/themes/enc_base/images/public/logo-ecole-nationale-des-chartes-header.png" alt="" width="170"></a>
-        <a href="https://github.com/agathefloderer/Wmlitterature"><img  src="{{ url_for('static', filename='images/logo_github.png')}}" width="50" title="Le github de l'application"></a>
+        <a href="http://www.chartes.psl.eu/fr/cursus/master-technologies-numeriques-appliquees-histoire"><img src="http://www.chartes.psl.eu/sites/all/themes/enc_base/images/public/logo-ecole-nationale-des-chartes-header.png" alt="" width="170" /></a>
+        <a href="https://github.com/agathefloderer/Wmlitterature"><img src="{{ url_for('static', filename='images/logo_github.png')}}" width="50" title="Le github de l'application" /></a>
         <figcaption>En savoir plus</figcaption>
     </figure>
   </div>
