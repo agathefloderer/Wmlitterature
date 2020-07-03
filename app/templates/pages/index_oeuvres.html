@@ -23,7 +23,7 @@
                     {% if page != oeuvres.page %}
                     <li class="li_page">
                         <a class="a_page" href="{{ url_for('index_oeuvres', page=page) }}">{{page}}</a>
-                    </li class="li_page">
+                    </li>
                     {% else %}
                     <li class="li_page">
                         <a class="a_page">{{page}} <span>(actuelle)</span></a>

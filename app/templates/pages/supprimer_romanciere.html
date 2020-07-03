@@ -11,8 +11,9 @@
 <br/>
 <form method="POST" action="{{url_for('suppression_romanciere', identifier=romanciere.id_femme)}}" style="text-align:center">
 	<div>
-       <p name="romanciere" value="{{romanciere.id_femme}}">Etes-vous sûr-e de vouloir procéder à cette suppression ?</p>
-	<div>
+        <input type="hidden" name="romanciere" value="{{romanciere.id_femme}}" />
+        <p>Etes-vous sûr-e de vouloir procéder à cette suppression ?</p>
+	</div>
 	<br/>
 	<div>
         <button type="submit">Confirmer</button>

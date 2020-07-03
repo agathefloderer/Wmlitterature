@@ -71,7 +71,7 @@ def romanciere(id_femme):
     :param id_femme : identifiant numérique de la romancière
     :return : affichage du template romanciere.html
     """
-    unique_femme = Femme_de_lettres.query.get(id_femme)
+    unique_femme = Femme_de_lettres.query.get_or_404(id_femme)
     #On fait des jointures pour pouvoir afficher sur la page des romancières des données provenant des Oeuvres_principales et Portrait
     oeuvres = unique_femme.oeuvres
     portraits = unique_femme.portraits
@@ -109,10 +109,11 @@ def oeuvre(id_oeuvre):
     :param id_oeuvre : idenfiant numérique de la romancière
     :return : affichage du template oeuvre.html
     """
-    unique_oeuvre = Oeuvres_principales.query.get(id_oeuvre)
+    unique_oeuvre = Oeuvres_principales.query.get_or_404(id_oeuvre)
     #On crée une jointure pour pouvoir afficher sur les pages concernant des oeuvres le nom des romancières.
     romanciere = unique_oeuvre.romanciere
     return render_template("pages/oeuvre.html", nom="WmLitterature", oeuvre=unique_oeuvre, romanciere=romanciere)
+
 
 @app.route("/galerie")
 def portrait():
@@ -122,6 +123,7 @@ def portrait():
     """
     portraits = Portrait.query.all()
     return render_template("pages/galerie.html", nom="WmLitterature", portraits=portraits)
+
 
 @app.route("/romanciere/portrait/<int:id_portrait>")
 def portrait_individuel(id_portrait):
@@ -135,6 +137,7 @@ def portrait_individuel(id_portrait):
     romanciere = unique_portrait.romanciere
     return render_template("pages/portrait.html", nom="WmLitterature", portrait=unique_portrait, romanciere=romanciere)
 
+
 #Recherche
 @app.route("/recherche")
 def recherche():
@@ -146,9 +149,9 @@ def recherche():
     page = request.args.get("page", 1)
     
     if isinstance(page, str) and page.isdigit():
-    	page = int(page)
-    else :
-    	page = 1
+        page = int(page)
+    else:
+        page = 1
 
     # On crée une liste vide de résultat (qui restera vide par defaut si on n'a pas de mot clef)
     resultats = []
@@ -167,7 +170,7 @@ def recherche():
                 Femme_de_lettres.date_mort.like("%{}%".format(motclef)),
                 Femme_de_lettres.lieu_mort.like("%{}%".format(motclef)),
                 Femme_de_lettres.pseudonyme.like("%{}%".format(motclef)),
-                )
+            )
         ).order_by(Femme_de_lettres.nom_auteur.asc()).paginate(page=page, per_page=resultats_par_page)
         titre = "Résultat pour la recherche '" + motclef + "'"
     return render_template("pages/recherche.html", resultats=resultats, titre=titre, keyword=motclef)
@@ -243,6 +246,7 @@ def modification_romanciere(identifier):
             femme_a_modifier = Femme_de_lettres.query.get(identifier)
             return render_template("pages/modifier_romanciere.html", nom="WmLitterature", romanciere=femme_a_modifier)
 
+
 @app.route("/supprimer_romanciere/<int:identifier>", methods=["POST", "GET"])
 @login_required
 def suppression_romanciere(identifier):
@@ -302,12 +306,13 @@ def creation_oeuvre(id_femme):
     else:
         return render_template("pages/creer_oeuvre.html", nom="WmLitterature", romanciere=femme_de_lettres)
 
+
 @app.route("/modifier_oeuvre/<int:identifier>", methods=["POST", "GET"])
 @login_required
 def modification_oeuvre(identifier):
     """
     Route gérant la modification d'une oeuvre
-    :param id_oeuvre: identifiant de l'oeuvre
+    :param identifier: identifiant de l'oeuvre
     :return : affichage du template modifier_romanciere.html ou redirection
     """
     # On renvoie sur la page html les éléments de l'objet oeuvre correspondant à l'identifiant de la route
@@ -335,12 +340,13 @@ def modification_oeuvre(identifier):
             oeuvre_a_modifier = Oeuvres_principales.query.get(identifier)
             return render_template("pages/modifier_oeuvre.html", nom="WmLitterature", oeuvre=oeuvre_a_modifier)
 
+
 @app.route("/supprimer_oeuvre/<int:identifier>", methods=["POST", "GET"])
 @login_required
 def suppression_oeuvre(identifier):
     """ 
     Route pour supprimer une romancière dans la base
-    :param identifier : identifiant de la romancière
+    :param identifier: identifiant de la romancière
     :return : affichage du template supprimer_romanciere.html ou redirection
     """
     oeuvre_a_supprimer = Oeuvres_principales.query.get(identifier)
@@ -391,6 +397,7 @@ def creation_portrait(id_femme):
             return render_template("pages/creer_portrait.html", romanciere=femme_de_lettres)
     else:
         return render_template("pages/creer_portrait.html", nom="WmLitterature", romanciere=femme_de_lettres)
+
 
 @app.route("/supprimer_portrait/<int:identifier>", methods=["POST", "GET"])
 @login_required
